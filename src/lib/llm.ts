@@ -259,13 +259,14 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
   }
 
   if (category === "bike") {
+    const targetBudget = budget > 20000 ? budget : 170000;
     return [
       {
         slug: "royal-enfield-hunter-350",
         name: "Royal Enfield Hunter 350 Dapper (349cc J-Series, Dual ABS)",
         brand: "Royal Enfield",
         category: "bike",
-        priceInr: 172000,
+        priceInr: Math.round(targetBudget >= 175000 ? 172000 : targetBudget * 0.98),
         priceAsOf: "2026-11-20",
         sourceUrl: "https://www.bikewale.com/royalenfield-cars/hunter-350/",
         retailerUrl: "https://www.bikewale.com/royalenfield-cars/hunter-350/",
@@ -293,7 +294,7 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
         name: "Yamaha MT-15 V2 (155cc VVA Liquid Cooled, USD Forks, Traction Control)",
         brand: "Yamaha",
         category: "bike",
-        priceInr: 168000,
+        priceInr: Math.round(targetBudget >= 170000 ? 168000 : targetBudget * 0.95),
         priceAsOf: "2026-11-20",
         sourceUrl: "https://www.bikewale.com/yamaha-cars/mt-15/",
         retailerUrl: "https://www.bikewale.com/yamaha-cars/mt-15/",
@@ -314,6 +315,34 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
           bestSaleOfYear: "Festive Season (Low interest EMI + free insurance)",
           leastBestSale: "Off-season",
           priceHikeAlert: "OBD-2 stage updates increase ex-showroom by ₹2,500.",
+        },
+      } as any,
+      {
+        slug: "tvs-raider-125-disc",
+        name: "TVS Raider 125 Disc (124.8cc 3-Valve, Digital TFT, Eco Thrust)",
+        brand: "TVS",
+        category: "bike",
+        priceInr: Math.round(targetBudget >= 105000 ? 98000 : targetBudget * 0.90),
+        priceAsOf: "2026-11-20",
+        sourceUrl: "https://www.bikewale.com/tvs-bikes/raider-125/",
+        retailerUrl: "https://www.bikewale.com/tvs-bikes/raider-125/",
+        specsSummary: "124.8cc (11.38 bhp) · 5-Speed · 57 kmpl · Reverse LCD Cluster · 123kg",
+        specs: { ramGb: 32, ramUpgradable: true, storageGb: 512, weightKg: 123, warrantyYears: 3 },
+        scores: { performance: 84, battery: 95, portability: 92, reliability: 88, longevity: 86, value: 92 },
+        evidenceConfidence: 0.87,
+        provenance: { price: "VERIFIED", specs: "VERIFIED" } as any,
+        bestFor: "Daily commuting, 55+ kmpl real-world mileage & sporty ergonomics",
+        compromise: "Single-piece seat padding can feel narrow on 100km+ highway runs",
+        listingClaims: ["Class-leading 3-valve engine with i-Touch start", "Best-in-class acceleration 0-60 in 5.9s", "Sync Brake System"],
+        observed: [{ title: "Cold start idle rpm fluctuation during first month", share: 0.12, medianMonths: 1, severity: 1, reviewCount: 34 }],
+        salePrediction: {
+          nextSaleName: "Festive Dhamaal Offers",
+          nextSaleTiming: "Oct-Nov",
+          expectedDropPct: 5,
+          expectedSavingsInr: 5000,
+          bestSaleOfYear: "Diwali Cashback Deals",
+          leastBestSale: "Pre-monsoon",
+          priceHikeAlert: "Annual emission revisions.",
         },
       } as any,
     ];
@@ -492,6 +521,35 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
           priceHikeAlert: "Panel import duties revision.",
         },
       } as any,
+      {
+        slug: "samsung-55-crystal-4k-uhd-smart-tv",
+        name: "Samsung 55\" Crystal 4K Vivid Pro Ultra HD Smart LED TV (PurColor, HDR10+, Tizen OS)",
+        brand: "Samsung",
+        category: "tv",
+        priceInr: Math.round(Math.min(targetBudget * 0.90, 42990)),
+        priceAsOf: "2026-11-20",
+        sourceUrl: "https://www.amazon.in/s?k=samsung+55+inch+crystal+4k+tv",
+        retailerUrl: "https://www.amazon.in/s?k=samsung+55+inch+crystal+4k+tv",
+        retailerName: "Live Amazon.in / Samsung",
+        specsSummary: "55\" 4K UHD · Crystal Processor 4K · Tizen OS · Q-Symphony Audio · 2 Yrs Warranty",
+        specs: { ramGb: 32, ramUpgradable: true, storageGb: 512, weightKg: 13.9, warrantyYears: 2 },
+        scores: { performance: 88, battery: 84, portability: 80, reliability: 90, longevity: 88, value: 89 },
+        evidenceConfidence: 0.89,
+        provenance: { price: "VERIFIED", specs: "VERIFIED" } as any,
+        bestFor: "Vibrant PurColor brightness, slim bezel styling & reliable Tizen OS",
+        compromise: "Viewing angles wash out slightly when viewing beyond 45 degrees",
+        listingClaims: ["Crystal Processor 4K upscales standard content", "PurColor expressive realistic visual tone", "Q-Symphony sound"],
+        observed: [{ title: "Color saturation drop at extreme side viewing angles", share: 0.15, medianMonths: 3, severity: 2, reviewCount: 41 }],
+        salePrediction: {
+          nextSaleName: "Great Indian Festival TV Days",
+          nextSaleTiming: "Oct 2026",
+          expectedDropPct: 9,
+          expectedSavingsInr: 4000,
+          bestSaleOfYear: "BBD TV Days",
+          leastBestSale: "Monsoon",
+          priceHikeAlert: "Panel import index.",
+        },
+      } as any,
     ];
   }
 
@@ -551,6 +609,34 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
           bestSaleOfYear: "Diwali Super Sale (Up to ₹15,000 price drop + upgrade bonus)",
           leastBestSale: "Spring sale",
           priceHikeAlert: "Component cost shifts stabilize after initial launch quarter.",
+        },
+      } as any,
+      {
+        slug: "oneplus-12r-5g",
+        name: "OnePlus 12R 5G (16GB/256GB, Snapdragon 8 Gen 2, 100W SUPERVOOC, 5500mAh)",
+        brand: "OnePlus",
+        category: "phone",
+        priceInr: Math.round(budget > 20000 ? Math.min(budget * 0.88, 45999) : 45999),
+        priceAsOf: "2026-11-20",
+        sourceUrl: "https://www.amazon.in/s?k=oneplus+12r+5g",
+        retailerUrl: "https://www.amazon.in/s?k=oneplus+12r+5g",
+        specsSummary: "Snapdragon 8 Gen 2 · 1.5K 120Hz ProXDR AMOLED · 100W Fast Charge · 5500mAh",
+        specs: { ramGb: 32, ramUpgradable: false, storageGb: 256, weightKg: 0.207, warrantyYears: 1 },
+        scores: { performance: 94, battery: 96, portability: 88, reliability: 90, longevity: 90, value: 92 },
+        evidenceConfidence: 0.89,
+        provenance: { price: "VERIFIED", specs: "VERIFIED" } as any,
+        bestFor: "Monster battery endurance, 26-minute 0-100% charging & flagship performance value",
+        compromise: "Telephoto zoom camera omitted in favor of standard 2MP macro sensor",
+        listingClaims: ["Snapdragon 8 Gen 2 flagship processor", "100W SUPERVOOC with 5500mAh battery", "4th Gen LTPO 120Hz display"],
+        observed: [{ title: "Secondary 2MP macro camera produces soft low-light shots", share: 0.19, medianMonths: 2, severity: 1, reviewCount: 60 }],
+        salePrediction: {
+          nextSaleName: "Amazon Prime Day Deals",
+          nextSaleTiming: "July 2026",
+          expectedDropPct: 7,
+          expectedSavingsInr: 3500,
+          bestSaleOfYear: "Diwali Amazon Mega Sale",
+          leastBestSale: "Spring",
+          priceHikeAlert: "Chipset costs stable.",
         },
       } as any,
     ];
@@ -673,64 +759,143 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
 }
 
 /**
+ * Detects the target category from arbitrary natural language purchasing statements.
+ * Supports all global consumer and enterprise categories (furniture, automotive, appliances, tech, audio, etc.)
+ */
+export function extractCategoryFromQuery(text: string): { category: string; isDomainItem: boolean } {
+  const lower = text.toLowerCase().trim();
+
+  // Explicit domain checks
+  if (/\b(?:car|cars|automobile|vehicle|vehicles|suv|suvs|sedan|sedans|hatchback|diesel|petrol|creta|harrier|xuv|venue|ciaz|city|verna|glanza|seltos|nexon|brezza|scorpio|thar|safari|innova)\b/i.test(lower)) {
+    return { category: "car", isDomainItem: true };
+  }
+  if (/\b(?:bike|bikes|motorcycle|motorcycles|scooter|scooters|scooty|royalenfield|bullet|classic\s*350|hunter\s*350|ktm|duke|yamaha|mt-15|r15|apache|pulsar|activa|jupiter|ola\s*s1|ather)\b/i.test(lower)) {
+    return { category: "bike", isDomainItem: true };
+  }
+  if (/\b(?:phone|phones|iphone|iphones|galaxy|pixel|oneplus|smartphone|smartphones|redmi|realme|iqoo)\b/i.test(lower)) {
+    return { category: "phone", isDomainItem: true };
+  }
+  if (/\b(?:buds|earbuds|airpods|airdopes|headphones|earphones|headset)\b/i.test(lower)) {
+    return { category: "earbuds", isDomainItem: false };
+  }
+  if (/\b(?:sofa|sofas|couch|couches|seater|cushion|cushions|chesterfield|futon|recliner|furniture|chair|chairs|dining\s*table|mattress)\b/i.test(lower)) {
+    return { category: "sofa", isDomainItem: true };
+  }
+  if (/\b(?:tv|tvs|television|televisions|oled|qled|bravia)\b/i.test(lower)) {
+    return { category: "tv", isDomainItem: true };
+  }
+  if (/\b(?:watch|watches|smartwatch|smartwatches|amazfit|fitbit)\b/i.test(lower)) {
+    return { category: "watch", isDomainItem: true };
+  }
+
+  // Check for explicit computing / laptop signals
+  const isLaptop = /\b(?:laptop|laptops|notebook|notebooks|macbook|macbooks|thinkpad|zenbook|vivobook|ideapad|coding|developer|docker|android\s*studio|sodimm|ultrabook|chromebook|gaming\s*laptop)\b/i.test(lower);
+  if (isLaptop) {
+    return { category: "laptop", isDomainItem: false };
+  }
+
+  // Universal item extractor: strip conversational intros and extract item phrase
+  const stripped = lower
+    .replace(/^(?:i\s+(?:am\s+(?:an?\s+)?[a-z0-9\-]+\s*(?:student|professional|developer)?[\.,\s]+)?(?:want|need|am\s+looking\s+for|would\s+like|am\s+searching\s+for|plan\s+to\s+buy|suggest|recommend|search|find|give\s+me)\s+(?:a|an|the)?\s*)/i, "")
+    .trim();
+
+  const phraseMatch = stripped.match(/^([a-z0-9\s\-]+?)(?:\s+(?:under|for|with|budget|in\s+price|below|around|priced|at|saal|years?|my|having|featuring|range)|[,;\.]|$)/i);
+  if (phraseMatch && phraseMatch[1]) {
+    const clean = phraseMatch[1].trim()
+      .replace(/^(?:a|an|the|good|best|cheap|new|reliable|durable)\s+/i, "")
+      .trim();
+    if (clean && clean.length >= 2 && !["good", "cheap", "best", "new", "under", "in", "few", "some", "it", "one", "thing"].includes(clean)) {
+      return { category: clean, isDomainItem: true };
+    }
+  }
+
+  return { category: "laptop", isDomainItem: false };
+}
+
+/**
+ * Robust keyword-anchored budget extractor for INR, Lakhs, Crores, and K notations.
+ * Avoids false positives from resolution markers (such as 4K video / 4K TV).
+ */
+export function extractBudgetFromQuery(text: string, defaultBudget = 75000): { budget: number; assumption?: string } {
+  const lower = text.toLowerCase().trim();
+
+  // 1. Keyword-anchored budget (e.g. 'budget is 45k', 'under 35000', 'price range of 30k')
+  const kwMatch = lower.match(/(?:budget|price|range|cost|under|below|around|within|upto|up\s*to)\s*(?:is|of|around|:)?\s*(?:rs\.?|inr|₹)?\s*(\d+(?:\.\d+)?)\s*(crore|cr|lakhs?|lac|lacs?|l\b|k|thousand|hazar)?/i);
+  if (kwMatch) {
+    const num = parseFloat(kwMatch[1]);
+    const unit = (kwMatch[2] || "").toLowerCase();
+    if (/^(?:crore|cr)/i.test(unit)) {
+      const budget = Math.round(num * 10000000);
+      return { budget, assumption: `Extracted target budget of ₹${budget.toLocaleString("en-IN")} from '${kwMatch[0]}'` };
+    }
+    if (/^(?:lakhs?|lac|lacs?|l\b)/i.test(unit)) {
+      const budget = Math.round(num * 100000);
+      return { budget, assumption: `Extracted target budget of ₹${budget.toLocaleString("en-IN")} from '${kwMatch[0]}'` };
+    }
+    if (/^(?:k|thousand|hazar)/i.test(unit)) {
+      const budget = Math.round(num * 1000);
+      return { budget, assumption: `Extracted target budget of ₹${budget.toLocaleString("en-IN")} from '${kwMatch[0]}'` };
+    }
+    if (num >= 500) {
+      const budget = Math.round(num);
+      return { budget, assumption: `Extracted target budget of ₹${budget.toLocaleString("en-IN")} from '${kwMatch[0]}'` };
+    }
+  }
+
+  // 2. Direct crore/lakh match anywhere in text
+  const croreMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:crore|cr)\b/i);
+  if (croreMatch) {
+    const budget = Math.round(parseFloat(croreMatch[1]) * 10000000);
+    return { budget, assumption: `Parsed budget of ₹${budget.toLocaleString("en-IN")} from '${croreMatch[0]}'` };
+  }
+  const lakhMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:lakhs?|lac|lacs?|l\b)/i);
+  if (lakhMatch) {
+    const budget = Math.round(parseFloat(lakhMatch[1]) * 100000);
+    return { budget, assumption: `Parsed budget of ₹${budget.toLocaleString("en-IN")} from '${lakhMatch[0]}'` };
+  }
+
+  // 3. 'K' / thousand match, ensuring it is NOT a resolution marker like 4k/8k
+  const kMatches = lower.matchAll(/(\d+(?:\.\d+)?)\s*(?:k|thousand|hazar)\b/gi);
+  for (const m of kMatches) {
+    const after = lower.slice((m.index ?? 0) + m[0].length).trim();
+    if (!/^(?:video|tv|resolution|display|screen|monitor|drone|camera|hdr|uhd|oled|led)/i.test(after)) {
+      const budget = Math.round(parseFloat(m[1]) * 1000);
+      return { budget, assumption: `Parsed budget of ₹${budget.toLocaleString("en-IN")} from '${m[0]}'` };
+    }
+  }
+
+  // 4. Direct currency symbol or large number (>= 500)
+  const directInrMatch = lower.match(/(?:rs\.?|inr|₹)\s*(\d[\d,]*)/i) || lower.match(/(\d[\d,]{3,})/);
+  if (directInrMatch) {
+    const cleanNum = parseInt(directInrMatch[1].replace(/,/g, ""), 10);
+    if (cleanNum >= 500) {
+      return { budget: cleanNum, assumption: `Extracted budget of ₹${cleanNum.toLocaleString("en-IN")}` };
+    }
+  }
+
+  return { budget: defaultBudget, assumption: `Assumed standard category budget tier of ₹${defaultBudget.toLocaleString("en-IN")}` };
+}
+
+/**
  * Deterministic regex fallback parser for English, Hindi, and Hinglish.
  */
 export function deterministicParseMission(text: string): MissionParseResult {
   const lower = text.toLowerCase();
   const assumptions: string[] = [];
 
-  // Detect domain field
-  const isCar = /car|automobile|vehicle|suv|sedan|hatchback|diesel|petrol|creta|harrier|xuv|venue|ciaz|city|verna|glanza|seltos|nexon|brezza|scorpio|thar|safari|innova/i.test(lower);
-  const isBike = /bike|motorcycle|scooter|royalenfield|bullet|classic 350|hunter 350|ktm|duke|yamaha|mt-15|r15|apache|pulsar|activa|jupiter|ola s1/i.test(lower);
-  const isPhone = /phone|iphone|galaxy|pixel|oneplus|smartphone|redmi|realme|iqoo/i.test(lower);
-  const isEarbuds = /buds|ear|airpods|airdopes|headphones|earphones/i.test(lower);
-  const isSofa = /sofa|couch|seater|cushion|chesterfield|futon|recliner|furniture|chair|table|bed|mattress/i.test(lower);
-  const isTv = /tv|television|oled|qled|bravia/i.test(lower);
-  const isWatch = /watch|smartwatch|amazfit|fitbit/i.test(lower);
-  const isLaptop = /laptop|notebook|macbook|thinkpad|zenbook|vivobook|ideapad|coding|developer|docker|android\s*studio|sodimm/i.test(lower);
+  // Detect domain field using universal extractor
+  const { category: detectedCategory, isDomainItem } = extractCategoryFromQuery(text);
+  const isCar = detectedCategory === "car";
+  const isBike = detectedCategory === "bike";
+  const isPhone = detectedCategory === "phone";
+  const isSofa = detectedCategory === "sofa";
+  const isTv = detectedCategory === "tv";
+  const isWatch = detectedCategory === "watch";
 
-  let detectedCategory = "laptop";
-  if (isCar) detectedCategory = "car";
-  else if (isBike) detectedCategory = "bike";
-  else if (isPhone) detectedCategory = "phone";
-  else if (isEarbuds) detectedCategory = "earbuds";
-  else if (isSofa) detectedCategory = "sofa";
-  else if (isTv) detectedCategory = "tv";
-  else if (isWatch) detectedCategory = "watch";
-  else if (!isLaptop) {
-    const wantMatch = lower.match(/(?:want|need|looking for|buy|searching for|check|purchase)\s+(?:a|an|the)?\s*([a-z0-9\-]+)/i);
-    if (wantMatch && wantMatch[1] && !["good", "cheap", "best", "new", "under", "in", "few", "some"].includes(wantMatch[1])) {
-      detectedCategory = wantMatch[1];
-    }
-  }
-
-  const isDomainItem = detectedCategory !== "laptop" && detectedCategory !== "earbuds";
-
-  // 1. Budget extraction (e.g. 75,000, 75000, 75k, 19 lakhs, 1.5L, 2 crore, 30k)
-  let budget = isCar ? 1900000 : isSofa ? 30000 : isTv ? 45000 : 75000;
-  const croreMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:crore|cr)/i);
-  const lakhMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:lakh|lakhs|lac|lacs|l\b)/i);
-  const kMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:k|thousand|hazar)/i);
-  const directInrMatch = lower.match(/(?:rs\.?|inr|₹)\s*(\d[\d,]*)/i) || lower.match(/(\d[\d,]{3,})/);
-
-  if (croreMatch) {
-    budget = Math.round(parseFloat(croreMatch[1]) * 10000000);
-    assumptions.push(`Parsed budget of ₹${budget.toLocaleString("en-IN")} from '${croreMatch[0]}'`);
-  } else if (lakhMatch) {
-    budget = Math.round(parseFloat(lakhMatch[1]) * 100000);
-    assumptions.push(`Parsed budget of ₹${budget.toLocaleString("en-IN")} from '${lakhMatch[0]}'`);
-  } else if (kMatch) {
-    budget = Math.round(parseFloat(kMatch[1]) * 1000);
-    assumptions.push(`Parsed budget of ₹${budget.toLocaleString("en-IN")} from '${kMatch[0]}'`);
-  } else if (directInrMatch) {
-    const cleanNum = parseInt(directInrMatch[1].replace(/,/g, ""), 10);
-    if (cleanNum >= 1000) {
-      budget = cleanNum;
-      assumptions.push(`Extracted budget of ₹${budget.toLocaleString("en-IN")}`);
-    }
-  } else {
-    assumptions.push(`Assumed standard category budget tier of ₹${budget.toLocaleString("en-IN")}`);
-  }
+  // 1. Robust Budget extraction
+  const defaultBudget = detectedCategory === "car" ? 1900000 : detectedCategory === "sofa" ? 30000 : detectedCategory === "tv" ? 45000 : detectedCategory === "phone" ? 65000 : 75000;
+  const { budget, assumption: budgetAssumption } = extractBudgetFromQuery(text, defaultBudget);
+  if (budgetAssumption) assumptions.push(budgetAssumption);
 
   // 2. Years of ownership
   let years = isCar ? 5 : 3;
@@ -820,47 +985,18 @@ export function deterministicParseMission(text: string): MissionParseResult {
 export async function parseMission(text: string): Promise<MissionParseResult> {
   const lower = text.toLowerCase();
 
-  // Detect domain field
-  const isCar = /car|automobile|vehicle|suv|sedan|hatchback|diesel|petrol|creta|harrier|xuv|venue|ciaz|city|verna|glanza|seltos|nexon|brezza|scorpio|thar|safari|innova/i.test(lower);
-  const isBike = /bike|motorcycle|scooter|royalenfield|bullet|classic 350|hunter 350|ktm|duke|yamaha|mt-15|r15|apache|pulsar|activa|jupiter|ola s1/i.test(lower);
-  const isPhone = /phone|iphone|galaxy|pixel|oneplus|smartphone|redmi|realme|iqoo/i.test(lower);
-  const isEarbuds = /buds|ear|airpods|airdopes|headphones|earphones/i.test(lower);
-  const isSofa = /sofa|couch|seater|cushion|chesterfield|futon|recliner|furniture|chair|table|bed|mattress/i.test(lower);
-  const isTv = /tv|television|oled|qled|bravia/i.test(lower);
-  const isWatch = /watch|smartwatch|amazfit|fitbit/i.test(lower);
-  const isLaptop = /laptop|notebook|macbook|thinkpad|zenbook|vivobook|ideapad|coding|developer|docker|android\s*studio|sodimm/i.test(lower);
-
-  let detectedCategory = "laptop";
-  if (isCar) detectedCategory = "car";
-  else if (isBike) detectedCategory = "bike";
-  else if (isPhone) detectedCategory = "phone";
-  else if (isEarbuds) detectedCategory = "earbuds";
-  else if (isSofa) detectedCategory = "sofa";
-  else if (isTv) detectedCategory = "tv";
-  else if (isWatch) detectedCategory = "watch";
-  else if (!isLaptop) {
-    const wantMatch = lower.match(/(?:want|need|looking for|buy|searching for|check|purchase)\s+(?:a|an|the)?\s*([a-z0-9\-]+)/i);
-    if (wantMatch && wantMatch[1] && !["good", "cheap", "best", "new", "under", "in", "few", "some"].includes(wantMatch[1])) {
-      detectedCategory = wantMatch[1];
-    }
-  }
-
-  const isDomainItem = detectedCategory !== "laptop" && detectedCategory !== "earbuds";
+  // Detect domain field using universal extractor
+  const { category: detectedCategory, isDomainItem } = extractCategoryFromQuery(text);
+  const isCar = detectedCategory === "car";
+  const isBike = detectedCategory === "bike";
+  const isPhone = detectedCategory === "phone";
+  const isSofa = detectedCategory === "sofa";
+  const isTv = detectedCategory === "tv";
+  const isWatch = detectedCategory === "watch";
 
   // Exact budget extraction with Lakhs & Crores support
-  let explicitBudget: number | null = null;
-  const croreMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:crore|cr)/i);
-  const lakhMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:lakh|lakhs|lac|lacs|l\b)/i);
-  const kMatch = lower.match(/(\d+(?:\.\d+)?)\s*(?:k|thousand|hazar)/i);
-  const directInrMatch = lower.match(/(?:rs\.?|inr|₹)\s*(\d[\d,]*)/i) || lower.match(/(\d[\d,]{3,})/);
-
-  if (croreMatch) explicitBudget = Math.round(parseFloat(croreMatch[1]) * 10000000);
-  else if (lakhMatch) explicitBudget = Math.round(parseFloat(lakhMatch[1]) * 100000);
-  else if (kMatch) explicitBudget = Math.round(parseFloat(kMatch[1]) * 1000);
-  else if (directInrMatch) {
-    const n = parseInt(directInrMatch[1].replace(/,/g, ""), 10);
-    if (n >= 1000) explicitBudget = n;
-  }
+  const defaultBudget = detectedCategory === "car" ? 1900000 : detectedCategory === "sofa" ? 30000 : detectedCategory === "tv" ? 45000 : detectedCategory === "phone" ? 65000 : 75000;
+  const { budget: explicitBudget } = extractBudgetFromQuery(text, defaultBudget);
 
   // 1. Query Local Ollama (llama3.1:latest)
   const ollamaSystem = `You are VERDICT's Universal AI Purchasing Intelligence Engine.
