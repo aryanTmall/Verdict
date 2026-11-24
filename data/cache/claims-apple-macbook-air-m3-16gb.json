@@ -1,0 +1,41 @@
+[
+  {
+    "claim": "Liquid Retina display with 500 nits brightness",
+    "status": "supported",
+    "supportCount": 2,
+    "contradictCount": 0,
+    "receipts": [
+      {
+        "quote": "Verified owner: Liquid Retina display with 500 nits brightness. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Verified owner: Dual external display support with lid closed. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      }
+    ]
+  },
+  {
+    "claim": "Dual external display support with lid closed",
+    "status": "supported",
+    "supportCount": 2,
+    "contradictCount": 0,
+    "receipts": [
+      {
+        "quote": "Verified owner: Liquid Retina display with 500 nits brightness. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Verified owner: Dual external display support with lid closed. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      }
+    ]
+  },
+  {
+    "claim": "Up to 18 hours battery life",
+    "status": "unverifiable",
+    "supportCount": 0,
+    "contradictCount": 0,
+    "receipts": []
+  }
+]
