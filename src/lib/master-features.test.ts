@@ -24,6 +24,15 @@ import { evaluateRealityCheck, VERIFIED_MARKET_MINIMUMS } from "./reality-check"
 import { buildTrackedPurchaseLink, MONETIZATION_DISCLOSURE } from "./monetization/affiliate";
 import { TIER_ENTITLEMENTS, VERDICT_PRICING } from "./monetization/entitlements";
 import { trackEvent } from "./monetization/analytics";
+import {
+  estimateFairUsedPrice,
+  calculateUsedDealScore,
+  getCategoryInspectionChecklist,
+  generateNegotiationStrategy,
+  generateNewVsUsedMatrix,
+  generateUsedPurchaseRegretTimeline,
+} from "./second-hand/estimator";
+import { getUsedListingsForProduct } from "./second-hand/marketplaces";
 
 describe("VERDICT Master Platform Features Test Suite", () => {
   // Test 1: Price Radar & Cross-Marketplace Arbitrage
@@ -455,6 +464,132 @@ describe("VERDICT Master Platform Features Test Suite", () => {
       const trackedEvt = trackEvent("EXHIBIT_CLICKED", { specimen: "Acer Swift Go 14" });
       expect(trackedEvt.id).toBeTruthy();
       expect(trackedEvt.eventType).toBe("EXHIBIT_CLICKED");
+    });
+  });
+
+  // Test 13: Second-Hand, Pre-Owned & Refurbished Market Intelligence (Module C)
+  describe("13. Second-Hand, Pre-Owned & Refurbished Market Intelligence", () => {
+    it("empirically models fair used prices and catches suspiciously cheap scam risks", () => {
+      // 1-year old laptop in excellent condition
+      const fairValuation = estimateFairUsedPrice({
+        productName: "MacBook Air M2",
+        category: "electronics",
+        currentNewPriceInr: 99900,
+        askingPriceInr: 68000,
+        ageMonths: 14,
+        condition: "EXCELLENT",
+        hasOriginalInvoice: true,
+        hasBoxAndAccessories: true,
+      });
+
+      expect(fairValuation.fairPriceMedianInr).toBeGreaterThan(60000);
+      expect(fairValuation.fairPriceMedianInr).toBeLessThan(75000);
+      expect(["FAIR_MARKET_PRICE", "OUTSTANDING_DEAL"]).toContain(fairValuation.dealQuality);
+      expect(fairValuation.confidence).toBe("STRONGLY_SUPPORTED");
+
+      // Suspiciously cheap listing detection (>22% below floor)
+      const scamListingValuation = estimateFairUsedPrice({
+        productName: "iPhone 15 Pro",
+        category: "smartphones",
+        currentNewPriceInr: 129900,
+        askingPriceInr: 35000,
+        ageMonths: 8,
+        condition: "EXCELLENT",
+        hasOriginalInvoice: false,
+      });
+
+      expect(scamListingValuation.dealQuality).toBe("SUSPICIOUSLY_CHEAP");
+      expect(scamListingValuation.marketContextExplanation).toContain("Warning");
+    });
+
+    it("evaluates Used Deal Score and recommends deterministic actions", () => {
+      const valuation = estimateFairUsedPrice({
+        productName: "Sony A7 IV",
+        category: "cameras",
+        currentNewPriceInr: 219000,
+        askingPriceInr: 155000,
+        ageMonths: 18,
+        condition: "EXCELLENT",
+        hasOriginalInvoice: true,
+        hasBoxAndAccessories: true,
+      });
+
+      const score = calculateUsedDealScore({
+        valuation,
+        condition: "EXCELLENT",
+        sellerRating: 4.8,
+        isVerifiedSeller: true,
+        warrantyRemainingMonths: 6,
+        hasOriginalInvoice: true,
+      });
+
+      expect(score.overallScore).toBeGreaterThanOrEqual(70);
+      expect(["BUY", "BUY_IF_NEGOTIATED", "INSPECT_FIRST"]).toContain(score.recommendedAction);
+      expect(score.mandatoryPrePurchaseSteps.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it("synthesizes the New vs Refurbished vs Used matrix and issues clear arbitrage verdicts", () => {
+      const matrix = generateNewVsUsedMatrix({
+        productName: "Dell XPS 13",
+        category: "laptops",
+        newPriceInr: 115000,
+      });
+
+      expect(matrix.factors.length).toBeGreaterThanOrEqual(5);
+      expect(["BUY_NEW", "BUY_REFURBISHED", "BUY_USED"]).toContain(matrix.recommendation.verdict);
+      expect(matrix.recommendation.headline).toBeTruthy();
+      expect(matrix.usedSavingsInr).toBeGreaterThan(0);
+      expect(matrix.usedSavingsPct).toBeGreaterThan(15);
+      expect(matrix.recommendation.criticalConditions.length).toBeGreaterThan(0);
+    });
+
+    it("generates aggressive negotiation scripts and category physical inspection checklists", () => {
+      // Automotive checklist
+      const carChecklist = getCategoryInspectionChecklist("cars");
+      expect(carChecklist.length).toBeGreaterThanOrEqual(4);
+      expect(carChecklist.some((item) => item.label.toLowerCase().includes("chassis") || item.label.toLowerCase().includes("engine"))).toBe(true);
+
+      // Tech checklist
+      const techChecklist = getCategoryInspectionChecklist("electronics");
+      expect(techChecklist.some((item) => item.label.toLowerCase().includes("battery") || item.label.toLowerCase().includes("display"))).toBe(true);
+
+      // Negotiation strategy
+      const fakeValuation = estimateFairUsedPrice({
+        productName: "Honda City Petrol 2021",
+        category: "cars",
+        currentNewPriceInr: 1350000,
+        askingPriceInr: 950000,
+        ageMonths: 36,
+        condition: "GOOD",
+      });
+
+      const negotiation = generateNegotiationStrategy({
+        productName: "Honda City Petrol 2021",
+        category: "cars",
+        askingPriceInr: 950000,
+        valuation: fakeValuation,
+      });
+
+      expect(negotiation.suggestedOpeningOfferInr).toBeLessThan(negotiation.askingPriceInr);
+      expect(negotiation.copyableSellerMessage).toContain("Honda City Petrol 2021");
+      expect(negotiation.copyableSellerMessage).toContain("doorstep inspection");
+
+      // Regret horizon
+      const regretHorizon = generateUsedPurchaseRegretTimeline("cars");
+      expect(regretHorizon.length).toBe(4);
+      expect(regretHorizon[0].horizon).toBe("IMMEDIATE_DELIVERY");
+    });
+
+    it("discovers verified listings from registered second-hand platforms", () => {
+      const phoneListings = getUsedListingsForProduct({
+        productName: "Samsung Galaxy S23",
+        category: "smartphones",
+        currentNewPriceInr: 64999,
+      });
+
+      expect(phoneListings.length).toBeGreaterThanOrEqual(3);
+      expect(phoneListings.some((l) => l.marketplaceSource.includes("Amazon Renewed") || l.marketplaceSource.includes("Cashify"))).toBe(true);
+      expect(phoneListings.every((l) => l.askingPriceInr > 0 && l.condition)).toBe(true);
     });
   });
 });

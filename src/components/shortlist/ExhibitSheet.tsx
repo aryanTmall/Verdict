@@ -16,6 +16,7 @@ import {
   ShoppingBag,
   Radar,
   Zap,
+  Repeat,
 } from "lucide-react";
 import { buildTrackedPurchaseLink } from "@/lib/monetization/affiliate";
 import { trackEvent } from "@/lib/monetization/analytics";
@@ -27,6 +28,7 @@ interface ExhibitSheetProps {
   onSelect: () => void;
   onOpenRadar?: (p: any) => void;
   onOpenAutopilot?: (p: any) => void;
+  onOpenUsedRadar?: (p: any) => void;
   className?: string;
 }
 
@@ -37,6 +39,7 @@ export function ExhibitSheet({
   onSelect,
   onOpenRadar,
   onOpenAutopilot,
+  onOpenUsedRadar,
   className = "",
 }: ExhibitSheetProps) {
   const [showBreakdown, setShowBreakdown] = useState(false);
@@ -192,8 +195,8 @@ export function ExhibitSheet({
         </div>
 
         {/* Price Radar & Autopilot Quick Triggers */}
-        {(onOpenRadar || onOpenAutopilot) && (
-          <div className="mt-2 flex items-center space-x-2 text-[10px] font-mono">
+        {(onOpenRadar || onOpenAutopilot || onOpenUsedRadar) && (
+          <div className="mt-2 flex items-center space-x-1.5 text-[10px] font-mono">
             {onOpenRadar && (
               <button
                 type="button"
@@ -201,11 +204,11 @@ export function ExhibitSheet({
                   e.stopPropagation();
                   onOpenRadar(p);
                 }}
-                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-2 bg-white hover:bg-[#2540D9] hover:text-white text-[#2540D9] border border-[#2540D9]/30 rounded transition font-bold cursor-pointer"
+                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-1.5 bg-white hover:bg-[#2540D9] hover:text-white text-[#2540D9] border border-[#2540D9]/30 rounded transition font-bold cursor-pointer"
                 title="Cross-marketplace price comparison"
               >
                 <Radar className="w-3 h-3" />
-                <span>Price Radar</span>
+                <span>Radar</span>
               </button>
             )}
             {onOpenAutopilot && (
@@ -215,11 +218,25 @@ export function ExhibitSheet({
                   e.stopPropagation();
                   onOpenAutopilot(p);
                 }}
-                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-2 bg-white hover:bg-[#D8381C] hover:text-white text-[#D8381C] border border-[#D8381C]/30 rounded transition font-bold cursor-pointer"
+                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-1.5 bg-white hover:bg-[#D8381C] hover:text-white text-[#D8381C] border border-[#D8381C]/30 rounded transition font-bold cursor-pointer"
                 title="Configure target price alert and sale rule"
               >
                 <Zap className="w-3 h-3" />
-                <span>Sale Autopilot</span>
+                <span>Autopilot</span>
+              </button>
+            )}
+            {onOpenUsedRadar && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenUsedRadar(p);
+                }}
+                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-1.5 bg-white hover:bg-[#1F6B4F] hover:text-white text-[#1F6B4F] border border-[#1F6B4F]/30 rounded transition font-bold cursor-pointer"
+                title="Second-hand, refurbished & pre-owned price intelligence"
+              >
+                <Repeat className="w-3 h-3" />
+                <span>Used/Refurb</span>
               </button>
             )}
           </div>

@@ -26,6 +26,10 @@ import type { RealityCheckResult } from "@/lib/reality-check";
 import { MonetizationTransparencyModal } from "@/components/monetization/MonetizationTransparencyModal";
 import { VerdictPlusModal } from "@/components/monetization/VerdictPlusModal";
 import { getCurrentSubscriptionTier, type SubscriptionTier } from "@/lib/monetization/entitlements";
+import { NewVsUsedMatrix } from "@/components/second-hand/NewVsUsedMatrix";
+import { UsedMarketRadarModal } from "@/components/second-hand/UsedMarketRadarModal";
+import { generateNewVsUsedMatrix } from "@/lib/second-hand/estimator";
+import type { PurchaseCondition } from "@/lib/second-hand/types";
 import { RiskAccordionTable } from "@/components/risk/RiskAccordionTable";
 import { TcoBreakdown } from "@/components/tco/TcoBreakdown";
 import { WhatIfPanel } from "@/components/whatif/WhatIfPanel";
@@ -75,6 +79,10 @@ export default function HomePage() {
 
   const [showAutopilotModal, setShowAutopilotModal] = useState(false);
   const [autopilotProduct, setAutopilotProduct] = useState<any>(null);
+
+  const [showUsedRadarModal, setShowUsedRadarModal] = useState(false);
+  const [usedRadarProduct, setUsedRadarProduct] = useState<any>(null);
+  const [purchaseCondition, setPurchaseCondition] = useState<PurchaseCondition>("ANY");
 
   const [showScanModal, setShowScanModal] = useState(false);
   const [showVoiceDrawer, setShowVoiceDrawer] = useState(false);
@@ -525,6 +533,8 @@ export default function HomePage() {
             onOpenScan={() => setShowScanModal(true)}
             onOpenVoice={() => setShowVoiceDrawer(true)}
             missionTextOverride={missionOverride}
+            selectedCondition={purchaseCondition}
+            onSelectCondition={setPurchaseCondition}
           />
         </section>
 
@@ -654,6 +664,10 @@ export default function HomePage() {
                         setAutopilotProduct(p);
                         setShowAutopilotModal(true);
                       }}
+                      onOpenUsedRadar={(p) => {
+                        setUsedRadarProduct(p);
+                        setShowUsedRadarModal(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -678,6 +692,19 @@ export default function HomePage() {
 
             {/* Section 5B: Smart Companion Pairing & Bundle Optimization */}
             <SmartPairingSection product={activeEvaluation.product} />
+
+            {/* Section 5C: Second-Hand, Pre-Owned & Refurbished Market Intelligence (Module C) */}
+            <NewVsUsedMatrix
+              matrix={generateNewVsUsedMatrix({
+                productName: activeEvaluation.product.name,
+                category: (activeEvaluation.product as any).category || "laptop",
+                newPriceInr: activeEvaluation.product.priceInr,
+              })}
+              onOpenUsedRadar={() => {
+                setUsedRadarProduct(activeEvaluation.product);
+                setShowUsedRadarModal(true);
+              }}
+            />
 
             {/* Section 6: Claims Ledger & Risk Table */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -851,6 +878,19 @@ export default function HomePage() {
       {showEthicsModal && (
         <MonetizationTransparencyModal
           onClose={() => setShowEthicsModal(false)}
+        />
+      )}
+
+      {/* Second-Hand & Refurbished Market Intelligence Modal (Module C) */}
+      {showUsedRadarModal && usedRadarProduct && (
+        <UsedMarketRadarModal
+          productName={usedRadarProduct.name}
+          category={(usedRadarProduct as any).category || "laptop"}
+          newPriceInr={usedRadarProduct.priceInr}
+          onClose={() => {
+            setShowUsedRadarModal(false);
+            setUsedRadarProduct(null);
+          }}
         />
       )}
 

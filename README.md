@@ -250,6 +250,29 @@ $$\text{Effective Price} = \text{Listed Price} + \text{Shipping Charges} - \text
 * **Privacy-First Analytics (`analytics.ts`):** Beacon tracking for search volume, category distribution, and affiliate clicks with **zero PII collection**.
 * **B2B Purchasing Intelligence API (`/api/b2b/evaluate`):** Programmatic endpoint for enterprise e-commerce platforms, marketplaces, and consumer finance apps.
 
+### 4.14 Second-Hand, Pre-Owned & Refurbished Market Intelligence (Module C)
+* Located at [`src/lib/second-hand/`](file:///C:/Users/aryan/.gemini/antigravity/scratch/IST%20HACKATHON%20build/src/lib/second-hand/) and [`src/components/second-hand/`](file:///C:/Users/aryan/.gemini/antigravity/scratch/IST%20HACKATHON%20build/src/components/second-hand/).
+* Answers the three fundamental buyer arbitration questions:
+  1. *Which product is best for me?*
+  2. *Should I buy it new, refurbished, or used?*
+  3. *Is this specific deal worth taking, or is it a trap?*
+* **Purchase Condition Selector (C1):** Direct filtering across `NEW`, `REFURBISHED`, `CERTIFIED_PRE_OWNED`, `OPEN_BOX`, and `ANY_CONDITION` (which triggers automatic price-to-utility condition arbitrage).
+* **New vs Used vs Refurbished Comparison Matrix (C2):** Side-by-side comparative table evaluating Initial Price, Real-world Warranty, Reliability Risk, Expected Lifespan, Repair Reserves, and Total Value Score.
+* **Marketplace Discovery Engine (C3):** Pluggable provider architecture integrating **Amazon Renewed**, **Cashify SuperSale Certified**, **Spinny Assured (200-Point Inspection)**, **CARS24 Quality Verified**, and **Verified Classifieds**.
+* **Empirical Fair-Price Engine (C4):** Calculates realistic fair depreciation curves tailored to the Indian market:
+  - Electronics & Laptops: 26–28% Year 1 depreciation, 14–15% subsequent years, with condition, box, and GST invoice multipliers.
+  - Automotive: 15% Year 1 depreciation, 8% subsequent years.
+  - Anomaly Flag: Any listing $> 22\%$ below fair market floor is aggressively flagged as `SUSPICIOUSLY_CHEAP` (potential scam, stolen goods, or unrepairable board defect).
+* **Dedicated Used Deal Score (C5):** Deterministic 0–100 rating combining fair price score, physical condition score, and seller risk deduction, emitting clear advice: `BUY`, `BUY_IF_NEGOTIATED`, `INSPECT_FIRST`, `WAIT`, or `AVOID`.
+* **Category Physical Inspection Checklists (C7):** Critical verification steps with exact instructions and red-flag explanations:
+  - *Automotive:* Chassis apron welds, Parivahan bank hypothecation NOC, odometer tampering vs service logs, flood line detection.
+  - *Smartphones:* DoT CEIR IMEI blacklist, iCloud/FRP activation locks, TrueTone/120Hz display authenticity, SIM tray liquid contact indicators (LCI).
+  - *Laptops & Tech:* BIOS passwords, corporate Computrace/MDM locks, battery cycle counts, thermal throttle tests, USB-C power negotiation.
+* **Multi-Year Pre-Owned Regret Simulator (C8):** Timeline forewarning buyers of common second-hand failure points (worn battery cells, brake rotor skimming, dry thermal paste, discontinued OS updates).
+* **Negotiation Assistant (C9):** Computes suggested opening offer, target price, and walk-away ceiling, providing a **1-click copyable polite WhatsApp / chat message** citing market comps.
+* **Buy New or Used Decision Banner (C10 / C12):** Deterministic arbitration banner specifying whether buying refurbished or used is mathematically justified and listing mandatory pre-purchase conditions.
+* **Dedicated REST API:** `/api/products/[id]/used-market` returns the full comparative matrix, discovered listings, valuation, deal score, checklist, and negotiation strategy.
+
 ---
 
 ## 5. The Legal Case File Design System

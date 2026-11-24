@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Mic, MicOff, Camera, Link2, Sparkles, AlertCircle, ArrowRight } from "lucide-react";
+import { Mic, MicOff, Camera, Link2, Sparkles, AlertCircle, ArrowRight, Layers } from "lucide-react";
+import { ConditionSelector } from "../second-hand/ConditionSelector";
+import type { PurchaseCondition } from "@/lib/second-hand/types";
 
 interface IntakeIndexCardProps {
   onAnalyze: (text: string, isDemo?: boolean) => void;
@@ -9,6 +11,8 @@ interface IntakeIndexCardProps {
   onOpenScan?: () => void;
   onOpenVoice?: () => void;
   missionTextOverride?: string;
+  selectedCondition?: PurchaseCondition;
+  onSelectCondition?: (cond: PurchaseCondition) => void;
 }
 
 export function IntakeIndexCard({
@@ -17,6 +21,8 @@ export function IntakeIndexCard({
   onOpenScan,
   onOpenVoice,
   missionTextOverride,
+  selectedCondition = "ANY",
+  onSelectCondition,
 }: IntakeIndexCardProps) {
   const [missionText, setMissionText] = useState(
     missionTextOverride ||
@@ -203,6 +209,17 @@ export function IntakeIndexCard({
           <div className="mt-2 text-xs font-mono text-[#D8381C] flex items-center space-x-1">
             <AlertCircle className="w-3.5 h-3.5" />
             <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {/* Condition Selector (Module C1) */}
+        {onSelectCondition && (
+          <div className="mt-3">
+            <ConditionSelector
+              selectedCondition={selectedCondition}
+              onSelectCondition={onSelectCondition}
+              compact
+            />
           </div>
         )}
 
