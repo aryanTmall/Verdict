@@ -179,7 +179,7 @@ export function IntakeIndexCard({
               className="text-[#2540D9] hover:underline font-semibold flex items-center space-x-1 cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Load Preset Mission (?demo=1)</span>
+              <span>Load Preset Mission</span>
             </button>
           </div>
         </div>

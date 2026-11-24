@@ -562,9 +562,6 @@ export default function HomePage() {
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 space-y-12">
         {/* Section 1: Hero & Intake Card */}
         <section className="space-y-4 pt-4">
-          <div className="text-[10px] font-mono uppercase tracking-widest text-[#8A8576]">
-            EXHIBIT FILE REF: VDT-2026-INTAKE
-          </div>
           <LetterReelHeadline />
           <p className="text-sm md:text-base font-mono text-[#1B1A17]/80 max-w-2xl leading-relaxed">
             A buyer-side AI cross-examination system. We audit seller marketing claims against real owner review evidence, forecast multi-year memory and thermal regret, and simulate what-if adjustments in real time.
