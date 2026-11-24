@@ -118,6 +118,89 @@ export async function queryGeminiJson<T>(
   }
 }
 
+const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+
+/**
+ * Direct HTTP client for Groq Cloud API (Llama 3.3 70B - 100% Free Tier).
+ */
+export async function queryGroqChat(
+  systemPrompt: string,
+  userPrompt: string,
+  apiKey = process.env.GROQ_API_KEY
+): Promise<string | null> {
+  if (!apiKey || apiKey.trim().length === 0) return null;
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey.trim()}`,
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+      }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content?.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Direct HTTP client for Groq Cloud JSON structured chat completions.
+ */
+export async function queryGroqJson<T>(
+  systemPrompt: string,
+  userPrompt: string,
+  apiKey = process.env.GROQ_API_KEY
+): Promise<T | null> {
+  if (!apiKey || apiKey.trim().length === 0) return null;
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey.trim()}`,
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+        response_format: { type: "json_object" },
+      }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content;
+    if (!text) return null;
+    return JSON.parse(text) as T;
+  } catch {
+    return null;
+  }
+}
+
 const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434";
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.1:latest";
 
@@ -1210,10 +1293,11 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
 
     let aiAnswer = defaultAiAnswers[classification.industry] || defaultAiAnswers.universal;
 
-    // Ask Google Gemini if configured, or local Ollama for enhanced domain narrative
+    // Ask Google Gemini or Groq Cloud if configured, or local Ollama for enhanced domain narrative
     try {
       const prompt = `You are VERDICT's ${pack.name} intelligence specialist. Provide 2 concise sentences advising a buyer in India looking for ${classification.category} within ₹${classification.budget.toLocaleString("en-IN")}. Mention top models and purchase advice.`;
       const aiText = (await queryGeminiChat("You are an expert purchasing advisor.", prompt)) ||
+        (await queryGroqChat("You are an expert purchasing advisor.", prompt)) ||
         (await queryOllamaChat("You are an expert purchasing advisor.", prompt));
       if (aiText && aiText.length > 30) {
         aiAnswer = aiText.trim();
@@ -1348,7 +1432,13 @@ YOUR TASK:
   let activeLlmProvider = "Google Gemini (gemini-2.5-flash)";
   let llmRes = await queryGeminiJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
 
-  // 2. Second priority: Local Ollama (llama3.1:latest)
+  // 2. Second priority: Groq Cloud API (Llama 3.3 70B - fast free tier)
+  if (!llmRes) {
+    llmRes = await queryGroqJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
+    if (llmRes) activeLlmProvider = "Groq Cloud (Llama 3.3 70B)";
+  }
+
+  // 3. Third priority: Local Ollama (llama3.1:latest)
   if (!llmRes) {
     llmRes = await queryOllamaJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
     if (llmRes) activeLlmProvider = `Local Ollama (${OLLAMA_MODEL})`;
