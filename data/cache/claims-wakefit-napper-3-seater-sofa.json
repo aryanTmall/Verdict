@@ -1,0 +1,41 @@
+[
+  {
+    "claim": "High density 32D foam cushioning for ergonomic lumbar comfort",
+    "status": "contradicted",
+    "supportCount": 1,
+    "contradictCount": 1,
+    "receipts": [
+      {
+        "quote": "Verified owner: High density 32D foam cushioning for ergonomic lumbar comfort. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Owner report after 6 months: Fabric requires foam shampoo cleaning for spill stains. This was an observed issue",
+        "monthsUsed": 6
+      }
+    ]
+  },
+  {
+    "claim": "Termite-resistant solid wood inner structural frame",
+    "status": "unverifiable",
+    "supportCount": 0,
+    "contradictCount": 0,
+    "receipts": []
+  },
+  {
+    "claim": "Breathable, tear-resistant 300 GSM premium fabric upholstery",
+    "status": "contradicted",
+    "supportCount": 1,
+    "contradictCount": 1,
+    "receipts": [
+      {
+        "quote": "Verified owner: Breathable, tear-resistant 300 GSM premium fabric upholstery. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Owner report after 6 months: Fabric requires foam shampoo cleaning for spill stains. This was an observed issue",
+        "monthsUsed": 6
+      }
+    ]
+  }
+]
