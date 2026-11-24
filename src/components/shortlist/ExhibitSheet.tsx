@@ -17,6 +17,8 @@ import {
   Radar,
   Zap,
 } from "lucide-react";
+import { buildTrackedPurchaseLink } from "@/lib/monetization/affiliate";
+import { trackEvent } from "@/lib/monetization/analytics";
 
 interface ExhibitSheetProps {
   letter: "A" | "B" | "C";
@@ -67,7 +69,7 @@ export function ExhibitSheet({
     );
 
   // Domain-aware direct marketplace & official model links
-  const directRetailerUrl =
+  const rawDirectUrl =
     (p as any).destinationUrl ||
     (p as any).sourceUrl ||
     (p as any).retailerUrl ||
@@ -81,6 +83,14 @@ export function ExhibitSheet({
     (p as any).destinationLabel ||
     (p as any).retailerName ||
     (isCar ? "CarWale / Showroom ↗" : isBike ? "BikeWale / Dealer ↗" : "Live Amazon.in ↗");
+
+  const trackedPurchase = buildTrackedPurchaseLink({
+    rawUrl: rawDirectUrl,
+    retailer: retailerLabel,
+    productName: p.name,
+    campaignSource: "exhibit_card",
+  });
+  const directRetailerUrl = trackedPurchase.destinationUrl;
 
   // Domain-aware specs label
   const specsLabel =
@@ -269,9 +279,16 @@ export function ExhibitSheet({
           href={directRetailerUrl}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            trackEvent("AFFILIATE_CLICKED", {
+              productName: p.name,
+              retailer: trackedPurchase.retailerName,
+              hasAffiliate: trackedPurchase.hasAffiliateTracking,
+            });
+          }}
           className="inline-flex items-center space-x-1 text-xs font-mono font-semibold text-[#1B1A17] hover:text-[#2540D9] bg-white px-2.5 py-1 rounded border border-[#1B1A17]/30 shadow-xs"
-          title={`Open live verified ${retailerLabel} search`}
+          title={trackedPurchase.disclosure}
         >
           <ShoppingBag className="w-3 h-3 text-[#2540D9]" />
           <span>{retailerLabel}</span>

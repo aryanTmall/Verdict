@@ -7,6 +7,7 @@ import { getPriceAudit } from "./price-intelligence";
 import { classifyQuery } from "./domains/classifier";
 import { getDomainPack, generateUniversalProducts } from "./domains/registry";
 import type { IndustryId } from "./domains/types";
+import { evaluateRealityCheck } from "./reality-check";
 
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
 const anthropic = anthropicApiKey ? new Anthropic({ apiKey: anthropicApiKey }) : null;
@@ -953,6 +954,11 @@ export function deterministicParseMission(text: string): MissionParseResult {
   };
 
   const domainFallbacks = isDomainItem ? getDomainFallbackProducts(detectedCategory, budget) : undefined;
+  const realityCheck = evaluateRealityCheck({
+    rawQuery: text,
+    category: detectedCategory,
+    budgetInr: budget,
+  });
 
   return {
     profile: {
@@ -969,7 +975,10 @@ export function deterministicParseMission(text: string): MissionParseResult {
     category: detectedCategory,
     catalogProducts: domainFallbacks,
     recommendedProductSlugs: domainFallbacks?.map(p => p.slug),
-    aiAnswer: isCar
+    realityCheck,
+    aiAnswer: !realityCheck.isRealistic && realityCheck.explanation
+      ? realityCheck.explanation
+      : isCar
       ? `For a budget of ₹${budget.toLocaleString("en-IN")} in India, top recommended cars include the Hyundai Creta SX(O) Turbo, Mahindra XUV700 AX5, and Tata Harrier Smart. Year-end December clearance offers typically save up to ₹1.3L to ₹1.5L before model-year price hikes take effect in January.`
       : isBike
       ? `For a budget of ₹${budget.toLocaleString("en-IN")} in India, top motorcycles include the Royal Enfield Hunter 350, Yamaha MT-15 V2, and KTM Duke 250, balancing city agility with highway cruising power.`
@@ -988,6 +997,12 @@ export function deterministicParseMission(text: string): MissionParseResult {
 export async function parseMission(text: string): Promise<MissionParseResult> {
   const lower = text.toLowerCase();
   const classification = classifyQuery(text);
+  const realityCheck = evaluateRealityCheck({
+    rawQuery: text,
+    category: classification.category,
+    industry: classification.industry,
+    budgetInr: classification.budget,
+  });
 
   // If this is any domain other than general computing laptops:
   const isDedicatedLaptop = classification.industry === "electronics" && (classification.category === "laptops" || classification.category === "computing_workstations");
@@ -1044,6 +1059,10 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
       // Keep verified default answer
     }
 
+    if (!realityCheck.isRealistic && realityCheck.explanation) {
+      aiAnswer = realityCheck.explanation;
+    }
+
     return {
       profile: {
         budgetInr: classification.budget,
@@ -1070,6 +1089,7 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
       classification,
       catalogProducts,
       recommendedProductSlugs: catalogProducts.map(p => p.slug),
+      realityCheck,
     };
   }
 

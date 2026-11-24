@@ -1,4 +1,5 @@
 export * from "./engine";
+export * from "./reality-check";
 
 export type MissionParseResult = {
   profile: import("./engine").Profile;
@@ -16,6 +17,7 @@ export type MissionParseResult = {
   industry?: string;
   catalogProducts?: any[];
   classification?: import("./domains/types").DomainClassification;
+  realityCheck?: import("./reality-check").RealityCheckResult;
   cached?: boolean;
 };
 

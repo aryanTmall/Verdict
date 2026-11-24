@@ -21,6 +21,11 @@ import { MultilingualVoiceDrawer } from "@/components/voice/MultilingualVoiceDra
 import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
 import { BuyerDnaModal } from "@/components/dna/BuyerDnaModal";
 import { applyDnaToWeights } from "@/lib/buyer-dna";
+import { RealityCheckBanner } from "@/components/reality/RealityCheckBanner";
+import type { RealityCheckResult } from "@/lib/reality-check";
+import { MonetizationTransparencyModal } from "@/components/monetization/MonetizationTransparencyModal";
+import { VerdictPlusModal } from "@/components/monetization/VerdictPlusModal";
+import { getCurrentSubscriptionTier, type SubscriptionTier } from "@/lib/monetization/entitlements";
 import { RiskAccordionTable } from "@/components/risk/RiskAccordionTable";
 import { TcoBreakdown } from "@/components/tco/TcoBreakdown";
 import { WhatIfPanel } from "@/components/whatif/WhatIfPanel";
@@ -84,6 +89,14 @@ export default function HomePage() {
   // Ask Drawer state
   const [isAskOpen, setIsAskOpen] = useState(false);
 
+  // Reality Check State
+  const [realityCheck, setRealityCheck] = useState<RealityCheckResult | null>(null);
+
+  // Monetization & Subscription state
+  const [showPlusModal, setShowPlusModal] = useState(false);
+  const [showEthicsModal, setShowEthicsModal] = useState(false);
+  const [subscriptionTier, setSubscriptionTierState] = useState<SubscriptionTier>("FREE");
+
   // Load catalog on mount
   useEffect(() => {
     async function loadCatalog() {
@@ -94,6 +107,7 @@ export default function HomePage() {
       } catch (err) {
         console.error("Failed to load catalog:", err);
       }
+      setSubscriptionTierState(getCurrentSubscriptionTier());
     }
     loadCatalog();
   }, []);
@@ -127,6 +141,15 @@ export default function HomePage() {
       });
       const parseData = await parseRes.json();
       const extractedProfile: Profile = parseData.profile;
+
+      if (parseData.realityCheck) {
+        setRealityCheck(parseData.realityCheck);
+        if (!parseData.realityCheck.isRealistic) {
+          addLog("Reality Check Triggered", "done", parseData.realityCheck.headline);
+        }
+      } else {
+        setRealityCheck(null);
+      }
 
       addLog(
         "Mission Profile Extracted",
@@ -443,6 +466,26 @@ export default function HomePage() {
               <span className="hidden sm:inline">Buyer DNA</span>
             </button>
 
+            {/* VERDICT PLUS Plan Button */}
+            <button
+              onClick={() => setShowPlusModal(true)}
+              className="inline-flex items-center space-x-1 rounded bg-[#2540D9] text-white px-2 py-0.5 font-bold hover:bg-blue-800 transition cursor-pointer"
+              title="VERDICT PLUS Membership & Pricing"
+            >
+              <span>⚡</span>
+              <span>{subscriptionTier === "PLUS" ? "PLUS" : "GET PLUS"}</span>
+            </button>
+
+            {/* Ethics & Transparency Link */}
+            <button
+              onClick={() => setShowEthicsModal(true)}
+              className="inline-flex items-center space-x-1 text-[#8A8576] hover:text-[#1B1A17] font-medium cursor-pointer"
+              title="Monetization Ethics & Trust-First Charter"
+            >
+              <span>⚖️</span>
+              <span className="hidden xl:inline">Ethics</span>
+            </button>
+
             <span className="text-[#8A8576]">·</span>
 
             <Link
@@ -494,6 +537,22 @@ export default function HomePage() {
         {/* Section 3: Post-Analysis Workflows */}
         {profile && activeEvaluation && (
           <div className="space-y-12 animate-in fade-in duration-300">
+            {/* Reality Check Banner */}
+            {realityCheck && (
+              <RealityCheckBanner
+                realityCheck={realityCheck}
+                onApplyAlternative={(alt) => {
+                  if (alt.suggestedBudgetInr) {
+                    handleProfilePatch({ budgetInr: alt.suggestedBudgetInr });
+                  }
+                  if (alt.actionType === "CHANGE_CATEGORY" || alt.actionType === "SWITCH_TO_USED") {
+                    handleAnalyzeMission(alt.title);
+                  }
+                }}
+                onDismiss={() => setRealityCheck(null)}
+              />
+            )}
+
             {/* AI Intake Search & Decision Intel Card */}
             {aiIntakeAnswer && (
               <div className="bg-[#FBF7EA] border-2 border-[#1B1A17] rounded-[4px] p-5 md:p-6 paper-shadow relative overflow-hidden">
@@ -777,11 +836,37 @@ export default function HomePage() {
         />
       )}
 
+      {/* VERDICT PLUS Membership Modal */}
+      {showPlusModal && (
+        <VerdictPlusModal
+          onClose={() => setShowPlusModal(false)}
+          onTierChanged={(newTier) => {
+            setSubscriptionTierState(newTier);
+            setDiffMessage(`Membership updated: ${newTier === "PLUS" ? "VERDICT PLUS Active" : "Free Tier Active"}`);
+          }}
+        />
+      )}
+
+      {/* Commercial Ethics & Transparency Modal */}
+      {showEthicsModal && (
+        <MonetizationTransparencyModal
+          onClose={() => setShowEthicsModal(false)}
+        />
+      )}
+
       {/* Footer */}
       <footer className="mt-16 border-t border-[#1B1A17]/20 py-8 px-4 text-center font-mono text-xs text-[#8A8576] space-y-2">
         <p>VERDICT — &ldquo;See beyond the buy.&rdquo; · Built for Hackathon · Zero sponsored rankings</p>
         <p className="text-[10px]">
           All fit scores, RAM headroom projections, and TCO figures are calculated by the deterministic engine in pure TypeScript.
+        </p>
+        <p className="text-[11px] pt-1">
+          <button
+            onClick={() => setShowEthicsModal(true)}
+            className="text-[#2540D9] hover:underline cursor-pointer font-bold"
+          >
+            Commercial Ethics, Disclosures & Trust-First Charter →
+          </button>
         </p>
       </footer>
     </div>

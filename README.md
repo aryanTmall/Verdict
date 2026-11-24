@@ -1,6 +1,6 @@
 # VERDICT — "See beyond the buy."
 
-[![Build & Tests](https://img.shields.io/badge/tests-37%20passing-1f6b4f?style=flat-square&logo=vitest&logoColor=white)](https://github.com/aryanTmall/Verdict)
+[![Build & Tests](https://img.shields.io/badge/tests-39%20passing-1f6b4f?style=flat-square&logo=vitest&logoColor=white)](https://github.com/aryanTmall/Verdict)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.4.6%20Turbopack-1b1a17?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Node Version](https://img.shields.io/badge/node-%3E%3D22.0.0-2540d9?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x%20Strict-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -227,6 +227,29 @@ $$\text{Effective Price} = \text{Listed Price} + \text{Shipping Charges} - \text
   - **Price Watch & Autopilot:** Active price alerts and pre-authorized rules.
   - **Warranty & Maintenance Calendar Sync:** Generates RFC 5545 compliant `.ics` calendar invitation files to sync maintenance dates (e.g. 10,000 km car service, 6-month RO water filter replacement, credit card warranty expiration) with Google Calendar, Apple Calendar, and Microsoft Outlook.
 
+### 4.12 Reality Check & Anti-Hallucination Guardrails Engine (Module A)
+* Located at [`src/lib/reality-check.ts`](file:///C:/Users/aryan/.gemini/antigravity/scratch/IST%20HACKATHON%20build/src/lib/reality-check.ts) and [`src/components/reality/RealityCheckBanner.tsx`](file:///C:/Users/aryan/.gemini/antigravity/scratch/IST%20HACKATHON%20build/src/components/reality/RealityCheckBanner.tsx).
+* **Zero-Hallucination Invariant:** VERDICT strictly refuses to fabricate fake cars, impossible specs, non-existent deals, or imaginary sellers.
+* **10-State Request Classification:**
+  - `REALISTIC`: Request is viable within contemporary retail inventory.
+  - `UNREALISTIC_BUDGET`: Intercepts absurd budgets (e.g., *"I want a car for ₹1"*) and politely explains realistic market minimums (e.g., Maruti Alto K10 starts at ₹4.3L ex-showroom) while offering actionable alternatives (used vehicles, monthly subscriptions, budget adjustments).
+  - `CONTRADICTORY_REQUIREMENTS`: Detects conflicting physical engineering goals (e.g., *"cheapest laptop with maximum 4K RTX 4090 gaming performance"*) and provides a balanced trade-off analysis explaining the physical conflict between thermal dissipation mass and low cost/weight.
+  - `SCAM_RISK`: Alerts buyers when a flagship item is listed dramatically below wholesale cost (e.g., *"iPhone 16 Pro Max for ₹8,000 on Telegram"*), detailing counterfeit and advance-fee fraud indicators.
+  - `IMPOSSIBLE_REQUIREMENTS` / `POSSIBLE_JOKE`: Redirects sci-fi or meme requests (*"flying car"*, *"100TB RAM laptop"*, *"plot on Mars"*) toward real-world performance engineering.
+  - `UNSAFE_PURCHASE`: Blocks hazardous, uncertified lithium packs or prescription drugs without medical authorization.
+
+### 4.13 Business Model, Monetization & Trust-First Charter (Module B)
+* Located at [`src/lib/monetization/`](file:///C:/Users/aryan/.gemini/antigravity/scratch/IST%20HACKATHON%20build/src/lib/monetization/) and [`MonetizationTransparencyModal.tsx`](file:///C:/Users/aryan/.gemini/antigravity/scratch/IST%20HACKATHON%20build/src/components/monetization/MonetizationTransparencyModal.tsx).
+* **The Trust-First Rule:** Affiliate commissions and commercial relationships strictly **NEVER** influence product scores, rankings, Best Overall awards, or risk matrices. Affiliate tracking is an exit monetization attribute, completely decoupled from evaluation math.
+* **Affiliate Purchase Link Abstraction (`affiliate.ts`):** Transparently attaches verified partner tags (Amazon Associates `verdict-in-21`, Flipkart `verdictaff`, Croma) and standard analytics UTM tags without breaking destination URLs.
+* **VERDICT PLUS Subscription Tier (`entitlements.ts`):**
+  - **Free Tier:** Core advisor, 3 saved case files, 2 active price monitors, 2-year ownership horizon.
+  - **VERDICT PLUS (₹499/mo · ₹3,999/yr):** Unlimited saved cases, unlimited price watches, full 5-year ownership milestone forecasts, exportable thermal PDF receipts, What-If simulator, and Autopilot Mode 3 autonomous snipe.
+  - *Includes an in-browser 1-click Free Pass toggle for judges and test users.*
+* **Zero-Corruption Sponsored Placement Rules:** Future sponsored placements must be distinctly labelled `[SPONSORED PROMOTION]`, visually separated from organic exhibits, and can never replace Exhibit A (Best Overall).
+* **Privacy-First Analytics (`analytics.ts`):** Beacon tracking for search volume, category distribution, and affiliate clicks with **zero PII collection**.
+* **B2B Purchasing Intelligence API (`/api/b2b/evaluate`):** Programmatic endpoint for enterprise e-commerce platforms, marketplaces, and consumer finance apps.
+
 ---
 
 ## 5. The Legal Case File Design System
@@ -265,6 +288,8 @@ Monospace Font:           IBM Plex Mono (Exact specs, chassis codes, receipts)
 | `/api/ics` | `POST` | Generates `.ics` calendar reminder files for maintenance milestones. |
 | `/api/claims` | `POST` | Verifies product claims with strict substring validation. |
 | `/api/save` | `POST` | Stores completed verdict case files in persistent local storage vault. |
+| `/api/analytics/track` | `POST` | Privacy-first event ingestion tracking searches, clicks, and conversions (zero PII). |
+| `/api/b2b/evaluate` | `POST` | B2B Decision Intelligence API exposing deterministic scoring to enterprise partners. |
 | `/api/health` | `GET` | Health check endpoint returning status, uptime, and memory usage. |
 
 ---
@@ -334,7 +359,7 @@ npm test
    ✓ Scenario 10: 'I need an espresso coffee machine, budget 25000'
 
 Test Files  4 passed (4)
-Tests       37 passed (37)
+Tests       39 passed (39)
 ```
 
 ---

@@ -20,6 +20,10 @@ import { getDomainPack } from "./domains/registry";
 import { applyDnaToWeights } from "./buyer-dna";
 import { auditDealRisk } from "./deal-risk";
 import { isSafeUrl } from "../app/api/products/analyze-link/route";
+import { evaluateRealityCheck, VERIFIED_MARKET_MINIMUMS } from "./reality-check";
+import { buildTrackedPurchaseLink, MONETIZATION_DISCLOSURE } from "./monetization/affiliate";
+import { TIER_ENTITLEMENTS, VERDICT_PRICING } from "./monetization/entitlements";
+import { trackEvent } from "./monetization/analytics";
 
 describe("VERDICT Master Platform Features Test Suite", () => {
   // Test 1: Price Radar & Cross-Marketplace Arbitrage
@@ -356,6 +360,101 @@ describe("VERDICT Master Platform Features Test Suite", () => {
       expect(isSafeUrl("https://www.amazon.in/dp/B0CX24D8L2")).toBe(true);
       expect(isSafeUrl("https://www.flipkart.com/item/p/itm12345")).toBe(true);
       expect(isSafeUrl("https://www.carwale.com/hyundai-cars/creta/")).toBe(true);
+    });
+  });
+
+  // Test 11: Reality Check & Anti-Hallucination Guardrails
+  describe("11. Reality Check & Anti-Hallucination Engine", () => {
+    it("intercepts impossible, joke, and absurd budgets with courteous corrections and realistic alternatives", () => {
+      // Example A3: 'I want a car for ₹1'
+      const carForOneRupee = evaluateRealityCheck({
+        rawQuery: "I want a car for ₹1.",
+        category: "cars",
+        budgetInr: 1,
+      });
+
+      expect(carForOneRupee.status).toBe("UNREALISTIC_BUDGET");
+      expect(carForOneRupee.isRealistic).toBe(false);
+      expect(carForOneRupee.explanation).toContain("isn't a realistic budget for purchasing a car");
+      expect(carForOneRupee.marketContext?.verifiedMinimumPriceInr).toBeGreaterThanOrEqual(400000);
+      expect(carForOneRupee.suggestedAlternatives?.length).toBeGreaterThanOrEqual(2);
+
+      // Joke / impossible science fiction check
+      const flyingCar = evaluateRealityCheck({
+        rawQuery: "I want a flying car with infinite battery",
+      });
+      expect(flyingCar.status).toBe("POSSIBLE_JOKE");
+      expect(flyingCar.isRealistic).toBe(false);
+
+      // Scam risk detection
+      const scamIphone = evaluateRealityCheck({
+        rawQuery: "Brand new iPhone 16 Pro Max for ₹8,000 on Telegram",
+        category: "smartphones",
+        budgetInr: 8000,
+      });
+      expect(scamIphone.status).toBe("SCAM_RISK");
+      expect(scamIphone.isRealistic).toBe(false);
+      expect(scamIphone.scamIndicators?.length).toBeGreaterThanOrEqual(1);
+
+      // Contradictory requirements
+      const contradiction = evaluateRealityCheck({
+        rawQuery: "I want the cheapest laptop with maximum 4K RTX 4090 gaming performance budget 25000",
+        category: "laptops",
+        budgetInr: 25000,
+      });
+      expect(contradiction.status).toBe("CONTRADICTORY_REQUIREMENTS");
+      expect(contradiction.tradeoffAnalysis).toBeDefined();
+      expect(contradiction.tradeoffAnalysis?.conflictPoint).toContain("Portability vs Raw Graphical Wattage");
+
+      // Realistic query passes cleanly
+      const realisticCar = evaluateRealityCheck({
+        rawQuery: "I need a family car, budget is 19 lakhs",
+        category: "cars",
+        budgetInr: 1900000,
+      });
+      expect(realisticCar.status).toBe("REALISTIC");
+      expect(realisticCar.isRealistic).toBe(true);
+    });
+  });
+
+  // Test 12: Business Model, Affiliate Tracking & Trust-First Entitlements
+  describe("12. Monetization, Affiliate Architecture & Entitlements", () => {
+    it("generates verified affiliate tracking links while maintaining zero scoring influence", () => {
+      // Amazon India tracking
+      const amazonLink = buildTrackedPurchaseLink({
+        rawUrl: "https://www.amazon.in/dp/B0CX24D8L2",
+        retailer: "Amazon.in",
+        productName: "Acer Swift Go 14",
+      });
+      expect(amazonLink.hasAffiliateTracking).toBe(true);
+      expect(amazonLink.destinationUrl).toContain("tag=verdict-in-21");
+      expect(amazonLink.destinationUrl).toContain("utm_source=verdict");
+      expect(amazonLink.disclosure).toContain(MONETIZATION_DISCLOSURE);
+
+      // Flipkart tracking
+      const flipkartLink = buildTrackedPurchaseLink({
+        rawUrl: "https://www.flipkart.com/product/p/itm123",
+        retailer: "Flipkart",
+        productName: "Poco X6 Pro",
+      });
+      expect(flipkartLink.hasAffiliateTracking).toBe(true);
+      expect(flipkartLink.destinationUrl).toContain("affid=verdictaff");
+
+      // Entitlements matrix
+      expect(TIER_ENTITLEMENTS.FREE.maxSavedCaseFiles).toBe(3);
+      expect(TIER_ENTITLEMENTS.FREE.maxActivePriceWatches).toBe(2);
+      expect(TIER_ENTITLEMENTS.PLUS.maxSavedCaseFiles).toBe(999);
+      expect(TIER_ENTITLEMENTS.PLUS.canExportThermalReceipts).toBe(true);
+      expect(TIER_ENTITLEMENTS.PLUS.canUseAutonomousSnipeMode).toBe(true);
+
+      // Pricing structure
+      expect(VERDICT_PRICING.monthlyInr).toBe(499);
+      expect(VERDICT_PRICING.annualInr).toBe(3999);
+
+      // Analytics tracking
+      const trackedEvt = trackEvent("EXHIBIT_CLICKED", { specimen: "Acer Swift Go 14" });
+      expect(trackedEvt.id).toBeTruthy();
+      expect(trackedEvt.eventType).toBe("EXHIBIT_CLICKED");
     });
   });
 });
