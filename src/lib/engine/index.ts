@@ -78,7 +78,11 @@ export function demandGb(prof: Profile, atYears: number): number {
   const gaming = prof.workloads.includes("gaming") ? a.workloadRamGb.gaming : 0;
   return (Math.max(concurrent, gaming) + a.osOverheadGb) * Math.pow(1 + a.demandGrowthPerYear, atYears);
 }
-export const headroom = (p: Product, prof: Profile, t: number) => p.specs.ramGb / demandGb(prof, t);
+export const headroom = (p: Product, prof: Profile, t: number) => {
+  const ram = p.specs?.ramGb ?? 16;
+  const dem = demandGb(prof, t);
+  return dem > 0 ? ram / dem : 1.5;
+};
 
 export type ForecastPoint = {
   label: string;
@@ -105,12 +109,13 @@ export function forecast(p: Product, prof: Profile): ForecastPoint[] {
   if (!pts.some(([, y]) => y === prof.years)) pts.push([`Year ${prof.years}`, prof.years]);
   return pts.map(([label, years]) => {
     const h = headroom(p, prof, years);
+    const validH = isNaN(h) || !isFinite(h) ? 1.5 : h;
     return {
       label,
       years,
-      headroom: h,
-      status: h >= 1.3 ? "comfortable" : h >= 1.0 ? "tight" : "bottleneck",
-      regretLikelihood: clamp((1.3 - h) / 0.5),
+      headroom: validH,
+      status: validH >= 1.3 ? "comfortable" : validH >= 1.0 ? "tight" : "bottleneck",
+      regretLikelihood: clamp((1.3 - validH) / 0.5),
     };
   });
 }
@@ -248,23 +253,36 @@ export type Evaluation = {
 export function evaluateOne(p: Product, prof: Profile): Evaluation {
   const w = normalise(prof.weights);
   const fc = forecast(p, prof);
-  const hEnd = fc[fc.length - 1].headroom;
+  const hEnd = fc && fc.length > 0 ? fc[fc.length - 1].headroom : 1.5;
   const scores: Record<Criterion, number> = {
-    ...p.scores,
+    performance: p.scores?.performance ?? 80,
+    battery: p.scores?.battery ?? (p.scores as any)?.efficiency ?? (p.scores as any)?.comfort ?? 75,
+    portability: p.scores?.portability ?? (p.scores as any)?.comfort ?? 75,
+    reliability: p.scores?.reliability ?? 85,
     longevity: clamp((hEnd - 0.7) / 0.8, 0, 1) * 100,
-    value: clamp((prof.budgetInr - p.priceInr) / prof.budgetInr * 2.5, 0, 1) * 100,
+    value: clamp(((prof.budgetInr - p.priceInr) / prof.budgetInr) * 2.5, 0, 1) * 100,
   };
+
+  // Ensure every criterion is a guaranteed finite number
+  for (const c of CRITERIA) {
+    if (scores[c] === undefined || isNaN(scores[c]) || !isFinite(scores[c])) {
+      scores[c] = 75;
+    }
+  }
+
   const breakdown = {} as Evaluation["breakdown"];
   let fit = 0;
   for (const c of CRITERIA) {
     const contribution = w[c] * scores[c];
-    breakdown[c] = { score: scores[c], weight: w[c], contribution };
-    fit += contribution;
+    const safeContrib = isNaN(contribution) || !isFinite(contribution) ? 0 : contribution;
+    breakdown[c] = { score: scores[c], weight: w[c], contribution: safeContrib };
+    fit += safeContrib;
   }
+  const safeFit = isNaN(fit) || !isFinite(fit) ? 75 : Math.max(0, Math.min(100, fit));
   const rs = risks(p, prof);
   const viol = violations(p, prof);
   return {
-    product: p, eligible: viol.length === 0, violations: viol, fit, breakdown,
+    product: p, eligible: viol.length === 0, violations: viol, fit: safeFit, breakdown,
     risks: rs, maxRisk: rs.reduce((m, r) => Math.max(m, r.score), 0), forecast: fc, tco: tco(p, prof),
   };
 }

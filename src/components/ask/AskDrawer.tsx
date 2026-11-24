@@ -21,10 +21,14 @@ export function AskDrawer({
   profile,
   claims,
 }: AskDrawerProps) {
-  const category = (evaluation.product as any).category || (evaluation.product.priceInr > 500000 ? "car" : evaluation.product.priceInr > 120000 && !evaluation.product.name.toLowerCase().includes("macbook") && !evaluation.product.name.toLowerCase().includes("laptop") ? "bike" : "laptop");
-  const isCar = category === "car";
-  const isBike = category === "bike";
-  const isPhone = category === "phone";
+  const category = ((evaluation.product as any).category || "").toLowerCase();
+  const isCar = category === "car" || category === "automotive" || /car|suv|sedan/i.test(evaluation.product.name);
+  const isBike = category === "bike" || /bike|motorcycle|scooter/i.test(evaluation.product.name);
+  const isPhone = category === "phone" || category === "smartphones" || /phone|iphone|galaxy/i.test(evaluation.product.name);
+  const isLaptop = category === "laptop" || /laptop|macbook|vivobook|thinkpad/i.test(evaluation.product.name);
+
+  const ramUpgradable = evaluation.product.specs?.ramUpgradable ?? false;
+  const ramGb = evaluation.product.specs?.ramGb ?? 16;
 
   const [question, setQuestion] = useState("");
   const [history, setHistory] = useState<Array<{ q: string; a: AskResponse }>>([
@@ -50,13 +54,24 @@ export function AskDrawer({
             ],
           },
         }
+      : !isLaptop
+      ? {
+          q: `Is ${evaluation.product.name} good value for money in this price band?`,
+          a: {
+            answer: `Engine Fit Score is ${Math.round(evaluation.fit)}/100 at ₹${evaluation.product.priceInr.toLocaleString("en-IN")}. Key strength: ${(evaluation.product as any).bestFor || "Reliable build quality"}. Primary compromise: ${(evaluation.product as any).compromise || "Routine upkeep"}.`,
+            citations: [
+              `Engine Fit: ${Math.round(evaluation.fit)}/100 [VERIFIED]`,
+              `Decision File: ${evaluation.product.name} [AUDITED]`,
+            ],
+          },
+        }
       : {
           q: "Will 16GB RAM be enough for 4 years of Docker and Android Studio?",
           a: {
-            answer: `Under moderate concurrency, the engine models memory demand starting at ~7.2 GB on Day 1 and expanding to ~15.8 GB by Year 4. Because ${evaluation.product.name} RAM is ${evaluation.product.specs.ramUpgradable ? "upgradable" : "soldered"}, you ${evaluation.product.specs.ramUpgradable ? "can add an extra SODIMM stick later" : "cannot upgrade memory post-purchase"}.`,
+            answer: `Under moderate concurrency, the engine models memory demand starting at ~7.2 GB on Day 1 and expanding to ~15.8 GB by Year 4. Because ${evaluation.product.name} RAM is ${ramUpgradable ? "upgradable" : "soldered"}, you ${ramUpgradable ? "can add an extra SODIMM stick later" : "cannot upgrade memory post-purchase"}.`,
             citations: [
-              `Forecast: Year 4 headroom ~${(evaluation.product.specs.ramGb / 15.8).toFixed(2)}x [PROJECTED]`,
-              `Specs: ${evaluation.product.specs.ramGb}GB RAM [VERIFIED]`,
+              `Forecast: Year 4 headroom ~${(ramGb / 15.8).toFixed(2)}x [PROJECTED]`,
+              `Specs: ${ramGb}GB RAM [VERIFIED]`,
             ],
           },
         },

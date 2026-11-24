@@ -68,6 +68,13 @@ export type DomainProduct = {
   primaryImageUrl: string;
   galleryImageUrls?: string[];
   specsSummary: string;
+  specs?: {
+    ramGb: number;
+    ramUpgradable: boolean;
+    storageGb: number;
+    weightKg: number;
+    warrantyYears: number;
+  };
   domainSpecs: Record<string, string | number | boolean>;
   scores: {
     performance: number;

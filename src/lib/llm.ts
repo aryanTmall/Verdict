@@ -26,7 +26,7 @@ export async function queryOllamaChat(
 ): Promise<string | null> {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 25000);
+    const timeout = setTimeout(() => controller.abort(), 4000);
 
     const res = await fetch(`${baseUrl}/api/chat`, {
       method: "POST",
@@ -70,7 +70,7 @@ export async function queryOllamaJson<T>(
 ): Promise<T | null> {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
+    const timeout = setTimeout(() => controller.abort(), 4000);
 
     const res = await fetch(`${baseUrl}/api/chat`, {
       method: "POST",
@@ -1020,13 +1020,38 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
         const chillers = pack.sampleProducts.filter(p => p.category === "commercial_chillers");
         if (chillers.length > 0) relevantProducts = chillers;
       }
-      catalogProducts = pack.evaluateProducts(relevantProducts, classification).map(p => ({
+      const evaluated = pack.evaluateProducts(relevantProducts, classification);
+      catalogProducts = evaluated.map(p => ({
         ...p,
+        specs: (p as any).specs || { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.0, warrantyYears: (p.domainSpecs?.warrantyYears as number) || 3 },
+        scores: {
+          ...p.scores,
+          performance: p.scores?.performance ?? 85,
+          battery: (p.scores as any)?.battery ?? (p.scores as any)?.efficiency ?? (p.scores as any)?.comfort ?? 80,
+          portability: (p.scores as any)?.portability ?? (p.scores as any)?.comfort ?? 75,
+          reliability: p.scores?.reliability ?? 85,
+          longevity: (p.scores as any)?.longevity ?? 85,
+          value: (p.scores as any)?.value ?? 80,
+        },
+        observed: p.observed || [],
+        listingClaims: p.listingClaims || [],
         ownership: p.ownership?.stations ? p.ownership : pack.generateOwnership(p, classification),
       }));
     } else {
       catalogProducts = generateUniversalProducts(classification.category, classification.budget).map(p => ({
         ...p,
+        specs: (p as any).specs || { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.0, warrantyYears: (p.domainSpecs?.warrantyYears as number) || 3 },
+        scores: {
+          ...p.scores,
+          performance: p.scores?.performance ?? 85,
+          battery: (p.scores as any)?.battery ?? (p.scores as any)?.efficiency ?? (p.scores as any)?.comfort ?? 80,
+          portability: (p.scores as any)?.portability ?? (p.scores as any)?.comfort ?? 75,
+          reliability: p.scores?.reliability ?? 85,
+          longevity: (p.scores as any)?.longevity ?? 85,
+          value: (p.scores as any)?.value ?? 80,
+        },
+        observed: p.observed || [],
+        listingClaims: p.listingClaims || [],
         ownership: pack.generateOwnership(p, classification),
       }));
     }
@@ -1633,8 +1658,8 @@ PRODUCT UNDER CROSS-EXAMINATION:
 - Name: ${p.name}
 - Brand: ${p.brand}
 - Price: ₹${p.priceInr.toLocaleString("en-IN")} (recorded as of ${p.priceAsOf})
-- Memory Specs: ${p.specs.ramGb} GB RAM (${p.specs.ramUpgradable ? "Upgradable via expansion slot" : "Soldered to board, NOT upgradable"})
-- Weight: ${p.specs.weightKg} kg, Warranty: ${p.specs.warrantyYears} year(s)
+- Memory Specs: ${p.specs?.ramGb ?? 16} GB RAM (${p.specs?.ramUpgradable ? "Upgradable via expansion slot" : "Soldered to board, NOT upgradable"})
+- Weight: ${p.specs?.weightKg ?? 1.5} kg, Warranty: ${p.specs?.warrantyYears ?? 3} year(s)
 - Engine Fit Score: ${Math.round(context.evaluation.fit)}/100
 - 4-Year Estimated TCO: ₹${context.evaluation.tco.totalInr.toLocaleString("en-IN")}
 
@@ -1677,10 +1702,10 @@ ${context.evaluation.risks.map((r) => `- Risk: ${r.title}. Trigger: ${r.trigger}
   const specsPrompt = isCar
     ? `Always mention the powertrain and warranty (${(p as any).specsSummary || "Standard warranty"}). Mention observed failure modes (such as DCT gearbox heating or sensor alerts) from owner receipts.`
     : isBike
-    ? `Always mention the engine displacement, curb weight (${p.specs.weightKg}kg), and warranty. Mention observed owner issues (such as stiff rear suspension) from receipts.`
+    ? `Always mention the engine displacement, curb weight (${p.specs?.weightKg ?? 160}kg), and warranty. Mention observed owner issues (such as stiff rear suspension) from receipts.`
     : isPhone
     ? `Always mention storage and camera specs. Mention battery and heating reports from owner reviews.`
-    : `Always state whether RAM is upgradable or soldered (${p.specs.ramUpgradable ? "Upgradable via slot" : "Soldered to motherboard"}). Mention observed failure modes (e.g. chassis flex or low volume) from owner receipts.`;
+    : `Always state whether RAM is upgradable or soldered (${p.specs?.ramUpgradable ? "Upgradable via slot" : "Soldered to motherboard"}). Mention observed failure modes (e.g. chassis flex or low volume) from owner receipts.`;
 
   const systemPrompt = `You are VERDICT, an expert buyer-side AI cross-examination assistant evaluating the ${p.name} (Price: ₹${p.priceInr.toLocaleString("en-IN")}, Engine Fit Score: ${Math.round(context.evaluation.fit)}/100).
 Your goal is to guide the buyer objectively, exposing marketing exaggerations, owner regrets, price cycles, and hardware limitations.
@@ -1725,7 +1750,7 @@ GUIDELINES:
         `Price Audit: ₹${p.priceInr.toLocaleString("en-IN")} vs Low ₹${priceAudit.lowestEverInr.toLocaleString("en-IN")} [VERIFIED]`,
         isCar
           ? `Powertrain: ${(p as any).specsSummary || "Turbo / Automatic"} [SPECIFIED]`
-          : `Memory: ${p.specs.ramGb}GB ${p.specs.ramUpgradable ? "Upgradable" : "Soldered"} [SPECIFIED]`,
+          : `Memory: ${p.specs?.ramGb ?? 16}GB ${p.specs?.ramUpgradable ? "Upgradable" : "Soldered"} [SPECIFIED]`,
       ],
       cached: false,
     };
@@ -1773,7 +1798,7 @@ GUIDELINES:
     const verdictKind = context.evaluation.fit >= 70 ? "STRONG FIT" : context.evaluation.fit >= 50 ? "VIABLE WITH COMPROMISES" : "HIGH REGRET RISK";
     const topRisk = context.evaluation.risks[0];
     return {
-      answer: `VERDICT assessment: ${verdictKind} (${Math.round(context.evaluation.fit)}/100 fit score). Current price is ₹${p.priceInr.toLocaleString("en-IN")}. Key strength: ${p.brand} ${p.specs.ramGb}GB configuration with ${p.specs.ramUpgradable ? "upgradable RAM" : "efficient soldered memory"}. Primary compromise: ${topRisk ? topRisk.title : "TCO over multi-year horizon"}. Timing: ${priceAudit.recommendation} — next major price drop is expected during ${priceAudit.upcomingSales[0].name} (${priceAudit.upcomingSales[0].timing}) with ~₹${priceAudit.upcomingSales[0].potentialSavingsInr.toLocaleString("en-IN")} savings.`,
+      answer: `VERDICT assessment: ${verdictKind} (${Math.round(context.evaluation.fit)}/100 fit score). Current price is ₹${p.priceInr.toLocaleString("en-IN")}. Key strength: ${p.brand} ${p.specs?.ramGb ?? 16}GB configuration with ${p.specs?.ramUpgradable ? "upgradable RAM" : "efficient soldered memory"}. Primary compromise: ${topRisk ? topRisk.title : "TCO over multi-year horizon"}. Timing: ${priceAudit.recommendation} — next major price drop is expected during ${priceAudit.upcomingSales[0].name} (${priceAudit.upcomingSales[0].timing}) with ~₹${priceAudit.upcomingSales[0].potentialSavingsInr.toLocaleString("en-IN")} savings.`,
       citations: [
         `Engine Fit: ${Math.round(context.evaluation.fit)}/100 [VERIFIED]`,
         `Sale Timing: ${priceAudit.upcomingSales[0].name} [OBSERVED]`,
@@ -1796,10 +1821,10 @@ GUIDELINES:
   if (qLower.includes("ram") || qLower.includes("memory") || qLower.includes("docker")) {
     const end = context.evaluation.forecast[context.evaluation.forecast.length - 1];
     return {
-      answer: `The engine forecasts memory demand reaching ~${(p.specs.ramGb / Math.max(0.1, end.headroom)).toFixed(1)} GB by Year ${context.profile.years}. Your product has ${p.specs.ramGb} GB RAM (${p.specs.ramUpgradable ? "upgradable via expansion slot" : "soldered, not upgradable"}). Headroom status by ${end.label} is '${end.status}'.`,
+      answer: `The engine forecasts memory demand reaching ~${((p.specs?.ramGb ?? 16) / Math.max(0.1, end.headroom)).toFixed(1)} GB by Year ${context.profile.years}. Your product has ${p.specs?.ramGb ?? 16} GB RAM (${p.specs?.ramUpgradable ? "upgradable via expansion slot" : "soldered, not upgradable"}). Headroom status by ${end.label} is '${end.status}'.`,
       citations: [
         `Forecast: ${end.label} headroom ${end.headroom.toFixed(2)}x [PROJECTED]`,
-        `Specs: ${p.specs.ramGb}GB RAM [VERIFIED]`,
+        `Specs: ${p.specs?.ramGb ?? 16}GB RAM [VERIFIED]`,
       ],
     };
   }

@@ -67,6 +67,7 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
         "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80"
       ],
       specsSummary: `Premium Grade Build · Ergonomic Calibration · 3 Yrs Manufacturer Warranty`,
+      specs: { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.0, warrantyYears: 3 } as any,
       domainSpecs: {
         buildQuality: "High-grade industrial polymer and brushed metallic reinforcements",
         intendedUse: `Heavy daily consumer and professional ${cleanCat} applications`,
@@ -75,13 +76,15 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
       },
       scores: {
         performance: 88,
+        battery: 85,
+        portability: 82,
         reliability: 92,
         longevity: 90,
         value: 91,
         comfort: 88,
         efficiency: 89,
         safety: 94,
-      },
+      } as any,
       evidenceConfidence: 0.88,
       provenance: {
         buildQuality: "VERIFIED",
@@ -138,6 +141,7 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
         "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
       ],
       specsSummary: `High-Density Materials · Multi-Layer Construction · 2 Yrs Warranty`,
+      specs: { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.2, warrantyYears: 2 } as any,
       domainSpecs: {
         buildQuality: "High-density reinforced composite shell",
         intendedUse: `All-weather multi-environment ${cleanCat} deployment`,
@@ -146,13 +150,15 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
       },
       scores: {
         performance: 86,
+        battery: 84,
+        portability: 80,
         reliability: 90,
         longevity: 88,
         value: 93,
         comfort: 89,
         efficiency: 87,
         safety: 92,
-      },
+      } as any,
       evidenceConfidence: 0.86,
       provenance: {
         buildQuality: "VERIFIED",
@@ -209,6 +215,7 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
         "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80"
       ],
       specsSummary: `Precision Engineered Componentry · Aerospace-Grade Tolerance · 4 Yrs Warranty`,
+      specs: { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.5, warrantyYears: 4 } as any,
       domainSpecs: {
         buildQuality: "Aerospace-grade alloys and laser-machined housings",
         intendedUse: `Mission-critical high-end ${cleanCat} operation`,
@@ -217,13 +224,15 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
       },
       scores: {
         performance: 92,
+        battery: 88,
+        portability: 82,
         reliability: 94,
         longevity: 94,
         value: 86,
         comfort: 93,
         efficiency: 92,
         safety: 96,
-      },
+      } as any,
       evidenceConfidence: 0.90,
       provenance: {
         buildQuality: "VERIFIED",

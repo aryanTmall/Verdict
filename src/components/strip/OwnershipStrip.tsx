@@ -138,14 +138,14 @@ export function OwnershipStrip({
 
       {/* Active Station Deep Dive Exhibit */}
       {(() => {
-        const activePt = forecast[activeStationIndex] || forecast[0];
+        const activePt = forecast[activeStationIndex] || forecast[0] || { years: 0, label: "Day 1", status: "comfortable", headroom: 1.5 };
         const demand = demandGb(profile, activePt.years);
-        const ram = p.specs.ramGb;
+        const ram = p.specs?.ramGb ?? 16;
         const usedPercent = Math.min(100, Math.round((demand / ram) * 100));
 
         // Find observed issues around this time
         const activeMonth = Math.round(activePt.years * 12);
-        const matchingObserved = p.observed.filter((o) => {
+        const matchingObserved = (p.observed || []).filter((o) => {
           if (o.medianMonths === null) return activePt.years >= 1;
           return Math.abs(o.medianMonths - activeMonth) <= 6;
         });

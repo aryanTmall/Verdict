@@ -148,6 +148,9 @@ export default function HomePage() {
         body: JSON.stringify({ text, demo: isDemo }),
       });
       const parseData = await parseRes.json();
+      if (!parseRes.ok || !parseData.profile) {
+        throw new Error(parseData?.error || "Unable to parse request. Please rephrase your query.");
+      }
       const extractedProfile: Profile = parseData.profile;
 
       if (parseData.realityCheck) {
