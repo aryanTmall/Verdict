@@ -41,6 +41,15 @@ const KNOWN_CATALOG_SVGS = new Set([
   "samsung-galaxy-book4.svg",
   "sony-wf-1000xm5.svg",
   "xiaomi-notebook-pro-120g.svg",
+  "hyundai-creta-sxo-turbo.webp",
+  "hyundai-creta-sxo-turbo.jpg",
+  "hyundai-creta-sxo-turbo.svg",
+  "mahindra-xuv700-ax5-petrol.webp",
+  "mahindra-xuv700-ax5-petrol.jpg",
+  "mahindra-xuv700-ax5-petrol.svg",
+  "tata-harrier-smart-diesel.webp",
+  "tata-harrier-smart-diesel.jpg",
+  "tata-harrier-smart-diesel.svg",
 ]);
 
 export function ProductIllustration({
@@ -59,7 +68,11 @@ export function ProductIllustration({
       isValidImageSource = true;
     } else if (imageUrl.startsWith("/products/")) {
       const fileName = imageUrl.replace("/products/", "").split("?")[0];
-      isValidImageSource = KNOWN_CATALOG_SVGS.has(fileName);
+      isValidImageSource =
+        KNOWN_CATALOG_SVGS.has(fileName) ||
+        /\.(webp|jpg|jpeg|png|svg)$/i.test(fileName);
+    } else if (imageUrl.startsWith("/")) {
+      isValidImageSource = true;
     }
   }
 

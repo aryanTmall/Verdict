@@ -119,10 +119,10 @@ export const automotiveDomain: DomainPack = {
       destinationLabel: "View official model ↗",
       seller: "Hyundai Authorized Network",
       sellerIdentity: "National Dealership Network",
-      primaryImageUrl: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
+      primaryImageUrl: "/products/hyundai-creta-sxo-turbo.webp",
       galleryImageUrls: [
-        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80"
+        "/products/hyundai-creta-sxo-turbo.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/2/21/2024_Hyundai_Creta_1.5_MPi_SX%28O%29_%28India%29_front_view.png"
       ],
       specsSummary: "1.5L Turbo Petrol (160PS) · 7-Speed Dual Clutch (DCT) · 18.4 kmpl · Level 2 ADAS (19 Safety Features) · 3 Yrs / Unlimited km Warranty",
       domainSpecs: {
@@ -208,9 +208,10 @@ export const automotiveDomain: DomainPack = {
       destinationLabel: "View official model ↗",
       seller: "Mahindra Direct Dealerships",
       sellerIdentity: "Nationwide Authorized Network",
-      primaryImageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
+      primaryImageUrl: "/products/mahindra-xuv700-ax5-petrol.webp",
       galleryImageUrls: [
-        "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80"
+        "/products/mahindra-xuv700-ax5-petrol.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/b/ba/2021_Mahindra_XUV700_2.2_AX7_%28India%29_front_view.png"
       ],
       specsSummary: "2.0L Turbo Petrol (200PS) · 6-Speed Manual · 13.0 kmpl · 5-Star Global NCAP · Dual 10.25\" Super-Screen Displays",
       domainSpecs: {
@@ -296,9 +297,10 @@ export const automotiveDomain: DomainPack = {
       destinationLabel: "View official model ↗",
       seller: "Tata Passenger Electric Mobility Network",
       sellerIdentity: "Nationwide Authorized Network",
-      primaryImageUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
+      primaryImageUrl: "/products/tata-harrier-smart-diesel.webp",
       galleryImageUrls: [
-        "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80"
+        "/products/tata-harrier-smart-diesel.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/2/22/Tata_Buzzard_Sport_Genf_2019_1Y7A5793.jpg"
       ],
       specsSummary: "2.0L Kryotec Diesel (170PS) · 6-Speed Manual · 16.8 kmpl · 5-Star Bharat NCAP (Highest Ever Score) · Land Rover D8 Derived Chassis",
       domainSpecs: {

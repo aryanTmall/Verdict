@@ -23,7 +23,7 @@ describe("Phase 13: Universal 10-Industry Purchase Intelligence Engine Tests", (
 
     const creta = mission.catalogProducts!.find(p => p.slug.includes("creta"));
     expect(creta).toBeDefined();
-    expect(creta.primaryImageUrl).toContain("http");
+    expect(creta.primaryImageUrl).toMatch(/^https?:\/\/|^\/products\//);
     expect(creta.destinationUrl).toContain("http");
     expect(creta.priceInr).toBeLessThanOrEqual(1900000);
     expect(creta.domainSpecs.engine).toBeDefined();

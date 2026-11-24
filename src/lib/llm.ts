@@ -118,10 +118,10 @@ export async function queryGeminiJson<T>(
   }
 }
 
-const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 
 /**
- * Direct HTTP client for Groq Cloud API (Llama 3.3 70B - 100% Free Tier).
+ * Direct HTTP client for Groq Cloud API (GPT-OSS 120B - 100% Free Tier).
  */
 export async function queryGroqChat(
   systemPrompt: string,
@@ -348,6 +348,7 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
         name: "Hyundai Creta SX(O) 1.5 Turbo Petrol (160PS, Panoramic Sunroof, ADAS L2)",
         brand: "Hyundai",
         category: "car",
+        primaryImageUrl: "/products/hyundai-creta-sxo-turbo.webp",
         priceInr: Math.round(budget > 1000000 ? Math.min(budget * 0.96, 1870000) : Math.round(budget * 0.96)),
         priceAsOf: "2026-11-20",
         sourceUrl: "https://www.carwale.com/hyundai-cars/creta/",
@@ -383,6 +384,7 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
         name: "Mahindra XUV700 AX5 Petrol MT (200PS mStallion Turbo, Panoramic Skyroof)",
         brand: "Mahindra",
         category: "car",
+        primaryImageUrl: "/products/mahindra-xuv700-ax5-petrol.webp",
         priceInr: Math.round(budget > 1000000 ? Math.min(budget * 0.98, 1890000) : Math.round(budget * 0.98)),
         priceAsOf: "2026-11-20",
         sourceUrl: "https://www.cardekho.com/mahindra/xuv700",
@@ -418,6 +420,7 @@ export function getDomainFallbackProducts(category: string, budget: number): Pro
         name: "Tata Harrier Smart Diesel (170PS Kryotec, 5-Star Bharat-NCAP Safety)",
         brand: "Tata",
         category: "car",
+        primaryImageUrl: "/products/tata-harrier-smart-diesel.webp",
         priceInr: Math.round(budget > 1000000 ? Math.min(budget, 1900000) : budget),
         priceAsOf: "2026-11-20",
         sourceUrl: "https://www.carwale.com/tata-cars/harrier/",
@@ -1428,8 +1431,8 @@ YOUR TASK:
     assumptionsMade?: string[];
   };
 
-  // 1. First priority: Groq Cloud API (Llama 3.3 70B - fast free tier)
-  let activeLlmProvider = "Groq Cloud (Llama 3.3 70B)";
+  // 1. First priority: Groq Cloud API (GPT-OSS 120B - fast free tier)
+  let activeLlmProvider = "Groq Cloud (GPT-OSS 120B)";
   let llmRes = process.env.GROQ_API_KEY
     ? await queryGroqJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence)
     : null;

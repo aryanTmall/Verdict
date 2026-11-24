@@ -73,6 +73,12 @@ export function getUsedListingsForProduct(params: {
   const newPrice = params.currentNewPriceInr;
 
   if (isCar) {
+    const carImage = params.productName.toLowerCase().includes("creta")
+      ? "/products/hyundai-creta-sxo-turbo.webp"
+      : params.productName.toLowerCase().includes("xuv")
+      ? "/products/mahindra-xuv700-ax5-petrol.webp"
+      : "/products/tata-harrier-smart-diesel.webp";
+
     return [
       {
         id: `cpo_spinny_${Date.now()}_1`,
@@ -92,7 +98,7 @@ export function getUsedListingsForProduct(params: {
         sellerRating: 4.8,
         marketplaceSource: "Spinny Assured",
         destinationUrl: `https://www.spinny.com/used-cars/?q=${encodeURIComponent(params.productName)}`,
-        imageUrl: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
+        imageUrl: carImage,
         isVerifiedListing: true,
         listingDate: "2 days ago",
       },
@@ -114,7 +120,7 @@ export function getUsedListingsForProduct(params: {
         sellerRating: 4.5,
         marketplaceSource: "CARS24",
         destinationUrl: `https://www.cars24.com/buy-used-cars/?q=${encodeURIComponent(params.productName)}`,
-        imageUrl: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
+        imageUrl: carImage,
         isVerifiedListing: true,
         listingDate: "5 days ago",
       },
@@ -135,7 +141,7 @@ export function getUsedListingsForProduct(params: {
         sellerRating: 4.2,
         marketplaceSource: "Direct Classifieds",
         destinationUrl: `https://www.olx.in/items/q-${encodeURIComponent(params.productName)}`,
-        imageUrl: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80",
+        imageUrl: carImage,
         isVerifiedListing: false,
         listingDate: "1 week ago",
       },

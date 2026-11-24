@@ -96,7 +96,7 @@ export async function processVisualScan(params: {
         ],
         scannedProductSummary: {
           estimatedRetailPriceInr: 1870000,
-          imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80",
+          imageUrl: "/products/hyundai-creta-sxo-turbo.webp",
           directSearchUrl: "https://www.carwale.com/search/?q=hyundai+creta",
           verdictPreview: "BUY WITH CAUTION",
         },
