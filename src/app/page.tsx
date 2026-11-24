@@ -31,6 +31,7 @@ export default function HomePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [assumptions, setAssumptions] = useState<string[]>([]);
   const [clarifyingQuestion, setClarifyingQuestion] = useState<string | null>(null);
+  const [clarifyingQuestions, setClarifyingQuestions] = useState<any[]>([]);
 
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(null);
@@ -103,6 +104,7 @@ export default function HomePage() {
       setProfile(extractedProfile);
       setAssumptions(parseData.assumptionsMade || []);
       setClarifyingQuestion(parseData.clarifyingQuestion || null);
+      setClarifyingQuestions(parseData.clarifyingQuestions || []);
 
       if (parseData.aiAnswer) {
         setAiIntakeAnswer(parseData.aiAnswer);
@@ -432,6 +434,16 @@ export default function HomePage() {
               profile={profile}
               assumptions={assumptions}
               clarifyingQuestion={clarifyingQuestion}
+              clarifyingQuestions={clarifyingQuestions}
+              onSelectOption={(qId, option) => {
+                setDiffMessage(`Constraint calibrated: ${option}. Matrix re-evaluated.`);
+                if (option.toLowerCase().includes("on-road")) {
+                  // Scale target to on-road equivalent
+                  handleProfilePatch({ budgetInr: Math.round(profile.budgetInr * 0.88) });
+                } else if (option.toLowerCase().includes("ex-showroom")) {
+                  handleProfilePatch({ budgetInr: profile.budgetInr });
+                }
+              }}
               onChange={(updated) => handleProfilePatch(updated)}
             />
 

@@ -28,6 +28,20 @@ export type Product = {
   evidenceConfidence: number; // 0..1
   provenance: Record<string, Provenance>;
   observed: ObservedIssue[];
+  industry?: string;
+  category?: string;
+  subcategory?: string;
+  specsSummary?: string;
+  destinationUrl?: string;
+  destinationLabel?: string;
+  primaryImageUrl?: string;
+  galleryImageUrls?: string[];
+  domainSpecs?: Record<string, any>;
+  ownership?: any;
+  bestFor?: string;
+  compromise?: string;
+  listingClaims?: string[];
+  salePrediction?: any;
 };
 
 export type WorkloadId = "ide" | "browser" | "android_studio" | "docker" | "gaming" | "office";
@@ -76,6 +90,17 @@ export type ForecastPoint = {
 const POINTS: [string, number][] = [["Day 1", 0], ["Month 6", 0.5], ["Year 1", 1], ["Year 2", 2], ["Year 3", 3], ["Year 4", 4]];
 
 export function forecast(p: Product, prof: Profile): ForecastPoint[] {
+  // If product has domain ownership stations, convert them to ForecastPoints
+  if (p.ownership && p.ownership.stations && p.ownership.stations.length > 0) {
+    return p.ownership.stations.map((st: any) => ({
+      label: st.station,
+      years: st.month / 12,
+      headroom: st.status === "comfortable" ? 1.8 : st.status === "tight" ? 1.1 : 0.8,
+      status: st.status,
+      regretLikelihood: st.status === "bottleneck" ? 0.7 : st.status === "tight" ? 0.35 : 0.05,
+    }));
+  }
+
   const pts = POINTS.filter(([, y]) => y <= prof.years);
   if (!pts.some(([, y]) => y === prof.years)) pts.push([`Year ${prof.years}`, prof.years]);
   return pts.map(([label, years]) => {
@@ -105,39 +130,44 @@ const mkRisk = (r: Omit<Risk, "score">): Risk => ({ ...r, score: (r.likelihood *
 
 export function risks(p: Product, prof: Profile): Risk[] {
   const out: Risk[] = [];
-  const fc = forecast(p, prof);
-  const end = fc[fc.length - 1];
+  const isComputing = !p.industry || p.industry === "electronics" || p.category === "laptop";
 
-  if (end.regretLikelihood >= 0.05) {
-    out.push(mkRisk({
-      id: "ram-headroom",
-      title: "Memory headroom runs out",
-      trigger: `Running ${prof.workloads.join(", ")} together`,
-      evidence: `${p.specs.ramGb} GB RAM vs ~${demandGb(prof, end.years).toFixed(1)} GB estimated demand by ${end.label} (assumption-based)`,
-      provenance: "assumption",
-      likelihood: end.regretLikelihood,
-      impact: p.specs.ramUpgradable ? 3 : 5,
-      mitigation: p.specs.ramUpgradable
-        ? `RAM is upgradable (about ${inr(ASSUMPTIONS.ramUpgradeCostInr)} assumed)`
-        : "RAM is not upgradable: only fixable by buying more memory now",
-    }));
+  if (isComputing && p.specs && p.specs.ramGb) {
+    const fc = forecast(p, prof);
+    const end = fc[fc.length - 1];
+
+    if (end && end.regretLikelihood >= 0.05) {
+      out.push(mkRisk({
+        id: "ram-headroom",
+        title: "Memory headroom runs out",
+        trigger: `Running ${prof.workloads.join(", ")} together`,
+        evidence: `${p.specs.ramGb} GB RAM vs ~${demandGb(prof, end.years).toFixed(1)} GB estimated demand by ${end.label} (assumption-based)`,
+        provenance: "assumption",
+        likelihood: end.regretLikelihood,
+        impact: p.specs.ramUpgradable ? 3 : 5,
+        mitigation: p.specs.ramUpgradable
+          ? `RAM is upgradable (about ${inr(ASSUMPTIONS.ramUpgradeCostInr)} assumed)`
+          : "RAM is not upgradable: only fixable by buying more memory now",
+      }));
+    }
   }
 
-  const gap = prof.years - p.specs.warrantyYears;
+  const warrantyYrs = p.specs?.warrantyYears ?? (p.domainSpecs?.warrantyYears as number) ?? 2;
+  const gap = prof.years - warrantyYrs;
   if (gap > 0) {
     out.push(mkRisk({
       id: "warranty-gap",
       title: "Warranty ends before your ownership period",
       trigger: `You plan to keep it ${prof.years} years`,
-      evidence: `${p.specs.warrantyYears}-year warranty`,
-      provenance: p.provenance["warrantyYears"] ?? "source_claim",
+      evidence: `${warrantyYrs}-year warranty`,
+      provenance: p.provenance?.["warrantyYears"] ?? "source_claim",
       likelihood: clamp(gap / prof.years) * 0.6,
       impact: 2,
       mitigation: "Consider an extended warranty or budget a repair reserve",
     }));
   }
 
-  for (const o of p.observed) {
+  for (const o of p.observed || []) {
     if (o.medianMonths !== null && o.medianMonths > prof.years * 12) continue;
     out.push(mkRisk({
       id: `observed-${o.title.toLowerCase().replace(/\W+/g, "-")}`,
@@ -155,8 +185,19 @@ export function risks(p: Product, prof: Profile): Risk[] {
 
 export type CostLine = { label: string; inr: number; provenance: Provenance };
 export function tco(p: Product, prof: Profile): { lines: CostLine[]; totalInr: number } {
-  const lines: CostLine[] = [{ label: "Purchase price", inr: p.priceInr, provenance: p.provenance["priceInr"] ?? "source_claim" }];
-  const uncovered = Math.max(0, prof.years - p.specs.warrantyYears);
+  // If product has domain ownership tcoBreakdown, use it directly
+  if (p.ownership && p.ownership.tcoBreakdown && p.ownership.tcoBreakdown.length > 0) {
+    const lines: CostLine[] = p.ownership.tcoBreakdown.map((item: any) => ({
+      label: item.label,
+      inr: item.inr,
+      provenance: item.provenance === "verified" || item.provenance === "statutory_tax" ? "verified" : "assumption",
+    }));
+    return { lines, totalInr: lines.reduce((s: number, l: CostLine) => s + l.inr, 0) };
+  }
+
+  const lines: CostLine[] = [{ label: "Purchase price", inr: p.priceInr, provenance: p.provenance?.["priceInr"] ?? "source_claim" }];
+  const warrantyYrs = p.specs?.warrantyYears ?? 2;
+  const uncovered = Math.max(0, prof.years - warrantyYrs);
   if (uncovered > 0) {
     lines.push({
       label: `Repair reserve, ${uncovered} uncovered year(s)`,
@@ -165,7 +206,7 @@ export function tco(p: Product, prof: Profile): { lines: CostLine[]; totalInr: n
     });
   }
   const end = forecast(p, prof).slice(-1)[0];
-  if (p.specs.ramUpgradable && end.headroom < 1.3) {
+  if (p.specs?.ramUpgradable && end && end.headroom < 1.3) {
     lines.push({ label: "RAM upgrade", inr: ASSUMPTIONS.ramUpgradeCostInr, provenance: "assumption" });
   }
   return { lines, totalInr: lines.reduce((s, l) => s + l.inr, 0) };
@@ -174,10 +215,14 @@ export function tco(p: Product, prof: Profile): { lines: CostLine[]; totalInr: n
 export type Violation = { id: "budget" | "min-ram" | "max-weight" | "day1-bottleneck"; message: string };
 export function violations(p: Product, prof: Profile): Violation[] {
   const v: Violation[] = [];
+  const isComputing = !p.industry || p.industry === "electronics" || p.category === "laptop";
+
   if (p.priceInr > prof.budgetInr) v.push({ id: "budget", message: `${inr(p.priceInr - prof.budgetInr)} over budget` });
-  if (prof.minRamGb && p.specs.ramGb < prof.minRamGb) v.push({ id: "min-ram", message: `Needs at least ${prof.minRamGb} GB RAM` });
-  if (prof.maxWeightKg && p.specs.weightKg > prof.maxWeightKg) v.push({ id: "max-weight", message: `Heavier than ${prof.maxWeightKg} kg` });
-  if (headroom(p, prof, 0) < 1) v.push({ id: "day1-bottleneck", message: "Cannot comfortably run your workloads on Day 1" });
+  if (isComputing && p.specs) {
+    if (prof.minRamGb && p.specs.ramGb < prof.minRamGb) v.push({ id: "min-ram", message: `Needs at least ${prof.minRamGb} GB RAM` });
+    if (prof.maxWeightKg && p.specs.weightKg > prof.maxWeightKg) v.push({ id: "max-weight", message: `Heavier than ${prof.maxWeightKg} kg` });
+    if (headroom(p, prof, 0) < 1) v.push({ id: "day1-bottleneck", message: "Cannot comfortably run your workloads on Day 1" });
+  }
   return v;
 }
 

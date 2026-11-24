@@ -4,10 +4,18 @@ export type MissionParseResult = {
   profile: import("./engine").Profile;
   assumptionsMade: string[];
   clarifyingQuestion: string | null;
+  clarifyingQuestions?: {
+    id: string;
+    question: string;
+    options: string[];
+    importance: "critical" | "high" | "nice_to_have";
+  }[];
   aiAnswer?: string;
   recommendedProductSlugs?: string[];
   category?: string;
+  industry?: string;
   catalogProducts?: any[];
+  classification?: import("./domains/types").DomainClassification;
   cached?: boolean;
 };
 

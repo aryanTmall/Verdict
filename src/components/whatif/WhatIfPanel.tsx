@@ -20,6 +20,25 @@ export function WhatIfPanel({
 }: WhatIfPanelProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
+  // Dynamic budget bounds scaled to user's domain & mission
+  const budget = profile.budgetInr;
+  const isHighBudget = budget >= 1000000;
+  const isLowBudget = budget <= 25000;
+
+  const minBudget = isHighBudget
+    ? Math.max(100000, Math.round(budget * 0.5))
+    : isLowBudget
+    ? Math.max(1000, Math.round(budget * 0.3))
+    : Math.max(10000, Math.round(budget * 0.5));
+
+  const maxBudget = isHighBudget
+    ? Math.round(budget * 1.6)
+    : isLowBudget
+    ? Math.round(budget * 2.2)
+    : Math.round(budget * 1.8);
+
+  const budgetStep = isHighBudget ? 25000 : isLowBudget ? 500 : 2500;
+
   return (
     <aside
       className={`bg-[#FBF7EA] border-2 border-[#1B1A17] rounded-[4px] p-5 paper-shadow font-mono text-xs space-y-4 ${className}`}
@@ -64,18 +83,18 @@ export function WhatIfPanel({
             </div>
             <input
               type="range"
-              min="35000"
-              max="200000"
-              step="2500"
+              min={minBudget}
+              max={maxBudget}
+              step={budgetStep}
               value={profile.budgetInr}
               onChange={(e) => onProfileChange({ budgetInr: parseInt(e.target.value, 10) })}
               className="w-full h-1.5 bg-[#8A8576]/30 rounded-lg appearance-none cursor-pointer accent-[#2540D9]"
               title="Change budget slider"
             />
             <div className="flex justify-between text-[9px] text-[#8A8576]">
-              <span>₹35k</span>
-              <span>₹1L</span>
-              <span>₹2L</span>
+              <span>₹{minBudget.toLocaleString("en-IN")}</span>
+              <span>₹{budget.toLocaleString("en-IN")}</span>
+              <span>₹{maxBudget.toLocaleString("en-IN")}</span>
             </div>
           </div>
 

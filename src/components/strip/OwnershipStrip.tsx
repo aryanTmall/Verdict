@@ -28,8 +28,9 @@ export function OwnershipStrip({
 
   const p = evaluation.product;
   const forecast = evaluation.forecast;
+  const domainOwnership = (p as any).ownership;
   const category = ((p as any).category || "").toLowerCase();
-  const isCar = category === "car" || /car|suv|sedan|creta|harrier|xuv/i.test(p.name);
+  const isCar = category === "car" || category === "cars" || /car|suv|sedan|creta|harrier|xuv/i.test(p.name);
   const isSofa = category === "sofa" || category === "furniture" || /sofa|couch|seater|furniture/i.test(p.name);
   const isLaptop = category === "laptop" || /laptop|macbook|thinkpad|zenbook|notebook/i.test(p.name);
 
@@ -37,13 +38,13 @@ export function OwnershipStrip({
   const firstBottleneck = forecast.find((pt) => pt.status === "bottleneck");
   const firstTight = forecast.find((pt) => pt.status === "tight");
 
-  let regretClockText = isCar
+  let regretClockText = domainOwnership?.regretClockNotice || (isCar
     ? "Powertrain & chassis projected reliable for 5 years"
     : isSofa
     ? "Foam resilience & frame integrity projected stable for 4 years"
     : !isLaptop
     ? "Structural reliability projected stable across ownership period"
-    : "No memory bottleneck projected in 4 years";
+    : "No memory bottleneck projected in 4 years");
 
   if (firstBottleneck) {
     const months = Math.round(firstBottleneck.years * 12);
@@ -149,6 +150,9 @@ export function OwnershipStrip({
           return Math.abs(o.medianMonths - activeMonth) <= 6;
         });
 
+        const currentDomainStation = domainOwnership?.stations?.[activeStationIndex];
+        const hasDomainOwnership = Boolean(currentDomainStation);
+
         const statusColor =
           activePt.status === "comfortable"
             ? "text-[#1F6B4F]"
@@ -180,36 +184,48 @@ export function OwnershipStrip({
             </div>
 
             {/* Capacity / Wear Ink Gauge */}
-            <div className="space-y-1.5 font-mono text-xs">
-              <div className="flex justify-between text-[#1B1A17]">
-                <span>
-                  {isLaptop ? (
-                    <>RAM Usage: <strong>{demand.toFixed(1)} GB</strong> demanded / <strong>{ram} GB</strong> physical</>
-                  ) : isCar ? (
-                    <>Drivetrain & Mechanical Longevity: <strong>Optimal Capacity</strong></>
-                  ) : isSofa ? (
-                    <>Cushioning & Hardwood Frame Longevity: <strong>High-Resilience Reserve</strong></>
-                  ) : (
-                    <>Structural Durability & Reliability: <strong>Optimal Capacity</strong></>
-                  )}
-                </span>
-                <span className="font-bold tabular-nums">{activePt.headroom.toFixed(2)}x Headroom ({usedPercent}%)</span>
+            {hasDomainOwnership ? (
+              <div className="bg-[#FBF7EA] border border-[#1B1A17]/20 rounded p-3.5 space-y-2 font-mono text-xs">
+                <div className="flex flex-wrap items-center justify-between gap-1 border-b border-dashed border-[#1B1A17]/20 pb-2">
+                  <span className="font-bold text-sm text-[#1B1A17]">
+                    {currentDomainStation.metricLabel}
+                  </span>
+                  <span className="font-bold text-xs text-[#2540D9] bg-white px-2 py-0.5 rounded border border-[#2540D9]/30">
+                    Est. Outlay: ₹{currentDomainStation.projectedCostInr.toLocaleString("en-IN")}
+                  </span>
+                </div>
+                <div className="text-xs text-[#1B1A17]/90 font-medium">
+                  <strong>Specifications:</strong> {currentDomainStation.metricValue}
+                </div>
+                <div className="text-[11px] text-[#8A8576] flex items-center justify-between">
+                  <span>Lifecycle Focus: {domainOwnership.metricName}</span>
+                  <span className="capitalize font-semibold text-[#1F6B4F]">Status: {currentDomainStation.status}</span>
+                </div>
               </div>
+            ) : (
+              <div className="space-y-1.5 font-mono text-xs">
+                <div className="flex justify-between text-[#1B1A17]">
+                  <span>
+                    RAM Usage: <strong>{demand.toFixed(1)} GB</strong> demanded / <strong>{ram} GB</strong> physical
+                  </span>
+                  <span className="font-bold tabular-nums">{activePt.headroom.toFixed(2)}x Headroom ({usedPercent}%)</span>
+                </div>
 
-              {/* Physical Gauge Bar */}
-              <div className="w-full h-4 bg-[#8A8576]/20 rounded overflow-hidden border border-[#1B1A17]/40 flex">
-                <div
-                  className={`h-full transition-all duration-300 ${
-                    activePt.status === "comfortable"
-                      ? "bg-[#1F6B4F]"
-                      : activePt.status === "tight"
-                      ? "bg-[#F3C94B]"
-                      : "bg-[#D8381C]"
-                  }`}
-                  style={{ width: `${Math.min(100, usedPercent)}%` }}
-                />
+                {/* Physical Gauge Bar */}
+                <div className="w-full h-4 bg-[#8A8576]/20 rounded overflow-hidden border border-[#1B1A17]/40 flex">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      activePt.status === "comfortable"
+                        ? "bg-[#1F6B4F]"
+                        : activePt.status === "tight"
+                        ? "bg-[#F3C94B]"
+                        : "bg-[#D8381C]"
+                    }`}
+                    style={{ width: `${Math.min(100, usedPercent)}%` }}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Observed Failure Mode Flags for this Timeline Phase */}
             <div>
@@ -218,7 +234,20 @@ export function OwnershipStrip({
                 <Info className="w-3 h-3" />
               </div>
 
-              {matchingObserved.length === 0 ? (
+              {currentDomainStation?.evidenceHeadline && (
+                <div className="mb-3 p-3 bg-[#FBF7EA] border border-[#1F6B4F]/40 rounded space-y-1 font-mono text-xs">
+                  <div className="flex items-center space-x-1.5 text-[#1F6B4F] font-bold">
+                    <span>✦ {currentDomainStation.evidenceHeadline}</span>
+                  </div>
+                  {currentDomainStation.ownerReceipt && (
+                    <p className="italic text-[#1B1A17]/80 text-[11px] pl-3 border-l-2 border-[#1F6B4F]/40">
+                      &ldquo;{currentDomainStation.ownerReceipt}&rdquo;
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {matchingObserved.length === 0 && !currentDomainStation?.evidenceHeadline ? (
                 <div className="p-3 bg-white rounded border border-dashed border-[#1B1A17]/20 text-xs font-mono text-[#8A8576]">
                   No significant hardware failures or owner complaints observed at this timeline station.
                 </div>

@@ -10,6 +10,13 @@ interface MissionBuilderProps {
   profile: Profile;
   assumptions: string[];
   clarifyingQuestion: string | null;
+  clarifyingQuestions?: {
+    id: string;
+    question: string;
+    options: string[];
+    importance: "critical" | "high" | "nice_to_have";
+  }[];
+  onSelectOption?: (questionId: string, option: string) => void;
   onChange: (updated: Profile) => void;
   className?: string;
 }
@@ -27,10 +34,13 @@ export function MissionBuilder({
   profile,
   assumptions,
   clarifyingQuestion,
+  clarifyingQuestions,
+  onSelectOption,
   onChange,
   className = "",
 }: MissionBuilderProps) {
   const [showAssumptions, setShowAssumptions] = useState(false);
+  const [selectedOptionNotice, setSelectedOptionNotice] = useState<string | null>(null);
 
   const toggleWorkload = (id: WorkloadId) => {
     const exists = profile.workloads.includes(id);
@@ -84,7 +94,49 @@ export function MissionBuilder({
         </button>
       </div>
 
-      {clarifyingQuestion && (
+      {selectedOptionNotice && (
+        <div className="bg-[#1F6B4F]/10 border border-[#1F6B4F]/40 p-2.5 rounded text-xs font-mono text-[#1F6B4F] flex items-center justify-between">
+          <span>✓ Parameter calibrated: {selectedOptionNotice}</span>
+          <button onClick={() => setSelectedOptionNotice(null)} className="text-[10px] font-bold text-[#8A8576] hover:text-[#1B1A17]">
+            [Dismiss]
+          </button>
+        </div>
+      )}
+
+      {clarifyingQuestions && clarifyingQuestions.length > 0 ? (
+        <div className="space-y-3">
+          {clarifyingQuestions.map((q) => (
+            <div key={q.id} className="bg-[#F3C94B]/20 border border-[#F3C94B] rounded p-3.5 space-y-2 text-xs font-mono text-[#1B1A17]">
+              <div className="flex items-start space-x-2">
+                <HelpCircle className="w-4 h-4 text-[#D8381C] flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold uppercase text-[10px] text-[#A82A12] block">
+                    CLARIFYING QUESTION (DEFENSE COUNSEL):
+                  </span>
+                  <p className="mt-0.5 font-medium">{q.question}</p>
+                </div>
+              </div>
+              {q.options && q.options.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1 pl-6">
+                  {q.options.map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => {
+                        setSelectedOptionNotice(opt);
+                        onSelectOption?.(q.id, opt);
+                      }}
+                      className="px-2.5 py-1 bg-white hover:bg-[#1B1A17] hover:text-white rounded border border-[#1B1A17]/30 text-[11px] font-semibold transition cursor-pointer shadow-xs"
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : clarifyingQuestion ? (
         <div className="bg-[#F3C94B]/20 border border-[#F3C94B] rounded p-3 text-xs font-mono text-[#1B1A17] flex items-start space-x-2">
           <HelpCircle className="w-4 h-4 text-[#D8381C] flex-shrink-0 mt-0.5" />
           <div>
@@ -92,7 +144,7 @@ export function MissionBuilder({
             <span>{clarifyingQuestion}</span>
           </div>
         </div>
-      )}
+      ) : null}
 
       {showAssumptions && (
         <div className="bg-[#F2EBD8] border border-dashed border-[#1B1A17]/40 rounded p-3 text-xs font-mono space-y-1">

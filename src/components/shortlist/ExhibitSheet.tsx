@@ -43,42 +43,45 @@ export function ExhibitSheet({
   const topRisk = evaluation.risks[0];
   const compromise = (p as any).compromise || (topRisk ? topRisk.title : "Higher initial purchase price");
   const bestFor = (p as any).bestFor || `High ${bestCriterion} capability`;
-  const imageUrl = (p as any).imageUrl || `/products/${p.slug}.svg`;
+  const imageUrl = (p as any).primaryImageUrl || (p as any).imageUrl || `/products/${p.slug}.svg`;
 
   const category = (p as any).category || "laptop";
   const isCar =
     category === "car" ||
+    category === "cars" ||
     /car|suv|sedan|hatchback|creta|harrier|xuv|venue|ciaz|city|verna|glanza|seltos|nexon|brezza|scorpio|thar|safari|innova/i.test(
       p.name + " " + category
     );
   const isBike =
     category === "bike" ||
     category === "motorcycle" ||
+    category === "motorcycles" ||
     /bike|motorcycle|scooter|royalenfield|bullet|classic 350|hunter 350|ktm|duke|yamaha|mt-15|r15|apache|pulsar/i.test(
       p.name + " " + category
     );
 
-  // Domain-aware direct marketplace links
-  let directRetailerUrl = (p as any).sourceUrl || (p as any).retailerUrl;
-  let retailerLabel = "Live Amazon.in";
+  // Domain-aware direct marketplace & official model links
+  const directRetailerUrl =
+    (p as any).destinationUrl ||
+    (p as any).sourceUrl ||
+    (p as any).retailerUrl ||
+    (isCar
+      ? `https://www.carwale.com/search/?q=${encodeURIComponent(p.name)}`
+      : isBike
+      ? `https://www.bikewale.com/search/?q=${encodeURIComponent(p.name)}`
+      : `https://www.amazon.in/s?k=${encodeURIComponent(p.name)}`);
 
-  if (isCar) {
-    directRetailerUrl = directRetailerUrl || `https://www.carwale.com/search/?q=${encodeURIComponent(p.name)}`;
-    retailerLabel = "CarWale / Showroom";
-  } else if (isBike) {
-    directRetailerUrl = directRetailerUrl || `https://www.bikewale.com/search/?q=${encodeURIComponent(p.name)}`;
-    retailerLabel = "BikeWale / Dealer";
-  } else {
-    directRetailerUrl = directRetailerUrl || `https://www.amazon.in/s?k=${encodeURIComponent(p.name)}`;
-    retailerLabel = "Live Amazon.in";
-  }
+  const retailerLabel =
+    (p as any).destinationLabel ||
+    (p as any).retailerName ||
+    (isCar ? "CarWale / Showroom ↗" : isBike ? "BikeWale / Dealer ↗" : "Live Amazon.in ↗");
 
   // Domain-aware specs label
   const specsLabel =
     (p as any).specsSummary ||
     (isCar
-      ? `${p.brand} · Automotive Class · ${p.specs.warrantyYears || 3} Yrs Warranty`
-      : `${p.brand} · ${p.specs.ramGb}GB RAM ${p.specs.ramUpgradable ? "(Upgradable)" : "(Soldered)"} · ${p.specs.weightKg}kg`);
+      ? `${p.brand} · Automotive Class · ${p.specs?.warrantyYears || 3} Yrs Warranty`
+      : `${p.brand} · ${p.specs?.ramGb ?? 16}GB RAM ${p.specs?.ramUpgradable ? "(Upgradable)" : ""} · ${p.specs?.weightKg ?? 1.6}kg`);
 
   // Domain-aware sale prediction
   const salePred = (p as any).salePrediction;
