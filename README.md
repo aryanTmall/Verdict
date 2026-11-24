@@ -1,11 +1,13 @@
 # VERDICT — "See beyond the buy."
 
-> **A buyer-side AI cross-examination engine that tests seller marketing claims against real owner evidence, forecasts multi-year ownership headroom, and executes instant in-browser what-if recomputation across every major purchasing domain.**
+> **A buyer-side AI purchasing and ownership intelligence platform that tests seller marketing claims against real owner evidence, forecasts multi-year ownership headroom, compares cross-marketplace prices, executes bounded sale autopilots, scans physical goods, and evaluates products and services across every industry with zero vibe math.**
 
 Built for the **IST Hackathon** ("Reimagining Shopping with AI") — Upgraded to **Universal Purchase Intelligence Engine**.
 
 Live URL: [https://verdict-u9pt.onrender.com/](https://verdict-u9pt.onrender.com/)  
-Architecture Specification: [SPEC.md](SPEC.md)
+GitHub Repository: [https://github.com/aryanTmall/Verdict](https://github.com/aryanTmall/Verdict)  
+Architecture Specification: [SPEC.md](SPEC.md)  
+Comprehensive Test Report: [TEST_REPORT.md](TEST_REPORT.md)
 
 ---
 
@@ -15,19 +17,21 @@ Traditional AI shopping assistants are retailer-aligned: they summarize glowing 
 
 **VERDICT** is strictly buyer-aligned. It acts as an aggressive defense attorney cross-examining a purchase before you pay:
 1. **Universal Industry Intelligence:** Automatically understands any purchase query across 10 core industries (Automotive, Real Estate, Electronics, Appliances, Sports, Agriculture, Travel, Fashion, Health, Services) + an adaptive Universal Fallback.
-2. **Deterministic, zero-vibe math:** All scoring, constraint filtering, ownership trajectories, regret risk scoring, and TCO calculations come from a pure TypeScript engine (`src/lib/engine/index.ts`). The LLM only interprets and narrates.
-3. **Audits marketing claims:** Every listing claim is tested against real owner review evidence, stamping each claim `SUPPORTED`, `CONTRADICTED`, or `CAN'T VERIFY`, backed by verbatim receipts under 25 words.
-4. **The Ownership Strip:** Forecasts Day 1 through Year 4/5 lifecycle milestones (e.g. ARAI vs city fuel burn and brake pad wear for cars, RERA and RWA maintenance for real estate, midsole fatigue for running shoes, water/power burn for appliances) along with an active "Regret Clock".
-5. **Instant What-If Recomputation:** Moving any budget or priority slider recomputes recommendations live in the browser with zero network lag and animates ranking shifts.
-6. **Official Verdict Stamp & Receipt:** Slams a BUY / WAIT / AVOID / CHOOSE ALTERNATIVE stamp, prints a thermal audit receipt, generates a shareable web link, and exports an `.ics` calendar warranty reminder.
+2. **VERDICT Price Radar:** Instant cross-marketplace comparison across Amazon, Flipkart, Croma, Reliance Digital, and Brand Stores, calculating true Effective Prices ($\text{Effective} = \text{Listed} + \text{Shipping} - \text{Verified Discounts}$).
+3. **Sale Autopilot:** Configures future target price conditions and safe autonomous buying rules before festive sales launch (with Notify Only, Approval Required, and Pre-Authorized bounded purchase modes).
+4. **Smart Companion Pairing & Anti-Upselling:** Recommends essential accessories while actively warning buyers against deceptive dealer up-sells (e.g. ₹9,500 cosmetic chrome garnish, redundant unpowered USB-C hubs).
+5. **Universal Scan Anything:** Identifies physical goods in real-time using phone camera feeds, uploaded photos, or GS1 GTIN-13 barcodes.
+6. **Multilingual Indian Speech:** Complete voice-driven interface covering all 22 Eighth Schedule Indian languages, Indian English, and conversational Hinglish code-switching.
+7. **The Ownership Strip:** Forecasts Day 1 through Year 4/5 lifecycle milestones (e.g. ARAI vs city fuel burn and brake pad wear for cars, RERA and RWA maintenance for real estate, midsole fatigue for running shoes, water/power burn for appliances) along with an active "Regret Clock".
+8. **Deterministic, zero-vibe math:** All scoring, constraint filtering, headroom projections, regret risk scoring, and TCO calculations come from a pure TypeScript engine (`src/lib/engine/index.ts`).
 
 ---
 
-## 2. Universal Industry Architecture
+## 2. Universal Architecture & Data Flow
 
 ```mermaid
 flowchart TD
-    User([Buyer Input: "I need a car, budget 19 lakhs"]) --> Intake[Intake Index Card]
+    User([Buyer Input: Voice / Text / Camera Scan / Barcode]) --> Intake[Intake Index Card]
     Intake --> ParseAPI[/api/mission/parse]
     
     subgraph UniversalClassifier [Universal Category Classifier]
@@ -53,6 +57,10 @@ flowchart TD
     EngineCore --> Shortlist[Top 3 Exhibits A/B/C + Dismissed Strip]
     EngineCore --> OwnershipStrip[Domain Ownership Strip: Day 1 - Year 5]
     
+    Shortlist --> PriceRadar[VERDICT Price Radar: Amazon / Flipkart / Croma / Brand]
+    Shortlist --> SmartPairing[Smart Pairing & Anti-Upsell Defense]
+    Shortlist --> SaleAutopilot[Sale Autopilot & Bounded Buying Rules]
+    
     Shortlist --> ClaimsAPI[/api/claims]
     ClaimsAPI --> SubstringVerifier[Server-side Quote Substring Verifier]
     SubstringVerifier --> ClaimsLedger[Claims Ledger Panel]
@@ -63,11 +71,6 @@ flowchart TD
     EngineCore --> NarrateAPI[/api/narrate]
     NarrateAPI --> DigitGuard[Strict Digit-Guard Validator]
     DigitGuard --> VerdictModal[Verdict Rubber Stamp Slam & Thermal Receipt]
-    
-    VerdictModal --> Vault[(Supabase / Local Vault)]
-    VerdictModal --> CalendarICS[/api/ics Reminder Export]
-    
-    User <--> AskAPI[/api/ask: Evidence-Gated Q&A Drawer]
 ```
 
 ---
@@ -95,76 +98,77 @@ VERDICT does not assume every query is about laptops or phones. It implements de
 9. **Health & Personal Care (`health.ts`):** True HEPA air purifiers (CADR 520 m³/h, 0.003-micron NanoProtect), 24dB sleep noise, filter replacement cadence.
    *Specimens:* Philips Series 3000i (₹28.9k).
 10. **Business & Professional Services (`services.ts`):** Dedicated commercial enterprise fiber (1 Gbps symmetric, 99.9% uptime SLA, static IPv4).
-   *Specimens:* Airtel Business Dedicated Internet.
+    *Specimens:* Airtel Business Dedicated Internet.
 11. **Universal Fallback (`universal.ts`):** Dynamic evaluator for any unsupported category (espresso machines, 4k drones, musical instruments, etc.) that extracts intended purpose and constructs explainable comparison criteria.
 
 ---
 
-## 4. Tech Stack
+## 4. Master Feature Highlights
 
-- **Framework:** Next.js 16 (App Router, Turbopack, React 19)
-- **Language:** TypeScript (strict mode)
-- **Styling & Tokens:** Tailwind CSS v4, custom "The Case File" design tokens (Paper `#F2EBD8`, Sheet `#FBF7EA`, Ink `#1B1A17`, Carbon Blue `#2540D9`, Stamp Vermilion `#D8381C`, Evidence Green `#1F6B4F`, Tape Yellow `#F3C94B`, Graphite `#8A8576`)
-- **Typography:** Bricolage Grotesque (Display & UI) + IBM Plex Mono (Tabular numbers, receipts, provenance chips)
-- **Motion & Smooth Scroll:** Framer Motion layout springs + Lenis smooth scrolling (with `prefers-reduced-motion` detection)
-- **Data Visualizations:** Recharts Radar Chart (ink-styled)
-- **LLM Engine:** Local Ollama (`llama3.1:latest`) or Anthropic SDK (`@anthropic-ai/sdk`), models `claude-sonnet-5-5` & `claude-haiku-5-5` with deterministic regex/NLP fallbacks
-- **Persistence:** Supabase (`@supabase/supabase-js`) with automatic fallback to local JSON file store (`data/vault/`)
-- **Calendar:** `ics` for warranty cutoff reminder export
-- **Testing:** Vitest with 22 automated unit and integration tests across 3 suites
+### A. VERDICT Price Radar
+- Cross-marketplace arbitrage comparing same exact variant across Amazon, Flipkart, Croma, Reliance Digital, and Brand Official Stores.
+- Calculates true **Effective Price**: Listed Price + Shipping + Applicable Charges - Verified Discounts.
+- Audits separate conditional bank offers without inflating the guaranteed price.
+- 12-month historical price points tracking Launch, Festive Dips, and Current Stabilized Medians.
+
+### B. Sale Autopilot & Bounded Buying Rules
+- Arms buyers with autonomous monitoring rules before festive sales launch.
+- Three distinct modes:
+  - `MODE 1 — NOTIFY ONLY`: Instant in-app alerts and notifications.
+  - `MODE 2 — APPROVAL REQUIRED`: Prepares cart checkout and strictly awaits buyer authorization.
+  - `MODE 3 — PRE-AUTHORIZED PURCHASE`: Bounded execution enforcing hard maximum payable cap with tokenized idempotency.
+
+### C. Smart Companion Pairing
+- Anti-upselling protection: Actively categorizes accessories into `ESSENTIAL`, `RECOMMENDED`, `OPTIONAL`, and `NOT_NEEDED`.
+- Protects buyers from paying ₹9,500 for dealer chrome trims or redundant unpowered USB-C hubs.
+- Automatic bundle discount optimizer providing verified 8% combo savings.
+
+### D. Universal Scan Anything
+- Live phone camera scanning via HTML5 `getUserMedia`.
+- GS1 GTIN-13 barcode lookups resolving direct manufacturer catalog records.
+- OCR text extraction from vehicle plates, appliance packaging, and tech spec sheets.
+
+### E. Multilingual Indian Voice & Speech
+- Complete coverage for all **22 Eighth Schedule Indian Languages** (Hindi, Bengali, Telugu, Marathi, Tamil, Urdu, Gujarati, Kannada, Odia, Malayalam, Punjabi, Assamese, Maithili, Santali, Kashmiri, Nepali, Sindhi, Konkani, Dogri, Manipuri, Bodo, Sanskrit) + Indian English & Hinglish.
+- Real-time speech recognition, script auto-detection, and localized spoken cross-examination verdicts.
 
 ---
 
-## 5. Run & Test Instructions
+## 5. Tech Stack
 
-### Prerequisites
-- Node.js >= 20
-- npm >= 10
+- **Framework:** Next.js 16.4.6 (App Router, Turbopack, React 19)
+- **Language:** TypeScript 5 (strict mode)
+- **Styling:** Tailwind CSS v4 with custom "The Case File" design tokens
+- **Typography:** Bricolage Grotesque + IBM Plex Mono
+- **Motion:** Framer Motion layout springs + Lenis smooth scrolling
+- **Charts:** Recharts Radar Chart (ink-styled)
+- **Testing:** Vitest v5.1.1 with 33 passing automated tests across 4 suites
 
-### Setup & Run
+---
+
+## 6. Run & Test Instructions
+
 ```bash
 # 1. Install dependencies
 npm install --legacy-peer-deps
 
-# 2. Run test suite (All 22 unit & domain tests)
+# 2. Run complete test suite (All 33 tests across 4 suites)
 npm test
 
-# 3. Build for production
+# 3. Build for production (22 routes compiled cleanly)
 npm run build
 
 # 4. Start production server
-npm run start
+npm start
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 6. End-to-End Benchmark Scenarios
-
-### Benchmark A: ₹19 Lakh Automotive Cross-Examination
-1. **Intake Statement:** `"I need a car, my budget is 19 lakhs."`
-2. **Classification Output:** Industry `automotive`, category `cars`, budget `₹19,00,000`, market `IN`, currency `INR`.
-3. **Clarifying Defense:** System presents interactive option chips: *`"Is ₹19,00,000 your maximum On-Road budget or Ex-Showroom price?"`*
-4. **Shortlist Candidates:**
-   - **Exhibit A (Top Pick):** `Hyundai Creta SX(O) 1.5 Turbo DCT` (₹18,70,000) — Level 2 ADAS, 158 bhp.
-   - **Exhibit B:** `Mahindra XUV700 AX5 Petrol MT` (₹17,80,000) — 5-Star Global NCAP, 197 bhp.
-   - **Exhibit C:** `Tata Harrier Smart MT` (₹15,49,000) — 5-Star Bharat NCAP, robust road presence.
-5. **Ownership Strip:** Replaces RAM memory with ARAI 18.4 kmpl vs Real Traffic 10.5 kmpl burn, Day 1 RTO/Taxes, Month 6 first service, and Year 3 brake pad wear.
-6. **Direct Link:** `"View official model ↗"` linking to verified manufacturer specification portals.
-
-### Benchmark B: Bangalore Flat ₹90 Lakhs (Real Estate)
-- Extracts `real_estate`, carpet area ratio, RERA registration numbers, 6.6% stamp duty/registration acquisition costs, and possession timelines.
-
-### Benchmark C: Wildlife Photography DSLR (Electronics)
-- Identifies Sony Alpha A7 IV (₹2.15L) and Canon EOS R6 Mark II (₹2.05L) with CIPA shot ratings and shutter lifecycle tracking.
-
----
-
 ## 7. Deployment Configuration (Render)
 
-VERDICT is configured for automated builds on Render:
 - **Build Command:** `npm install --legacy-peer-deps && npm run build`
 - **Start Command:** `npx next start -H 0.0.0.0 -p $PORT`
-- **Environment:** `NODE_VERSION=20.18.0`, `NODE_OPTIONS=--max-old-space-size=460`
 - **Configuration File:** `render.yaml`
+- **Node Version:** 20.18.0

@@ -13,6 +13,12 @@ import { TradeoffRadar } from "@/components/shortlist/TradeoffRadar";
 import { OwnershipStrip } from "@/components/strip/OwnershipStrip";
 import { ClaimsLedger } from "@/components/claims/ClaimsLedger";
 import { PriceTracker } from "@/components/price/PriceTracker";
+import { PriceRadarModal } from "@/components/price/PriceRadarModal";
+import { SaleAutopilotModal } from "@/components/autopilot/SaleAutopilotModal";
+import { SmartPairingSection } from "@/components/pairing/SmartPairingSection";
+import { ScanModal } from "@/components/scan/ScanModal";
+import { MultilingualVoiceDrawer } from "@/components/voice/MultilingualVoiceDrawer";
+import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
 import { RiskAccordionTable } from "@/components/risk/RiskAccordionTable";
 import { TcoBreakdown } from "@/components/tco/TcoBreakdown";
 import { WhatIfPanel } from "@/components/whatif/WhatIfPanel";
@@ -23,7 +29,18 @@ import type { Profile, Evaluation, Product } from "@/lib/engine";
 import { evaluate, decide, whatIf } from "@/lib/engine";
 import type { ClaimVerification, NarrationResult } from "@/lib/types";
 import type { ReviewItem, CatalogItem } from "../../scripts/derive";
-import { MessageSquareCode, ShieldAlert, Sparkles, FolderArchive, Palette } from "lucide-react";
+import {
+  MessageSquareCode,
+  ShieldAlert,
+  Sparkles,
+  FolderArchive,
+  Palette,
+  Radar,
+  Zap,
+  Bell,
+  Camera,
+  Languages,
+} from "lucide-react";
 
 export default function HomePage() {
   const [catalog, setCatalog] = useState<any[]>([]);
@@ -43,6 +60,18 @@ export default function HomePage() {
   const [diffMessage, setDiffMessage] = useState<string | null>(null);
   const [aiIntakeAnswer, setAiIntakeAnswer] = useState<string | null>(null);
   const [recommendedSlugs, setRecommendedSlugs] = useState<string[]>([]);
+
+  // Advanced Master Modals & Drawer states
+  const [showRadarModal, setShowRadarModal] = useState(false);
+  const [radarProduct, setRadarProduct] = useState<any>(null);
+
+  const [showAutopilotModal, setShowAutopilotModal] = useState(false);
+  const [autopilotProduct, setAutopilotProduct] = useState<any>(null);
+
+  const [showScanModal, setShowScanModal] = useState(false);
+  const [showVoiceDrawer, setShowVoiceDrawer] = useState(false);
+  const [showNotifDrawer, setShowNotifDrawer] = useState(false);
+  const [missionOverride, setMissionOverride] = useState<string | undefined>(undefined);
 
   // Verdict Modal state
   const [showVerdictModal, setShowVerdictModal] = useState(false);
@@ -343,13 +372,71 @@ export default function HomePage() {
             </span>
           </div>
 
-          <div className="flex items-center space-x-3 text-xs font-mono">
+          <div className="flex flex-wrap items-center space-x-2 sm:space-x-4 text-xs font-mono">
+            {/* Price Radar Quick Trigger */}
+            <button
+              onClick={() => {
+                setRadarProduct(activeEvaluation?.product || catalog[0]);
+                setShowRadarModal(true);
+              }}
+              className="inline-flex items-center space-x-1 text-[#2540D9] hover:underline font-bold cursor-pointer"
+              title="Open Price Radar"
+            >
+              <Radar className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Price Radar</span>
+            </button>
+
+            {/* Sale Autopilot Quick Trigger */}
+            <button
+              onClick={() => {
+                setAutopilotProduct(activeEvaluation?.product || catalog[0]);
+                setShowAutopilotModal(true);
+              }}
+              className="inline-flex items-center space-x-1 text-[#D8381C] hover:underline font-bold cursor-pointer"
+              title="Open Sale Autopilot"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Sale Autopilot</span>
+            </button>
+
+            {/* Scan Anything Button */}
+            <button
+              onClick={() => setShowScanModal(true)}
+              className="inline-flex items-center space-x-1 text-[#1B1A17] hover:text-[#2540D9] font-medium cursor-pointer"
+              title="Scan physical product, barcode or photo"
+            >
+              <Camera className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Scan Anything</span>
+            </button>
+
+            {/* Voice Multilingual Button */}
+            <button
+              onClick={() => setShowVoiceDrawer(true)}
+              className="inline-flex items-center space-x-1 text-[#1B1A17] hover:text-[#2540D9] font-medium cursor-pointer"
+              title="Multilingual Indian Voice"
+            >
+              <Languages className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Voice</span>
+            </button>
+
+            {/* In-App Notifications Hub */}
+            <button
+              onClick={() => setShowNotifDrawer(true)}
+              className="relative p-1 text-[#1B1A17] hover:text-[#2540D9] cursor-pointer"
+              title="Notifications Hub"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D8381C]" />
+            </button>
+
+            <span className="text-[#8A8576]">·</span>
+
             <Link
               href="/vault"
               className="inline-flex items-center space-x-1 text-[#1B1A17] hover:text-[#2540D9] font-medium"
             >
               <FolderArchive className="w-3.5 h-3.5" />
-              <span>Vault Archive</span>
+              <span>Vault</span>
             </Link>
             <span className="text-[#8A8576]">·</span>
             <Link
@@ -357,7 +444,7 @@ export default function HomePage() {
               className="inline-flex items-center space-x-1 text-[#1B1A17] hover:text-[#2540D9]"
             >
               <Palette className="w-3.5 h-3.5" />
-              <span>Design Spec</span>
+              <span className="hidden sm:inline">Spec</span>
             </Link>
           </div>
         </div>
@@ -375,7 +462,13 @@ export default function HomePage() {
             A buyer-side AI cross-examination system. We audit seller marketing claims against real owner review evidence, forecast multi-year memory and thermal regret, and simulate what-if adjustments in real time.
           </p>
 
-          <IntakeIndexCard onAnalyze={handleAnalyzeMission} isLoading={isLoading} />
+          <IntakeIndexCard
+            onAnalyze={handleAnalyzeMission}
+            isLoading={isLoading}
+            onOpenScan={() => setShowScanModal(true)}
+            onOpenVoice={() => setShowVoiceDrawer(true)}
+            missionTextOverride={missionOverride}
+          />
         </section>
 
         {/* Ticker Marquee with real factual claims */}
@@ -480,6 +573,14 @@ export default function HomePage() {
                       evaluation={ev}
                       isSelected={selectedProductSlug === ev.product.slug}
                       onSelect={() => handleSelectProduct(ev.product.slug)}
+                      onOpenRadar={(p) => {
+                        setRadarProduct(p);
+                        setShowRadarModal(true);
+                      }}
+                      onOpenAutopilot={(p) => {
+                        setAutopilotProduct(p);
+                        setShowAutopilotModal(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -501,6 +602,9 @@ export default function HomePage() {
 
             {/* Section 5: Price Intelligence & Festive Sale Tracker */}
             <PriceTracker product={activeEvaluation.product} />
+
+            {/* Section 5B: Smart Companion Pairing & Bundle Optimization */}
+            <SmartPairingSection product={activeEvaluation.product} />
 
             {/* Section 6: Claims Ledger & Risk Table */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -594,6 +698,56 @@ export default function HomePage() {
           onSave={handleSaveVerdict}
         />
       )}
+
+      {/* VERDICT Price Radar Modal */}
+      {showRadarModal && (
+        <PriceRadarModal
+          product={radarProduct || activeEvaluation?.product || catalog[0]}
+          onClose={() => setShowRadarModal(false)}
+          onSetAlert={(p) => {
+            setAutopilotProduct(p);
+            setShowAutopilotModal(true);
+          }}
+        />
+      )}
+
+      {/* Sale Autopilot Rule & Countdown Modal */}
+      {showAutopilotModal && (
+        <SaleAutopilotModal
+          product={autopilotProduct || activeEvaluation?.product || catalog[0]}
+          onClose={() => setShowAutopilotModal(false)}
+        />
+      )}
+
+      {/* Universal Visual & Barcode Scan Modal */}
+      {showScanModal && (
+        <ScanModal
+          onClose={() => setShowScanModal(false)}
+          onSelectScannedProduct={(productName) => {
+            const query = `Cross-examine the ${productName}. What is its real owner track record and best available price?`;
+            setMissionOverride(query);
+            handleAnalyzeMission(query);
+          }}
+        />
+      )}
+
+      {/* Multilingual Voice & Speech Drawer */}
+      <MultilingualVoiceDrawer
+        isOpen={showVoiceDrawer}
+        onClose={() => setShowVoiceDrawer(false)}
+        currentProductName={activeEvaluation?.product?.name || "Selected Product"}
+        onSubmitVoiceMission={(text) => {
+          setMissionOverride(text);
+          handleAnalyzeMission(text);
+        }}
+      />
+
+      {/* In-App Notifications Hub Drawer */}
+      <NotificationDrawer
+        isOpen={showNotifDrawer}
+        onClose={() => setShowNotifDrawer(false)}
+        onOpenAutopilot={() => setShowAutopilotModal(true)}
+      />
 
       {/* Footer */}
       <footer className="mt-16 border-t border-[#1B1A17]/20 py-8 px-4 text-center font-mono text-xs text-[#8A8576] space-y-2">

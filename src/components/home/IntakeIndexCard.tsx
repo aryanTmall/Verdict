@@ -1,17 +1,34 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Mic, MicOff, Camera, Link2, Sparkles, AlertCircle, ArrowRight } from "lucide-react";
 
 interface IntakeIndexCardProps {
   onAnalyze: (text: string, isDemo?: boolean) => void;
   isLoading: boolean;
+  onOpenScan?: () => void;
+  onOpenVoice?: () => void;
+  missionTextOverride?: string;
 }
 
-export function IntakeIndexCard({ onAnalyze, isLoading }: IntakeIndexCardProps) {
+export function IntakeIndexCard({
+  onAnalyze,
+  isLoading,
+  onOpenScan,
+  onOpenVoice,
+  missionTextOverride,
+}: IntakeIndexCardProps) {
   const [missionText, setMissionText] = useState(
+    missionTextOverride ||
     "I am an engineering student. I need a laptop for coding, Android Studio, Docker, college, daily travel and occasional gaming. My budget is ₹75,000 and I want it to last four years."
   );
+
+  // Sync if override changes
+  useEffect(() => {
+    if (missionTextOverride) {
+      setMissionText(missionTextOverride);
+    }
+  }, [missionTextOverride]);
   const [isListening, setIsListening] = useState(false);
   const [voiceLang, setVoiceLang] = useState<"en-IN" | "hi-IN">("en-IN");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -177,13 +194,13 @@ export function IntakeIndexCard({ onAnalyze, isLoading }: IntakeIndexCardProps) 
             {/* Voice Button */}
             <button
               type="button"
-              onClick={handleVoiceToggle}
+              onClick={onOpenVoice || handleVoiceToggle}
               className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-mono border transition cursor-pointer ${
                 isListening
                   ? "bg-[#D8381C] text-white border-[#D8381C] animate-pulse"
                   : "bg-white/80 hover:bg-white text-[#1B1A17] border-[#1B1A17]/30"
               }`}
-              title="Speak mission"
+              title="Speak mission in Indian languages"
             >
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
               <span>{isListening ? "Listening..." : "Speak"}</span>
@@ -192,14 +209,14 @@ export function IntakeIndexCard({ onAnalyze, isLoading }: IntakeIndexCardProps) 
             {/* Language Toggle for Voice */}
             <button
               type="button"
-              onClick={() => setVoiceLang((l) => (l === "en-IN" ? "hi-IN" : "en-IN"))}
+              onClick={onOpenVoice || (() => setVoiceLang((l) => (l === "en-IN" ? "hi-IN" : "en-IN")))}
               className="text-[11px] font-mono text-[#8A8576] hover:text-[#1B1A17] px-2 py-1 rounded border border-transparent hover:border-[#1B1A17]/20"
-              title="Toggle English / Hindi speech recognition"
+              title="Select Indian language"
             >
               [{voiceLang}]
             </button>
 
-            {/* Photo / Screenshot Upload */}
+            {/* Photo / Screenshot / Scan Anything */}
             <input
               type="file"
               ref={fileInputRef}
@@ -209,12 +226,12 @@ export function IntakeIndexCard({ onAnalyze, isLoading }: IntakeIndexCardProps) 
             />
             <button
               type="button"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={onOpenScan || (() => fileInputRef.current?.click())}
               className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/80 hover:bg-white text-[#1B1A17] border border-[#1B1A17]/30 transition cursor-pointer"
-              title="Upload product photo or screenshot"
+              title="Scan physical product, barcode, or photo"
             >
               <Camera className="w-3.5 h-3.5" />
-              <span>Photo</span>
+              <span>Scan / Photo</span>
             </button>
 
             {/* Link Paste Button */}

@@ -14,6 +14,8 @@ import {
   AlertTriangle,
   TrendingDown,
   ShoppingBag,
+  Radar,
+  Zap,
 } from "lucide-react";
 
 interface ExhibitSheetProps {
@@ -21,6 +23,8 @@ interface ExhibitSheetProps {
   evaluation: Evaluation;
   isSelected: boolean;
   onSelect: () => void;
+  onOpenRadar?: (p: any) => void;
+  onOpenAutopilot?: (p: any) => void;
   className?: string;
 }
 
@@ -29,6 +33,8 @@ export function ExhibitSheet({
   evaluation,
   isSelected,
   onSelect,
+  onOpenRadar,
+  onOpenAutopilot,
   className = "",
 }: ExhibitSheetProps) {
   const [showBreakdown, setShowBreakdown] = useState(false);
@@ -154,7 +160,7 @@ export function ExhibitSheet({
           </div>
         </div>
 
-        {/* Price Tracker Prediction Pill */}
+        {/* Price Tracker Prediction Pill & Quick Action Tools */}
         <div className="mt-2.5 p-2 bg-[#F2EBD8] rounded border border-[#1B1A17]/15 flex items-center justify-between text-[10px] font-mono">
           <span className="flex items-center space-x-1 text-[#1B1A17] font-semibold truncate mr-1">
             <TrendingDown className="w-3 h-3 text-[#1F6B4F] flex-shrink-0" />
@@ -164,6 +170,40 @@ export function ExhibitSheet({
             ~{nextSaleDrop}% off
           </span>
         </div>
+
+        {/* Price Radar & Autopilot Quick Triggers */}
+        {(onOpenRadar || onOpenAutopilot) && (
+          <div className="mt-2 flex items-center space-x-2 text-[10px] font-mono">
+            {onOpenRadar && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenRadar(p);
+                }}
+                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-2 bg-white hover:bg-[#2540D9] hover:text-white text-[#2540D9] border border-[#2540D9]/30 rounded transition font-bold cursor-pointer"
+                title="Cross-marketplace price comparison"
+              >
+                <Radar className="w-3 h-3" />
+                <span>Price Radar</span>
+              </button>
+            )}
+            {onOpenAutopilot && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenAutopilot(p);
+                }}
+                className="flex-1 inline-flex items-center justify-center space-x-1 py-1 px-2 bg-white hover:bg-[#D8381C] hover:text-white text-[#D8381C] border border-[#D8381C]/30 rounded transition font-bold cursor-pointer"
+                title="Configure target price alert and sale rule"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Sale Autopilot</span>
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Best For / Compromise */}
         <div className="mt-3 bg-[#F2EBD8] p-2.5 rounded text-xs font-mono space-y-1.5 border border-[#1B1A17]/10">
