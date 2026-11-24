@@ -27,7 +27,7 @@ export const automotiveDomain: DomainPack = {
   },
   generateOwnership: (product, classification) => {
     const pInr = product.priceInr;
-    const isEv = product.domainSpecs.fuelType === "Electric";
+    const isEv = product.domainSpecs?.fuelType === "Electric";
     const monthlyFuel = isEv ? 1800 : 9200;
 
     return {

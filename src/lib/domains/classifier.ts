@@ -145,10 +145,15 @@ export function classifyQuery(text: string): DomainClassification {
     assumptions.push("Evaluated against State RERA verification databases, Occupancy Certificate validity, and statutory ~6.6% stamp duty/registration outlays.");
   }
   // Domain C: ELECTRONICS & COMPUTING
-  else if (/\b(?:laptop|laptops|macbook|thinkpad|zenbook|vivobook|ideapad|coding|developer|docker|android\s*studio|desktop|camera|cameras|dslr|mirrorless|lens|photography|wildlife|sensor|monitor|tv|television|smartphone|iphone|galaxy|tablet)\b/i.test(lower)) {
+  else if (/\b(?:laptop|laptops|macbook|thinkpad|zenbook|vivobook|ideapad|coding|developer|docker|android\s*studio|desktop|camera|cameras|dslr|mirrorless|lens|photography|wildlife|sensor|monitor|tv|television|smartphone|iphone|galaxy|tablet|drone|quadcopter)\b/i.test(lower)) {
     industry = "electronics";
     ownershipYears = 4;
-    if (/\b(?:camera|dslr|mirrorless|photography|wildlife|lens|shutter)\b/i.test(lower)) {
+    if (/\b(?:drone|quadcopter)\b/i.test(lower)) {
+      category = "drones";
+      subcategory = "aerial_imaging";
+      if (!budget) budget = 45000;
+      assumptions.push("Evaluated for wind resistance class, gimbal stabilization, transmission range, and flight battery endurance.");
+    } else if (/\b(?:camera|dslr|mirrorless|photography|wildlife|lens|shutter)\b/i.test(lower)) {
       category = "cameras";
       subcategory = "mirrorless_cameras";
       if (!budget) budget = 215000;
@@ -159,6 +164,11 @@ export function classifyQuery(text: string): DomainClassification {
       subcategory = "flagship_mobile";
       if (!budget) budget = 65000;
       assumptions.push("Evaluated against multi-year OS security update commitments and camera optical stabilization.");
+    } else if (/\b(?:tv|television|smart\s*tv|oled\s*tv|4k\s*tv)\b/i.test(lower)) {
+      category = "tv";
+      subcategory = "smart_television";
+      if (!budget) budget = 45000;
+      assumptions.push("Evaluated against panel refresh rates, HDR brightness (nits), sound output, and OS streaming ecosystem.");
     } else {
       category = "laptops";
       subcategory = "computing_workstations";
@@ -189,6 +199,11 @@ export function classifyQuery(text: string): DomainClassification {
       if (!budget) budget = 125000;
       requiredAttributes["commercialKitchenGrade"] = true;
       assumptions.push("Evaluated for 43°C ambient commercial kitchen duty with Embraco heavy-duty compressors and forced-air cooling.");
+    } else if (/\b(?:sofa|sofas|couch|furniture|divan|chesterfield)\b/i.test(lower)) {
+      category = "sofa";
+      subcategory = "living_room_furniture";
+      if (!budget) budget = 30000;
+      assumptions.push("Evaluated for frame wood durability (Sal/Neem/Eucalyptus), foam density (32D+), and upholstery wear cycles.");
     } else {
       category = "refrigerators";
       subcategory = "home_appliances";
@@ -198,14 +213,21 @@ export function classifyQuery(text: string): DomainClassification {
   // Domain E: SPORTS & FITNESS
   else if (/\b(?:running\s*shoes?|shoes?|marathon|sneakers?|bicycle|bicycles?|cycle|cycles?|treadmill|gym|workout|fitness)\b/i.test(lower)) {
     industry = "sports";
-    category = "running_shoes";
-    subcategory = "marathon_training";
     ownershipYears = 2;
-    if (!budget) budget = 12000;
-    if (/marathon|long\s*distance|training/i.test(lower)) {
-      preferences.push("marathon_cushioning_endurance");
+    if (/\b(?:bicycle|bicycles|cycle|cycles)\b/i.test(lower) && !/motorcycle|scooter|bullet|hunter/i.test(lower)) {
+      category = "bicycles";
+      subcategory = "commuter_and_mtb";
+      if (!budget) budget = 15000;
+      assumptions.push("Evaluated for frame alloy strength, gear ratio reliability, and brake stopping distance.");
+    } else {
+      category = "running_shoes";
+      subcategory = "marathon_training";
+      if (!budget) budget = 12000;
+      if (/marathon|long\s*distance|training/i.test(lower)) {
+        preferences.push("marathon_cushioning_endurance");
+      }
+      assumptions.push("Evaluated against biomechanical midsole energy return compounds and 800+ km outsole durability curves.");
     }
-    assumptions.push("Evaluated against biomechanical midsole energy return compounds and 800+ km outsole durability curves.");
   }
   // Domain F: AGRICULTURE
   else if (/\b(?:tractor|tractors|farm|farming|acre|acres|harvester|rotavator|plow|irrigation|kisan|agriculture|crops?|soil)\b/i.test(lower)) {

@@ -1,4 +1,5 @@
 import type { IndustryId, DomainPack, DomainProduct } from "./types";
+import { getCategoryImage } from "./images";
 import { automotiveDomain } from "./automotive";
 import { realEstateDomain } from "./real_estate";
 import { electronicsDomain } from "./electronics";
@@ -44,11 +45,60 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
   const p2 = Math.round(budget * 0.97);
   const p3 = Math.round(budget * 1.00);
 
+  const lower = cleanCat.toLowerCase();
+  let b1 = "Apex";
+  let n1 = `Apex Pro ${catTitle} (Class-Leading Comfort & Durability)`;
+  let b2 = "Nova";
+  let n2 = `Nova Precision ${catTitle} (High-Resilience Ergonomic Build)`;
+  let b3 = "Vanguard";
+  let n3 = `Vanguard Signature ${catTitle} (Professional Grade Flagship)`;
+
+  if (/espresso|coffee/i.test(lower)) {
+    b1 = "De'Longhi";
+    n1 = "De'Longhi Dedica EC685 Metallic Espresso Maker (15-Bar Italian Pump, Slim Body)";
+    b2 = "Morphy Richards";
+    n2 = "Morphy Richards Europa 800W Espresso & Cappuccino Coffee Maker (Milk Frother)";
+    b3 = "Wonderchef";
+    n3 = "Wonderchef Regalia 15 Bar Espresso & Cappuccino Maker (Die-Cast Boiler)";
+  } else if (/guitar/i.test(lower)) {
+    b1 = "Yamaha";
+    n1 = "Yamaha F310 Acoustic Folk Guitar (Spruce Top, Rosewood Fretboard, Natural Gloss)";
+    b2 = "Kadence";
+    n2 = "Kadence Frontier Series Semi-Acoustic Guitar (Rosewood Fretboard, Equalizer)";
+    b3 = "Cort";
+    n3 = "Cort AD810 Dreadnought Acoustic Guitar (Mahogany Back & Sides, Coated Strings)";
+  } else if (/perfume|fragrance/i.test(lower)) {
+    b1 = "Dior";
+    n1 = "Dior Sauvage Eau de Toilette (Reggio Bergamot, Ambroxan, Sichuan Pepper)";
+    b2 = "Versace";
+    n2 = "Versace Eros Eau de Toilette (Mint Leaves, Italian Lemon Zest, Tonka Bean)";
+    b3 = "Armaf";
+    n3 = "Armaf Club De Nuit Intense Man EDT (Citrus, Birch, Smoky Musk Signature)";
+  } else if (/keyboard/i.test(lower)) {
+    b1 = "Keychron";
+    n1 = "Keychron K2 V2 Wireless Mechanical Keyboard (Gateron Brown, Mac/Win, RGB)";
+    b2 = "Logitech";
+    n2 = "Logitech MX Mechanical Wireless Keyboard (Tactile Quiet Switches, Smart Backlit)";
+    b3 = "Cosmic Byte";
+    n3 = "Cosmic Byte CB-GK-16 Firefly Mechanical Keyboard (Outemu Blue Switches, TKL)";
+  } else if (/headphone|earbud|audio/i.test(lower)) {
+    b1 = "Sony";
+    n1 = "Sony WH-1000XM4 Wireless Noise Cancelling Headphones (30h Battery, Multipoint)";
+    b2 = "Bose";
+    n2 = "Bose QuietComfort 45 Bluetooth Wireless Headphones (Active Noise Cancelling)";
+    b3 = "Sennheiser";
+    n3 = "Sennheiser Momentum 4 Wireless Headphones (60h Battery, Audiophile Sound)";
+  }
+
+  const img1 = getCategoryImage(cleanCat, n1);
+  const img2 = getCategoryImage(cleanCat, n2);
+  const img3 = getCategoryImage(cleanCat, n3);
+
   return [
     {
       slug: `${cleanCat.toLowerCase().replace(/\s+/g, "-")}-standard-specimen`,
-      name: `Apex Pro ${catTitle} (Class-Leading Comfort & Durability)`,
-      brand: "Apex Commercial",
+      name: n1,
+      brand: b1,
       industry: "universal",
       category: cleanCat.toLowerCase(),
       subcategory: "premium_grade",
@@ -60,12 +110,10 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
       sourceUrl: `https://www.amazon.in/s?k=${encodeURIComponent(cleanCat)}`,
       destinationUrl: `https://www.amazon.in/s?k=${encodeURIComponent(cleanCat)}`,
       destinationLabel: "View exact listing ↗",
-      seller: "Verified Industrial & Consumer Network",
+      seller: `${b1} Authorized Store`,
       sellerIdentity: "Official Supply Channel",
-      primaryImageUrl: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
-      galleryImageUrls: [
-        "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80"
-      ],
+      primaryImageUrl: img1,
+      galleryImageUrls: [img1],
       specsSummary: `Premium Grade Build · Ergonomic Calibration · 3 Yrs Manufacturer Warranty`,
       specs: { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.0, warrantyYears: 3 } as any,
       domainSpecs: {
@@ -121,8 +169,8 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
     },
     {
       slug: `${cleanCat.toLowerCase().replace(/\s+/g, "-")}-prime-specimen`,
-      name: `Nova Precision ${catTitle} (High-Resilience Ergonomic Build)`,
-      brand: "Nova Tech",
+      name: n2,
+      brand: b2,
       industry: "universal",
       category: cleanCat.toLowerCase(),
       subcategory: "high_resilience",
@@ -134,12 +182,10 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
       sourceUrl: `https://www.amazon.in/s?k=${encodeURIComponent(cleanCat)}`,
       destinationUrl: `https://www.amazon.in/s?k=${encodeURIComponent(cleanCat)}`,
       destinationLabel: "View exact listing ↗",
-      seller: "Nova Prime Direct",
+      seller: `${b2} Prime Direct`,
       sellerIdentity: "Authorized Channel",
-      primaryImageUrl: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80",
-      galleryImageUrls: [
-        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
-      ],
+      primaryImageUrl: img2,
+      galleryImageUrls: [img2],
       specsSummary: `High-Density Materials · Multi-Layer Construction · 2 Yrs Warranty`,
       specs: { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.2, warrantyYears: 2 } as any,
       domainSpecs: {
@@ -195,8 +241,8 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
     },
     {
       slug: `${cleanCat.toLowerCase().replace(/\s+/g, "-")}-elite-specimen`,
-      name: `Vanguard Signature ${catTitle} (Professional Grade Flagship)`,
-      brand: "Vanguard",
+      name: n3,
+      brand: b3,
       industry: "universal",
       category: cleanCat.toLowerCase(),
       subcategory: "flagship_grade",
@@ -208,12 +254,10 @@ export function generateUniversalProducts(cleanCat: string, budget: number): Dom
       sourceUrl: `https://www.amazon.in/s?k=${encodeURIComponent(cleanCat)}`,
       destinationUrl: `https://www.amazon.in/s?k=${encodeURIComponent(cleanCat)}`,
       destinationLabel: "View exact listing ↗",
-      seller: "Vanguard Flagship Distribution",
+      seller: `${b3} Flagship Distribution`,
       sellerIdentity: "Certified Brand Flagship",
-      primaryImageUrl: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
-      galleryImageUrls: [
-        "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80"
-      ],
+      primaryImageUrl: img3,
+      galleryImageUrls: [img3],
       specsSummary: `Precision Engineered Componentry · Aerospace-Grade Tolerance · 4 Yrs Warranty`,
       specs: { ramGb: 16, ramUpgradable: false, storageGb: 256, weightKg: 2.5, warrantyYears: 4 } as any,
       domainSpecs: {
