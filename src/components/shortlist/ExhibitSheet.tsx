@@ -96,7 +96,7 @@ export function ExhibitSheet({
     >
       {/* Exhibit Badge Header */}
       <div>
-        <div className="flex items-center justify-between pb-3 border-b border-[#1B1A17]/20">
+        <div className="flex items-center justify-between pb-3 border-b border-[#1B1A17]/20 flex-wrap gap-1">
           <div className="flex items-center space-x-2">
             <span className="font-mono text-xs font-bold px-2 py-0.5 bg-[#1B1A17] text-[#FBF7EA] rounded-sm">
               EXHIBIT {letter}
