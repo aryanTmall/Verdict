@@ -3,8 +3,13 @@ services:
     name: verdict
     runtime: node
     plan: free
+    region: oregon
     buildCommand: npm install && npm run build
-    startCommand: npm run start
+    startCommand: npx next start -H 0.0.0.0 -p $PORT
     envVars:
       - key: NODE_VERSION
         value: 20.18.0
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=460
