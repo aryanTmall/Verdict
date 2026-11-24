@@ -245,13 +245,25 @@ export type Evaluation = {
   product: Product;
   eligible: boolean;
   violations: Violation[];
-  fit: number; // 0..100
+  fit: number; // 0..100 (Objective Quality / Engineering Fit)
+  personalFitScore?: number; // 0..100 (Personal DNA & Compatibility Fit)
+  compatibilityScore?: number; // 0..100 (Compatibility with Owned Gear)
+  personalFitReasons?: string[];
+  dontBuyWarning?: any;
+  outfitSuggestions?: any[];
+  reusedOwnedAccessories?: Array<{ name: string; savesMoneyInr?: number }>;
   breakdown: Record<Criterion, { score: number; weight: number; contribution: number }>;
   risks: Risk[];
   maxRisk: number;
   forecast: ForecastPoint[];
   tco: { lines: CostLine[]; totalInr: number };
 };
+
+let _personalFitComputer: ((params: any) => any) | null = null;
+
+export function registerPersonalFitComputer(fn: (params: any) => any) {
+  _personalFitComputer = fn;
+}
 
 export function evaluateOne(p: Product, prof: Profile): Evaluation {
   const w = normalise(prof.weights);
@@ -284,9 +296,52 @@ export function evaluateOne(p: Product, prof: Profile): Evaluation {
   const safeFit = isNaN(fit) || !isFinite(fit) ? 75 : Math.max(0, Math.min(100, fit));
   const rs = risks(p, prof);
   const viol = violations(p, prof);
+
+  // Compute Personal Fit and Compatibility from Central Memory Engine
+  let personalFitScore = safeFit;
+  let compatibilityScore = 80;
+  let personalFitReasons: string[] = [];
+  let dontBuyWarning: any = undefined;
+  let outfitSuggestions: any[] | undefined = undefined;
+  let reusedOwnedAccessories: any[] | undefined = undefined;
+
+  if (_personalFitComputer) {
+    try {
+      const fitRes = _personalFitComputer({
+        productName: p.name,
+        category: p.category || (p as any).subcategory || "laptop",
+        industry: p.industry || "electronics",
+        priceInr: p.priceInr,
+        specs: p.specs || p.domainSpecs,
+        objectiveScore: safeFit,
+      });
+      personalFitScore = fitRes.personalFitScore;
+      compatibilityScore = fitRes.compatibilityScore;
+      personalFitReasons = fitRes.fitReasons;
+      dontBuyWarning = fitRes.dontBuyEvaluation;
+      outfitSuggestions = fitRes.outfitSuggestions;
+      reusedOwnedAccessories = fitRes.reusedOwnedAccessories;
+    } catch {
+      // Graceful fallback if in environment without memory
+    }
+  }
+
   return {
-    product: p, eligible: viol.length === 0, violations: viol, fit: safeFit, breakdown,
-    risks: rs, maxRisk: rs.reduce((m, r) => Math.max(m, r.score), 0), forecast: fc, tco: tco(p, prof),
+    product: p,
+    eligible: viol.length === 0,
+    violations: viol,
+    fit: safeFit,
+    personalFitScore,
+    compatibilityScore,
+    personalFitReasons,
+    dontBuyWarning,
+    outfitSuggestions,
+    reusedOwnedAccessories,
+    breakdown,
+    risks: rs,
+    maxRisk: rs.reduce((m, r) => Math.max(m, r.score), 0),
+    forecast: fc,
+    tco: tco(p, prof),
   };
 }
 

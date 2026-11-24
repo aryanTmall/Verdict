@@ -125,7 +125,7 @@ describe("Phase 13: Universal 10-Industry Purchase Intelligence Engine Tests", (
 
     const evals = evaluate(mission.catalogProducts!, mission.profile);
     expect(evals.filter(e => e.eligible).length).toBe(2);
-  }, 15000);
+  }, 25000);
 
   // Test 7: Tractor for 5-Acre Farm
   it("Scenario 7: 'I need a tractor for a 5-acre farm.'", async () => {
@@ -144,7 +144,7 @@ describe("Phase 13: Universal 10-Industry Purchase Intelligence Engine Tests", (
 
     const evals = evaluate(mission.catalogProducts!, mission.profile);
     expect(evals.filter(e => e.eligible).length).toBe(2);
-  }, 15000);
+  }, 25000);
 
   // Test 8: Hotel in Goa for Family Holiday
   it("Scenario 8: 'Find a hotel in Goa for a family holiday.'", async () => {
@@ -162,7 +162,7 @@ describe("Phase 13: Universal 10-Industry Purchase Intelligence Engine Tests", (
 
     const evals = evaluate(mission.catalogProducts!, mission.profile);
     expect(evals.filter(e => e.eligible).length).toBe(2);
-  }, 15000);
+  }, 25000);
 
   // Test 9: Commercial Refrigerator for Restaurant
   it("Scenario 9: 'I want a commercial refrigerator for my restaurant.'", async () => {

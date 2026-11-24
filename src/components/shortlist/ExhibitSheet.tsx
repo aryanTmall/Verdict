@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { buildTrackedPurchaseLink } from "@/lib/monetization/affiliate";
 import { trackEvent } from "@/lib/monetization/analytics";
+import { PersonalFitBadge } from "@/components/dna/PersonalFitBadge";
+import { OutfitCombinationsModal } from "@/components/dna/OutfitCombinationsModal";
 
 interface ExhibitSheetProps {
   letter: "A" | "B" | "C";
@@ -43,6 +45,7 @@ export function ExhibitSheet({
   className = "",
 }: ExhibitSheetProps) {
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [showOutfits, setShowOutfits] = useState(false);
   const p = evaluation.product;
   const priceAudit = getPriceAudit(p);
 
@@ -182,6 +185,13 @@ export function ExhibitSheet({
             <div className="text-[10px] font-mono text-[#8A8576] uppercase">FIT SCORE</div>
           </div>
         </div>
+
+        {/* Dedicated Personal Buying Memory Badge (Personal Fit + Compatibility) */}
+        <PersonalFitBadge
+          evaluation={evaluation}
+          onOpenOutfits={() => setShowOutfits(true)}
+          className="mt-2.5"
+        />
 
         {/* Price Tracker Prediction Pill & Quick Action Tools */}
         <div className="mt-2.5 p-2 bg-[#F2EBD8] rounded border border-[#1B1A17]/15 flex items-center justify-between text-[10px] font-mono">
@@ -324,6 +334,14 @@ export function ExhibitSheet({
           {isSelected ? "Active Focus" : "Cross-Examine"}
         </button>
       </div>
+
+      {/* Outfit Combinations Wardrobe Modal */}
+      <OutfitCombinationsModal
+        isOpen={showOutfits}
+        onClose={() => setShowOutfits(false)}
+        outfitSuggestions={evaluation.outfitSuggestions || []}
+        productName={p.name}
+      />
     </div>
   );
 }

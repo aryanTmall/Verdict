@@ -19,7 +19,7 @@ import { classifyQuery } from "./domains/classifier";
 import { getDomainPack } from "./domains/registry";
 import { applyDnaToWeights } from "./buyer-dna";
 import { auditDealRisk } from "./deal-risk";
-import { isSafeUrl } from "../app/api/products/analyze-link/route";
+import { isSafeUrl } from "./url-validator";
 import { evaluateRealityCheck, VERIFIED_MARKET_MINIMUMS } from "./reality-check";
 import { buildTrackedPurchaseLink, MONETIZATION_DISCLOSURE } from "./monetization/affiliate";
 import { TIER_ENTITLEMENTS, VERDICT_PRICING } from "./monetization/entitlements";

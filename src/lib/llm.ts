@@ -1206,6 +1206,8 @@ export function deterministicParseMission(text: string, researchReport?: Researc
     recommendedProductSlugs: domainFallbacks?.map(p => p.slug),
     realityCheck,
     researchReport,
+    memoryContext: null,
+    extractedMemoryResult: null,
     aiAnswer,
   };
 }
@@ -1219,6 +1221,17 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
     industry: classification.industry,
     budgetInr: classification.budget,
   });
+
+  // Extract explicit preferences / owned items and retrieve relevant memory
+  let memoryContext: any = null;
+  let extractedMemoryResult: any = null;
+  try {
+    const { extractMemoriesFromText, retrieveRelevantMemory } = require("./memory");
+    extractedMemoryResult = extractMemoriesFromText(text);
+    memoryContext = retrieveRelevantMemory(text, classification.category, classification.industry);
+  } catch {
+    // Graceful fallback
+  }
 
   // Execute Live Web Research across Category-Aware Queries A-H
   const researchReport = await conductLiveResearch(text, {
@@ -1361,6 +1374,8 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
       recommendedProductSlugs: catalogProducts.map(p => p.slug),
       realityCheck,
       researchReport,
+      memoryContext,
+      extractedMemoryResult,
     };
   }
 
@@ -1533,6 +1548,8 @@ YOUR TASK:
       catalogProducts,
       realityCheck,
       researchReport,
+      memoryContext,
+      extractedMemoryResult,
     };
   }
 

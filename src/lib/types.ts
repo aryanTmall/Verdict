@@ -19,6 +19,8 @@ export type MissionParseResult = {
   classification?: import("./domains/types").DomainClassification;
   realityCheck?: import("./reality-check").RealityCheckResult;
   researchReport?: import("./search/types").ResearchReport;
+  memoryContext?: any;
+  extractedMemoryResult?: any;
   cached?: boolean;
 };
 

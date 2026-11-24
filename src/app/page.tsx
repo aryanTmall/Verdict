@@ -37,6 +37,9 @@ import { TcoBreakdown } from "@/components/tco/TcoBreakdown";
 import { WhatIfPanel } from "@/components/whatif/WhatIfPanel";
 import { VerdictModal } from "@/components/verdict/VerdictModal";
 import { AskDrawer } from "@/components/ask/AskDrawer";
+import { MemorySuggestionPill } from "@/components/dna/MemorySuggestionPill";
+import { DontBuyBanner } from "@/components/dna/DontBuyBanner";
+import type { MemoryItem } from "@/lib/memory/types";
 
 import type { Profile, Evaluation, Product } from "@/lib/engine";
 import { evaluate, decide, whatIf } from "@/lib/engine";
@@ -91,6 +94,7 @@ export default function HomePage() {
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
   const [showDnaModal, setShowDnaModal] = useState(false);
   const [missionOverride, setMissionOverride] = useState<string | undefined>(undefined);
+  const [proposedMemories, setProposedMemories] = useState<MemoryItem[]>([]);
 
   // Verdict Modal state
   const [showVerdictModal, setShowVerdictModal] = useState(false);
@@ -181,6 +185,28 @@ export default function HomePage() {
         "done",
         `Budget: ₹${extractedProfile.budgetInr.toLocaleString("en-IN")} · ${extractedProfile.years} Yrs · ${extractedProfile.workloads.length} workloads`
       );
+
+      // Personal Buying Memory Synchronization
+      if (parseData.extractedMemoryResult) {
+        const memRes = parseData.extractedMemoryResult;
+        if (memRes.proposedMemories && memRes.proposedMemories.length > 0) {
+          setProposedMemories(memRes.proposedMemories);
+        }
+        if (memRes.extractedMemories && memRes.extractedMemories.length > 0) {
+          addLog(
+            "Personal Memory Synchronized",
+            "done",
+            `Saved ${memRes.extractedMemories.length} preference(s) into My DNA profile`
+          );
+        }
+        if (memRes.conflictsDetected && memRes.conflictsDetected.length > 0) {
+          addLog(
+            "Memory Conflict Resolved",
+            "done",
+            memRes.conflictsDetected.map((c: any) => c.resolution).join(" · ")
+          );
+        }
+      }
 
       setProfile(extractedProfile);
       setAssumptions(parseData.assumptionsMade || []);
@@ -481,15 +507,15 @@ export default function HomePage() {
               <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D8381C]" />
             </button>
 
-            {/* Buyer DNA Quick Button */}
-            <button
-              onClick={() => setShowDnaModal(true)}
-              className="inline-flex items-center space-x-1 text-[#1B1A17] hover:text-[#2540D9] font-medium cursor-pointer"
-              title="Personal Buyer DNA Profile"
+            {/* MY DNA Dedicated Section Link */}
+            <Link
+              href="/dna"
+              className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded bg-[#2540D9]/10 border border-[#2540D9]/30 text-[#2540D9] hover:bg-[#2540D9] hover:text-white font-bold transition cursor-pointer"
+              title="Personal Buying Memory & My DNA Profile"
             >
               <Dna className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Buyer DNA</span>
-            </button>
+              <span>MY DNA</span>
+            </Link>
 
             {/* VERDICT PLUS Plan Button */}
             <button
@@ -553,6 +579,25 @@ export default function HomePage() {
             selectedCondition={purchaseCondition}
             onSelectCondition={setPurchaseCondition}
           />
+
+          {/* Inferred Memory Suggestions Pill */}
+          {proposedMemories.length > 0 && (
+            <div className="mt-4">
+              <MemorySuggestionPill
+                proposedMemories={proposedMemories}
+                onConfirm={async (id) => {
+                  await fetch("/api/memory", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ confirmId: id }),
+                  });
+                }}
+                onReject={async (id) => {
+                  await fetch(`/api/memory?id=${id}`, { method: "DELETE" });
+                }}
+              />
+            </div>
+          )}
         </section>
 
         {/* Ticker Marquee with real factual claims */}
@@ -583,6 +628,11 @@ export default function HomePage() {
             {/* Live Search & Evidence Ledger Banner */}
             {researchReport && (
               <ResearchStatusBanner report={researchReport} />
+            )}
+
+            {/* Memory-Powered Don't-Buy Banner */}
+            {activeEvaluation?.dontBuyWarning?.isTriggered && (
+              <DontBuyBanner evaluation={activeEvaluation.dontBuyWarning} />
             )}
 
             {/* AI Intake Search & Decision Intel Card */}
