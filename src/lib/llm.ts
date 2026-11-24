@@ -1293,11 +1293,11 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
 
     let aiAnswer = defaultAiAnswers[classification.industry] || defaultAiAnswers.universal;
 
-    // Ask Google Gemini or Groq Cloud if configured, or local Ollama for enhanced domain narrative
+    // Ask Groq Cloud or Google Gemini if configured, or local Ollama for enhanced domain narrative
     try {
       const prompt = `You are VERDICT's ${pack.name} intelligence specialist. Provide 2 concise sentences advising a buyer in India looking for ${classification.category} within ₹${classification.budget.toLocaleString("en-IN")}. Mention top models and purchase advice.`;
-      const aiText = (await queryGeminiChat("You are an expert purchasing advisor.", prompt)) ||
-        (await queryGroqChat("You are an expert purchasing advisor.", prompt)) ||
+      const aiText = (await queryGroqChat("You are an expert purchasing advisor.", prompt)) ||
+        (await queryGeminiChat("You are an expert purchasing advisor.", prompt)) ||
         (await queryOllamaChat("You are an expert purchasing advisor.", prompt));
       if (aiText && aiText.length > 30) {
         aiAnswer = aiText.trim();
@@ -1428,14 +1428,16 @@ YOUR TASK:
     assumptionsMade?: string[];
   };
 
-  // 1. First priority: Google Gemini API (gemini-2.5-flash) with native JSON mode
-  let activeLlmProvider = "Google Gemini (gemini-2.5-flash)";
-  let llmRes = await queryGeminiJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
+  // 1. First priority: Groq Cloud API (Llama 3.3 70B - fast free tier)
+  let activeLlmProvider = "Groq Cloud (Llama 3.3 70B)";
+  let llmRes = process.env.GROQ_API_KEY
+    ? await queryGroqJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence)
+    : null;
 
-  // 2. Second priority: Groq Cloud API (Llama 3.3 70B - fast free tier)
-  if (!llmRes) {
-    llmRes = await queryGroqJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
-    if (llmRes) activeLlmProvider = "Groq Cloud (Llama 3.3 70B)";
+  // 2. Second priority: Google Gemini API (gemini-2.5-flash with native JSON mode)
+  if (!llmRes && process.env.GEMINI_API_KEY) {
+    llmRes = await queryGeminiJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
+    if (llmRes) activeLlmProvider = "Google Gemini (gemini-2.5-flash)";
   }
 
   // 3. Third priority: Local Ollama (llama3.1:latest)
