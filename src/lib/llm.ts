@@ -8,6 +8,8 @@ import { classifyQuery } from "./domains/classifier";
 import { getDomainPack, generateUniversalProducts } from "./domains/registry";
 import type { IndustryId } from "./domains/types";
 import { evaluateRealityCheck } from "./reality-check";
+import { conductLiveResearch } from "./search";
+import type { ResearchReport } from "./search/types";
 
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
 const anthropic = anthropicApiKey ? new Anthropic({ apiKey: anthropicApiKey }) : null;
@@ -883,7 +885,7 @@ export function extractBudgetFromQuery(text: string, defaultBudget = 75000): { b
 /**
  * Deterministic regex fallback parser for English, Hindi, and Hinglish.
  */
-export function deterministicParseMission(text: string): MissionParseResult {
+export function deterministicParseMission(text: string, researchReport?: ResearchReport): MissionParseResult {
   const lower = text.toLowerCase();
   const assumptions: string[] = [];
 
@@ -953,12 +955,49 @@ export function deterministicParseMission(text: string): MissionParseResult {
     value: 0.1,
   };
 
-  const domainFallbacks = isDomainItem ? getDomainFallbackProducts(detectedCategory, budget) : undefined;
+  let domainFallbacks = isDomainItem ? getDomainFallbackProducts(detectedCategory, budget) : undefined;
+  if (researchReport?.isLive && researchReport.sources.length > 0 && domainFallbacks) {
+    domainFallbacks = domainFallbacks.map((p) => {
+      const match = researchReport.sources.find(
+        (s) =>
+          s.title.toLowerCase().includes(p.brand.toLowerCase()) ||
+          s.snippet.toLowerCase().includes(p.brand.toLowerCase()) ||
+          s.title.toLowerCase().includes(p.name.toLowerCase().slice(0, 10))
+      );
+      return {
+        ...p,
+        sourceUrl: match?.url || p.sourceUrl,
+        retailerUrl: match?.url || p.retailerUrl || p.sourceUrl,
+        retailerName: match ? `${match.domain} (Verified Live)` : p.retailerName,
+      };
+    });
+  }
+
   const realityCheck = evaluateRealityCheck({
     rawQuery: text,
     category: detectedCategory,
     budgetInr: budget,
   });
+
+  let aiAnswer = !realityCheck.isRealistic && realityCheck.explanation
+    ? realityCheck.explanation
+    : isCar
+    ? `For a budget of ₹${budget.toLocaleString("en-IN")} in India, top recommended cars include the Hyundai Creta SX(O) Turbo, Mahindra XUV700 AX5, and Tata Harrier Smart. Year-end December clearance offers typically save up to ₹1.3L to ₹1.5L before model-year price hikes take effect in January.`
+    : isBike
+    ? `For a budget of ₹${budget.toLocaleString("en-IN")} in India, top motorcycles include the Royal Enfield Hunter 350, Yamaha MT-15 V2, and KTM Duke 250, balancing city agility with highway cruising power.`
+    : isPhone
+    ? `For a budget of ₹${budget.toLocaleString("en-IN")}, top flagship smartphones include Apple iPhone 16, Samsung Galaxy S24, and OnePlus 12 with top-tier camera optics and multi-year software support.`
+    : isSofa
+    ? `For a budget of ₹${budget.toLocaleString("en-IN")}, top recommended 3-seater sofas include Wakefit Napper, Sleepyhead Bae, and Furny Chesterfield with solid wood framing, high-density 32D foam, and 3-year warranty.`
+    : isTv
+    ? `For a budget of ₹${budget.toLocaleString("en-IN")}, top recommended 4K smart TVs include Sony Bravia 55", LG WebOS 55", and Samsung Crystal 4K with Dolby Audio and smart streaming.`
+    : isDomainItem
+    ? `VERDICT Intelligence: Cross-examining top ${detectedCategory.toUpperCase()} options for ₹${budget.toLocaleString("en-IN")}. Tested against verified owner reviews, durability records, and historical discount cycles.`
+    : `Analysis initiated for: "${text}". Target budget: ₹${budget.toLocaleString("en-IN")}, ${years}-year ownership target. Matching top eligible candidates from the evidence vault.`;
+
+  if (researchReport?.isLive && researchReport.totalSources > 0 && !aiAnswer.includes("🔍 Live Research")) {
+    aiAnswer += `\n\n🔍 Live Research: Verified across ${researchReport.totalSources} sources (${researchReport.domainsConsulted.slice(0, 3).join(", ")}) via ${researchReport.providerUsed}.`;
+  }
 
   return {
     profile: {
@@ -976,21 +1015,8 @@ export function deterministicParseMission(text: string): MissionParseResult {
     catalogProducts: domainFallbacks,
     recommendedProductSlugs: domainFallbacks?.map(p => p.slug),
     realityCheck,
-    aiAnswer: !realityCheck.isRealistic && realityCheck.explanation
-      ? realityCheck.explanation
-      : isCar
-      ? `For a budget of ₹${budget.toLocaleString("en-IN")} in India, top recommended cars include the Hyundai Creta SX(O) Turbo, Mahindra XUV700 AX5, and Tata Harrier Smart. Year-end December clearance offers typically save up to ₹1.3L to ₹1.5L before model-year price hikes take effect in January.`
-      : isBike
-      ? `For a budget of ₹${budget.toLocaleString("en-IN")} in India, top motorcycles include the Royal Enfield Hunter 350, Yamaha MT-15 V2, and KTM Duke 250, balancing city agility with highway cruising power.`
-      : isPhone
-      ? `For a budget of ₹${budget.toLocaleString("en-IN")}, top flagship smartphones include Apple iPhone 16, Samsung Galaxy S24, and OnePlus 12 with top-tier camera optics and multi-year software support.`
-      : isSofa
-      ? `For a budget of ₹${budget.toLocaleString("en-IN")}, top recommended 3-seater sofas include Wakefit Napper, Sleepyhead Bae, and Furny Chesterfield with solid wood framing, high-density 32D foam, and 3-year warranty.`
-      : isTv
-      ? `For a budget of ₹${budget.toLocaleString("en-IN")}, top recommended 4K smart TVs include Sony Bravia 55", LG WebOS 55", and Samsung Crystal 4K with Dolby Audio and smart streaming.`
-      : isDomainItem
-      ? `VERDICT Intelligence: Cross-examining top ${detectedCategory.toUpperCase()} options for ₹${budget.toLocaleString("en-IN")}. Tested against verified owner reviews, durability records, and historical discount cycles.`
-      : `Analysis initiated for: "${text}". Target budget: ₹${budget.toLocaleString("en-IN")}, ${years}-year ownership target. Matching top eligible candidates from the evidence vault.`,
+    researchReport,
+    aiAnswer,
   };
 }
 
@@ -999,6 +1025,13 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
   const classification = classifyQuery(text);
   const realityCheck = evaluateRealityCheck({
     rawQuery: text,
+    category: classification.category,
+    industry: classification.industry,
+    budgetInr: classification.budget,
+  });
+
+  // Execute Live Web Research across Category-Aware Queries A-H
+  const researchReport = await conductLiveResearch(text, {
     category: classification.category,
     industry: classification.industry,
     budgetInr: classification.budget,
@@ -1088,6 +1121,26 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
       aiAnswer = realityCheck.explanation;
     }
 
+    if (researchReport.isLive && researchReport.sources.length > 0) {
+      catalogProducts = catalogProducts.map(p => {
+        const matchingSource = researchReport.sources.find(s =>
+          s.title.toLowerCase().includes(p.brand.toLowerCase()) ||
+          s.snippet.toLowerCase().includes(p.brand.toLowerCase()) ||
+          s.title.toLowerCase().includes(p.name.toLowerCase().slice(0, 10))
+        );
+        return {
+          ...p,
+          sourceUrl: matchingSource?.url || p.sourceUrl,
+          retailerUrl: matchingSource?.url || p.retailerUrl || p.sourceUrl,
+          retailerName: matchingSource ? `${matchingSource.domain} (Verified Live)` : p.retailerName,
+        };
+      });
+    }
+
+    if (researchReport.isLive && researchReport.totalSources > 0 && !aiAnswer.includes("🔍 Live Research")) {
+      aiAnswer += `\n\n🔍 Live Research: Verified across ${researchReport.totalSources} sources (${researchReport.domainsConsulted.slice(0, 3).join(", ")}) via ${researchReport.providerUsed}.`;
+    }
+
     return {
       profile: {
         budgetInr: classification.budget,
@@ -1115,6 +1168,7 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
       catalogProducts,
       recommendedProductSlugs: catalogProducts.map(p => p.slug),
       realityCheck,
+      researchReport,
     };
   }
 
@@ -1166,6 +1220,11 @@ YOUR TASK:
        "priceHikeAlert": "Annual price revision."
      }`;
 
+  const evidenceSnippet = researchReport.sources.slice(0, 5).map(s => `[${s.domain} - Tier ${s.tier}]: ${s.snippet}`).join('\n');
+  const userPromptWithEvidence = evidenceSnippet 
+    ? `${text}\n\n[LIVE SEARCH EVIDENCE RETRIEVED - GROUND RECOMMENDATIONS IN THESE FACTS]:\n${evidenceSnippet}`
+    : text;
+
   const ollamaRes = await queryOllamaJson<{
     answer?: string;
     budgetInr?: number;
@@ -1178,7 +1237,7 @@ YOUR TASK:
     products?: any[];
     recommendedProductSlugs?: string[];
     assumptionsMade?: string[];
-  }>(ollamaSystem, text);
+  }>(ollamaSystem, userPromptWithEvidence);
 
   if (ollamaRes) {
     const finalBudget = explicitBudget || ollamaRes.budgetInr || (isCar ? 1900000 : isSofa ? 30000 : isTv ? 45000 : 75000);
@@ -1225,6 +1284,27 @@ YOUR TASK:
       catalogProducts = getDomainFallbackProducts(category, finalBudget);
     }
 
+    if (researchReport.isLive && researchReport.sources.length > 0 && catalogProducts) {
+      catalogProducts = catalogProducts.map(p => {
+        const matchingSource = researchReport.sources.find(s =>
+          s.title.toLowerCase().includes(p.brand.toLowerCase()) ||
+          s.snippet.toLowerCase().includes(p.brand.toLowerCase()) ||
+          s.title.toLowerCase().includes(p.name.toLowerCase().slice(0, 10))
+        );
+        return {
+          ...p,
+          sourceUrl: matchingSource?.url || p.sourceUrl,
+          retailerUrl: matchingSource?.url || p.retailerUrl || p.sourceUrl,
+          retailerName: matchingSource ? `${matchingSource.domain} (Verified Live)` : p.retailerName,
+        };
+      });
+    }
+
+    let answer = ollamaRes.answer || `Top recommendations evaluated for ₹${finalBudget.toLocaleString("en-IN")}.`;
+    if (researchReport.isLive && researchReport.totalSources > 0 && !answer.includes("🔍 Live Research")) {
+      answer += `\n\n🔍 Live Research: Verified across ${researchReport.totalSources} sources (${researchReport.domainsConsulted.slice(0, 3).join(", ")}) via ${researchReport.providerUsed}.`;
+    }
+
     return {
       profile: {
         budgetInr: finalBudget,
@@ -1237,10 +1317,12 @@ YOUR TASK:
       },
       assumptionsMade: ollamaRes.assumptionsMade || [`Evaluated via Local Ollama (${OLLAMA_MODEL}) with ${category.toUpperCase()} industry knowledge`],
       clarifyingQuestion: null,
-      aiAnswer: ollamaRes.answer || `Top recommendations evaluated for ₹${finalBudget.toLocaleString("en-IN")}.`,
+      aiAnswer: answer,
       recommendedProductSlugs: ollamaRes.recommendedProductSlugs || catalogProducts?.map(p => p.slug),
       category,
       catalogProducts,
+      realityCheck,
+      researchReport,
     };
   }
 
@@ -1314,7 +1396,7 @@ Be conservative and honest. Enforce minRamGb=16 if Docker or Android Studio are 
     }
   }
 
-  return deterministicParseMission(text);
+  return deterministicParseMission(text, researchReport);
 }
 
 // ==========================================

@@ -34,6 +34,9 @@ export type Product = {
   specsSummary?: string;
   destinationUrl?: string;
   destinationLabel?: string;
+  retailerUrl?: string;
+  retailerName?: string;
+  researchEvidence?: any;
   primaryImageUrl?: string;
   galleryImageUrls?: string[];
   domainSpecs?: Record<string, any>;

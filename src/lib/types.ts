@@ -18,6 +18,7 @@ export type MissionParseResult = {
   catalogProducts?: any[];
   classification?: import("./domains/types").DomainClassification;
   realityCheck?: import("./reality-check").RealityCheckResult;
+  researchReport?: import("./search/types").ResearchReport;
   cached?: boolean;
 };
 

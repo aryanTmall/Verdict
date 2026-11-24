@@ -23,6 +23,8 @@ import { BuyerDnaModal } from "@/components/dna/BuyerDnaModal";
 import { applyDnaToWeights } from "@/lib/buyer-dna";
 import { RealityCheckBanner } from "@/components/reality/RealityCheckBanner";
 import type { RealityCheckResult } from "@/lib/reality-check";
+import { ResearchStatusBanner } from "@/components/research/ResearchStatusBanner";
+import type { ResearchReport } from "@/lib/search/types";
 import { MonetizationTransparencyModal } from "@/components/monetization/MonetizationTransparencyModal";
 import { VerdictPlusModal } from "@/components/monetization/VerdictPlusModal";
 import { getCurrentSubscriptionTier, type SubscriptionTier } from "@/lib/monetization/entitlements";
@@ -99,6 +101,7 @@ export default function HomePage() {
 
   // Reality Check State
   const [realityCheck, setRealityCheck] = useState<RealityCheckResult | null>(null);
+  const [researchReport, setResearchReport] = useState<ResearchReport | null>(null);
 
   // Monetization & Subscription state
   const [showPlusModal, setShowPlusModal] = useState(false);
@@ -160,6 +163,17 @@ export default function HomePage() {
         }
       } else {
         setRealityCheck(null);
+      }
+
+      if (parseData.researchReport) {
+        setResearchReport(parseData.researchReport);
+        addLog(
+          parseData.researchReport.isLive ? "Live Web Research Completed" : "Audited Knowledge Vault Consulted",
+          "done",
+          parseData.researchReport.statusMessage
+        );
+      } else {
+        setResearchReport(null);
       }
 
       addLog(
@@ -564,6 +578,11 @@ export default function HomePage() {
                 }}
                 onDismiss={() => setRealityCheck(null)}
               />
+            )}
+
+            {/* Live Search & Evidence Ledger Banner */}
+            {researchReport && (
+              <ResearchStatusBanner report={researchReport} />
             )}
 
             {/* AI Intake Search & Decision Intel Card */}
