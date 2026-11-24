@@ -1,0 +1,1197 @@
+[
+  {
+    "slug": "lenovo-ideapad-slim-5-16iah8",
+    "name": "Lenovo IdeaPad Slim 5 16\" (Core i5 13th Gen, 16GB/512GB)",
+    "brand": "Lenovo",
+    "category": "laptop",
+    "priceInr": 68990,
+    "priceAsOf": "2026-11-18",
+    "sourceUrl": "https://www.lenovo.com/in/en/p/laptops/ideapad/ideapad-500-series/ideapad-slim-5-gen-9-(16-inch-amd)/len101i0088",
+    "imageUrl": "/products/lenovo-ideapad-slim-5-16iah8.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 512,
+      "weightKg": 1.82,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 68,
+      "portability": 70,
+      "reliability": 52
+    },
+    "evidenceConfidence": 0.62,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Up to 11.5 hours battery life with Rapid Charge Boost",
+      "Whisper-quiet dual fan cooling system",
+      "Military-grade MIL-STD-810H durability"
+    ],
+    "observed": [
+      {
+        "title": "Battery degradation under sustained workload",
+        "share": 0.333,
+        "medianMonths": 4,
+        "severity": 3,
+        "reviewCount": 6
+      },
+      {
+        "title": "Hinge stiffness and creaking",
+        "share": 0.167,
+        "medianMonths": 14,
+        "severity": 3,
+        "reviewCount": 6
+      },
+      {
+        "title": "Fan noise under dual compiler load",
+        "share": 0.167,
+        "medianMonths": 6,
+        "severity": 2,
+        "reviewCount": 6
+      }
+    ]
+  },
+  {
+    "slug": "acer-swift-go-14-oled",
+    "name": "Acer Swift Go 14 OLED (Intel Core Ultra 5 125H, 16GB/512GB)",
+    "brand": "Acer",
+    "category": "laptop",
+    "priceInr": 72490,
+    "priceAsOf": "2026-11-15",
+    "sourceUrl": "https://store.acer.com/en-in/acer-swift-go-14-oled-intel-core-ultra-5-125h-sfg14-73",
+    "imageUrl": "/products/acer-swift-go-14-oled.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 512,
+      "weightKg": 1.32,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 82,
+      "portability": 82,
+      "reliability": 57
+    },
+    "evidenceConfidence": 0.6,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Vibrant 2.8K 90Hz OLED display",
+      "Up to 12.5 hours real-world battery",
+      "Featherlight 1.32kg all-aluminum chassis"
+    ],
+    "observed": [
+      {
+        "title": "Battery degradation under sustained workload",
+        "share": 0.2,
+        "medianMonths": 5,
+        "severity": 3,
+        "reviewCount": 5
+      },
+      {
+        "title": "Thermal throttling under heavy multitasking",
+        "share": 0.2,
+        "medianMonths": 6,
+        "severity": 3,
+        "reviewCount": 5
+      },
+      {
+        "title": "Fan noise under dual compiler load",
+        "share": 0.2,
+        "medianMonths": 4,
+        "severity": 2,
+        "reviewCount": 5
+      }
+    ]
+  },
+  {
+    "slug": "asus-vivobook-16-x1605va",
+    "name": "ASUS Vivobook 16 (Core i5-1335U, 16GB/512GB, Upgradable)",
+    "brand": "ASUS",
+    "category": "laptop",
+    "priceInr": 54990,
+    "priceAsOf": "2026-11-19",
+    "sourceUrl": "https://in.store.asus.com/vivobook-16-x1605va.html",
+    "imageUrl": "/products/asus-vivobook-16-x1605va.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.88,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 68,
+      "reliability": 59
+    },
+    "evidenceConfidence": 0.58,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "16-inch immersive display with 86% screen-to-body ratio",
+      "Upgradeable memory slot up to 24GB",
+      "180-degree lay-flat hinge for seamless collaboration"
+    ],
+    "observed": [
+      {
+        "title": "Battery degradation under sustained workload",
+        "share": 0.25,
+        "medianMonths": 6,
+        "severity": 3,
+        "reviewCount": 4
+      },
+      {
+        "title": "Hinge stiffness and creaking",
+        "share": 0.25,
+        "medianMonths": 10,
+        "severity": 3,
+        "reviewCount": 4
+      }
+    ]
+  },
+  {
+    "slug": "apple-macbook-air-m2-8gb",
+    "name": "Apple MacBook Air 13\" M2 (8GB Unified Memory, 256GB SSD)",
+    "brand": "Apple",
+    "category": "laptop",
+    "priceInr": 84990,
+    "priceAsOf": "2026-11-20",
+    "sourceUrl": "https://www.apple.com/in/shop/buy-mac/macbook-air/13-inch-m2",
+    "imageUrl": "/products/apple-macbook-air-m2-8gb.svg",
+    "specs": {
+      "ramGb": 8,
+      "ramUpgradable": false,
+      "storageGb": 256,
+      "weightKg": 1.24,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 66,
+      "battery": 94,
+      "portability": 84,
+      "reliability": 70
+    },
+    "evidenceConfidence": 0.58,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Up to 18 hours battery life on a single charge",
+      "Silent fanless design with zero noise",
+      "Blazing fast unified memory for creative workflows"
+    ],
+    "observed": [
+      {
+        "title": "Memory bottleneck with concurrent containers",
+        "share": 0.25,
+        "medianMonths": 8,
+        "severity": 4,
+        "reviewCount": 4
+      }
+    ]
+  },
+  {
+    "slug": "apple-macbook-air-m3-16gb",
+    "name": "Apple MacBook Air 13\" M3 (16GB Unified Memory, 512GB SSD)",
+    "brand": "Apple",
+    "category": "laptop",
+    "priceInr": 124900,
+    "priceAsOf": "2026-11-20",
+    "sourceUrl": "https://www.apple.com/in/shop/buy-mac/macbook-air/13-inch-m3",
+    "imageUrl": "/products/apple-macbook-air-m3-16gb.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 512,
+      "weightKg": 1.24,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 90,
+      "battery": 94,
+      "portability": 84,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Liquid Retina display with 500 nits brightness",
+      "Dual external display support with lid closed",
+      "Up to 18 hours battery life"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "hp-victus-15-fb0157ax",
+    "name": "HP Victus 15 (AMD Ryzen 5 5600H, RTX 3050 4GB, 16GB/512GB)",
+    "brand": "HP",
+    "category": "laptop",
+    "priceInr": 62990,
+    "priceAsOf": "2026-11-17",
+    "sourceUrl": "https://www.hp.com/in-en/shop/laptops-tablets/hp-victus-gaming-laptop-15-fb0157ax-8e2b8pa.html",
+    "imageUrl": "/products/hp-victus-15-fb0157ax.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 2.37,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 96,
+      "battery": 48,
+      "portability": 56,
+      "reliability": 48
+    },
+    "evidenceConfidence": 0.58,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "OMEN Tempest cooling keeps temperatures chilled",
+      "Full-sized backlit keyboard with integrated numeric keypad",
+      "Up to 7 hours mixed-use battery life"
+    ],
+    "observed": [
+      {
+        "title": "Battery degradation under sustained workload",
+        "share": 0.25,
+        "medianMonths": 5,
+        "severity": 3,
+        "reviewCount": 4
+      },
+      {
+        "title": "Fan noise under dual compiler load",
+        "share": 0.25,
+        "medianMonths": 6,
+        "severity": 2,
+        "reviewCount": 4
+      },
+      {
+        "title": "Hinge stiffness and creaking",
+        "share": 0.25,
+        "medianMonths": 8,
+        "severity": 3,
+        "reviewCount": 4
+      }
+    ]
+  },
+  {
+    "slug": "asus-tuf-gaming-f15-fx506hf",
+    "name": "ASUS TUF Gaming F15 (Core i5-11400H, RTX 2050 4GB, 16GB/512GB)",
+    "brand": "ASUS",
+    "category": "laptop",
+    "priceInr": 52990,
+    "priceAsOf": "2026-11-18",
+    "sourceUrl": "https://in.store.asus.com/asus-tuf-gaming-f15-fx506hf.html",
+    "imageUrl": "/products/asus-tuf-gaming-f15-fx506hf.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 2.3,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 96,
+      "battery": 48,
+      "portability": 58,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "MIL-STD-810H military construction resists drops and shocks",
+      "Self-cleaning cooling 2.0 system",
+      "144Hz adaptive-sync display"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "lenovo-loq-15iax9",
+    "name": "Lenovo LOQ 15 (Core i5-12450HX, RTX 3050 6GB, 16GB/512GB)",
+    "brand": "Lenovo",
+    "category": "laptop",
+    "priceInr": 67990,
+    "priceAsOf": "2026-11-19",
+    "sourceUrl": "https://www.lenovo.com/in/en/p/laptops/loq-laptops/lenovo-loq-15iax9/len101q0005",
+    "imageUrl": "/products/lenovo-loq-15iax9.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 2.38,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 96,
+      "battery": 48,
+      "portability": 56,
+      "reliability": 70
+    },
+    "evidenceConfidence": 0.55,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Lenovo LA1 AI chip dynamic power balancing",
+      "Hyperchamber thermal design with dual outward-facing fans",
+      "Rapid Charge Pro 0-50% in 30 minutes"
+    ],
+    "observed": [
+      {
+        "title": "Battery degradation under sustained workload",
+        "share": 0.333,
+        "medianMonths": 5,
+        "severity": 3,
+        "reviewCount": 3
+      }
+    ]
+  },
+  {
+    "slug": "dell-inspiron-3530",
+    "name": "Dell Inspiron 3530 (Core i5-1334U, 16GB/512GB)",
+    "brand": "Dell",
+    "category": "laptop",
+    "priceInr": 56490,
+    "priceAsOf": "2026-11-16",
+    "sourceUrl": "https://www.dell.com/en-in/shop/dell-laptops/inspiron-15-laptop/spd/inspiron-15-3530-laptop",
+    "imageUrl": "/products/dell-inspiron-3530.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.65,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 74,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Lift hinge design for ergonomic typing posture",
+      "ExpressCharge boosts battery up to 80% in 60 minutes",
+      "120Hz anti-glare display for smooth scrolling"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "hp-pavilion-plus-14",
+    "name": "HP Pavilion Plus 14 OLED (Ryzen 7 7840U, 16GB/1TB SSD)",
+    "brand": "HP",
+    "category": "laptop",
+    "priceInr": 78990,
+    "priceAsOf": "2026-11-15",
+    "sourceUrl": "https://www.hp.com/in-en/shop/hp-pavilion-plus-laptop-14-ey0789au.html",
+    "imageUrl": "/products/hp-pavilion-plus-14.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 1024,
+      "weightKg": 1.38,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 82,
+      "portability": 81,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "2.8K OLED IMAX Enhanced certified screen",
+      "5MP webcam with temporal noise reduction",
+      "Up to 11 hours battery life"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "samsung-galaxy-book4",
+    "name": "Samsung Galaxy Book4 (Intel Core 5 120U, 16GB/512GB)",
+    "brand": "Samsung",
+    "category": "laptop",
+    "priceInr": 69990,
+    "priceAsOf": "2026-11-17",
+    "sourceUrl": "https://www.samsung.com/in/computers/galaxy-book/galaxy-book4-15inch-core-5-512gb-np750xgk-kg1in/",
+    "imageUrl": "/products/samsung-galaxy-book4.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.55,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 76,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Seamless Galaxy Ecosystem integration with Phone Link",
+      "Full metal slim body with premium finish",
+      "Dual SSD expansion slots"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "asus-zenbook-14-oled-ux3405",
+    "name": "ASUS Zenbook 14 OLED (Core Ultra 7 155H, 16GB/1TB SSD)",
+    "brand": "ASUS",
+    "category": "laptop",
+    "priceInr": 104990,
+    "priceAsOf": "2026-11-18",
+    "sourceUrl": "https://in.store.asus.com/zenbook-14-oled-ux3405.html",
+    "imageUrl": "/products/asus-zenbook-14-oled-ux3405.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 1024,
+      "weightKg": 1.28,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 82,
+      "portability": 83,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "75Wh monster battery with up to 15 hours runtime",
+      "3K 120Hz ASUS Lumina OLED display",
+      "Intel AI Boost NPU for local acceleration"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "acer-nitro-v-15",
+    "name": "Acer Nitro V 15 (Core i5-13420H, RTX 4050 6GB, 16GB/512GB)",
+    "brand": "Acer",
+    "category": "laptop",
+    "priceInr": 74990,
+    "priceAsOf": "2026-11-19",
+    "sourceUrl": "https://store.acer.com/en-in/acer-nitro-v-gaming-laptop-intel-core-i5-13420h-anv15-51",
+    "imageUrl": "/products/acer-nitro-v-15.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 2.1,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 96,
+      "battery": 48,
+      "portability": 63,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Dual fan exhaust keeps chassis cool during heavy gaming",
+      "RTX 4050 with DLSS 3 support",
+      "DDR5 memory expandable to 32GB"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "lenovo-ideapad-slim-3-15iau7",
+    "name": "Lenovo IdeaPad Slim 3 15\" (Core i3-1215U, 8GB/512GB)",
+    "brand": "Lenovo",
+    "category": "laptop",
+    "priceInr": 36990,
+    "priceAsOf": "2026-11-14",
+    "sourceUrl": "https://www.lenovo.com/in/en/p/laptops/ideapad/ideapad-300-series/ideapad-slim-3-gen-8-(15-inch-intel)/len101i0084",
+    "imageUrl": "/products/lenovo-ideapad-slim-3-15iau7.svg",
+    "specs": {
+      "ramGb": 8,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.63,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 64,
+      "battery": 68,
+      "portability": 74,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Dolby Audio stereo speakers",
+      "Privacy shutter on 720p HD webcam",
+      "Up to 6 hours battery life for daily tasks"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "hp-15s-fq5329tu",
+    "name": "HP 15s (Core i5-1235U, 16GB/512GB SSD)",
+    "brand": "HP",
+    "category": "laptop",
+    "priceInr": 52490,
+    "priceAsOf": "2026-11-16",
+    "sourceUrl": "https://www.hp.com/in-en/shop/hp-laptop-15s-fq5329tu-8e2c4pa.html",
+    "imageUrl": "/products/hp-15s-fq5329tu.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.69,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 73,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Micro-edge anti-glare display",
+      "Full numeric keypad for fast data entry",
+      "HP Fast Charge 50% in 45 minutes"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "dell-g15-5530",
+    "name": "Dell G15 5530 (Core i5-13450HX, RTX 3050 6GB, 16GB/1TB)",
+    "brand": "Dell",
+    "category": "laptop",
+    "priceInr": 77990,
+    "priceAsOf": "2026-11-19",
+    "sourceUrl": "https://www.dell.com/en-in/shop/gaming-laptops/g15-gaming-laptop/spd/g-series-15-5530-laptop",
+    "imageUrl": "/products/dell-g15-5530.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 1024,
+      "weightKg": 2.81,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 45,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Alienware-inspired thermal cooling with 4 heat pipes",
+      "Game Shift key for instant turbo cooling",
+      "120Hz refresh rate panel"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "msi-thin-15-b12uc",
+    "name": "MSI Thin 15 (Core i7-12650H, RTX 3050 4GB, 16GB/512GB)",
+    "brand": "MSI",
+    "category": "laptop",
+    "priceInr": 64990,
+    "priceAsOf": "2026-11-17",
+    "sourceUrl": "https://in.msi.com/Laptop/Thin-15-B12UX",
+    "imageUrl": "/products/msi-thin-15-b12uc.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.86,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 69,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Lightweight gaming chassis under 1.9kg",
+      "Cooler Boost 5 cooling architecture",
+      "144Hz IPS-level gaming panel"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "acer-aspire-lite-15",
+    "name": "Acer Aspire Lite 15 (AMD Ryzen 5 5500U, 16GB/512GB)",
+    "brand": "Acer",
+    "category": "laptop",
+    "priceInr": 39990,
+    "priceAsOf": "2026-11-15",
+    "sourceUrl": "https://store.acer.com/en-in/acer-aspire-lite-al15-41-amd-ryzen-5-5500u",
+    "imageUrl": "/products/acer-aspire-lite-15.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": true,
+      "storageGb": 512,
+      "weightKg": 1.59,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 88,
+      "battery": 68,
+      "portability": 75,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Metal top cover with sleek steel-gray finish",
+      "16GB dual-channel DDR4 memory",
+      "Full numeric keypad and precision trackpad"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "apple-macbook-pro-14-m3-pro",
+    "name": "Apple MacBook Pro 14\" M3 Pro (18GB Unified, 512GB SSD)",
+    "brand": "Apple",
+    "category": "laptop",
+    "priceInr": 199900,
+    "priceAsOf": "2026-11-20",
+    "sourceUrl": "https://www.apple.com/in/shop/buy-mac/macbook-pro/14-inch-m3-pro",
+    "imageUrl": "/products/apple-macbook-pro-14-m3-pro.svg",
+    "specs": {
+      "ramGb": 18,
+      "ramUpgradable": false,
+      "storageGb": 512,
+      "weightKg": 1.61,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 91,
+      "battery": 94,
+      "portability": 75,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Liquid Retina XDR with 1000 nits sustained brightness",
+      "Up to 22 hours battery life",
+      "Industry-leading active thermal architecture"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "lenovo-yoga-slim-7x",
+    "name": "Lenovo Yoga Slim 7x Copilot+ (Snapdragon X Elite, 16GB/512GB)",
+    "brand": "Lenovo",
+    "category": "laptop",
+    "priceInr": 134990,
+    "priceAsOf": "2026-11-18",
+    "sourceUrl": "https://www.lenovo.com/in/en/p/laptops/yoga/yoga-slim-series/yoga-slim-7x-gen-9-(14-inch-snapdragon)/len101y0049",
+    "imageUrl": "/products/lenovo-yoga-slim-7x.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 512,
+      "weightKg": 1.28,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 82,
+      "portability": 83,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "45 TOPS NPU for instant on-device Copilot experiences",
+      "Up to 23.5 hours battery runtime",
+      "3K PureSight OLED touchscreen"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "asus-rog-zephyrus-g14",
+    "name": "ASUS ROG Zephyrus G14 (Ryzen 9 8945HS, RTX 4060, 16GB/1TB)",
+    "brand": "ASUS",
+    "category": "laptop",
+    "priceInr": 174990,
+    "priceAsOf": "2026-11-19",
+    "sourceUrl": "https://in.store.asus.com/rog-zephyrus-g14-2024.html",
+    "imageUrl": "/products/asus-rog-zephyrus-g14.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 1024,
+      "weightKg": 1.5,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 68,
+      "portability": 78,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "CNC-machined aluminum unibody chassis",
+      "ROG Nebula 3K 120Hz OLED display",
+      "Slash Lighting LED array on lid"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "infinix-zerobook-13th-gen",
+    "name": "Infinix ZEROBOOK 13th Gen (Core i9-13900H, 32GB/1TB SSD)",
+    "brand": "Infinix",
+    "category": "laptop",
+    "priceInr": 79990,
+    "priceAsOf": "2026-11-16",
+    "sourceUrl": "https://www.infinixmobiles.in/laptops/zerobook-13th-gen",
+    "imageUrl": "/products/infinix-zerobook-13th-gen.svg",
+    "specs": {
+      "ramGb": 32,
+      "ramUpgradable": false,
+      "storageGb": 1024,
+      "weightKg": 1.8,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 85,
+      "battery": 68,
+      "portability": 70,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Massive 32GB LPDDR5 RAM for massive container loads",
+      "Overboost switch for 54W peak CPU power",
+      "Quad-speaker sound with dual bass woofers"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "xiaomi-notebook-pro-120g",
+    "name": "Xiaomi Notebook Pro 120G (Core i5-12450H, 16GB/512GB)",
+    "brand": "Xiaomi",
+    "category": "laptop",
+    "priceInr": 66990,
+    "priceAsOf": "2026-11-17",
+    "sourceUrl": "https://www.mi.com/in/product/xiaomi-notebook-pro-120g/",
+    "imageUrl": "/products/xiaomi-notebook-pro-120g.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 512,
+      "weightKg": 1.4,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 68,
+      "portability": 80,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "2.5K 120Hz Mi-Fluid display with 100% sRGB",
+      "Series 6 aerospace-grade aluminum chassis",
+      "Thunderbolt 4 support"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "dell-xps-13-plus",
+    "name": "Dell XPS 13 Plus 9320 (Core i7-1360P, 16GB/1TB SSD)",
+    "brand": "Dell",
+    "category": "laptop",
+    "priceInr": 159990,
+    "priceAsOf": "2026-11-18",
+    "sourceUrl": "https://www.dell.com/en-in/shop/dell-laptops/xps-13-plus-laptop/spd/xps-13-9320-laptop",
+    "imageUrl": "/products/dell-xps-13-plus.svg",
+    "specs": {
+      "ramGb": 16,
+      "ramUpgradable": false,
+      "storageGb": 1024,
+      "weightKg": 1.26,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 84,
+      "battery": 82,
+      "portability": 84,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "ramGb": "verified",
+      "ramUpgradable": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Zero-lattice keyboard with seamless glass haptic touchpad",
+      "Capacitive touch function row",
+      "OLED InfinityEdge touch display"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "sony-wf-1000xm5",
+    "name": "Sony WF-1000XM5 Industry Leading Noise Canceling Earbuds",
+    "brand": "Sony",
+    "category": "earbuds",
+    "priceInr": 21990,
+    "priceAsOf": "2026-11-20",
+    "sourceUrl": "https://www.sony.co.in/headphones/products/wf-1000xm5",
+    "imageUrl": "/products/sony-wf-1000xm5.svg",
+    "specs": {
+      "ramGb": 0,
+      "ramUpgradable": false,
+      "storageGb": 0,
+      "weightKg": 0.04,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 80,
+      "battery": 85,
+      "portability": 95,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Integrated Processor V2 and HD Noise Canceling Processor QN2e",
+      "Up to 8 hours battery life (24 hours with case)",
+      "Bone conduction sensors for crystal-clear voice"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "apple-airpods-pro-2-usbc",
+    "name": "Apple AirPods Pro (2nd Gen with MagSafe Case USB-C)",
+    "brand": "Apple",
+    "category": "earbuds",
+    "priceInr": 22900,
+    "priceAsOf": "2026-11-20",
+    "sourceUrl": "https://www.apple.com/in/shop/product/MTJV3HN/A/airpods-pro",
+    "imageUrl": "/products/apple-airpods-pro-2-usbc.svg",
+    "specs": {
+      "ramGb": 0,
+      "ramUpgradable": false,
+      "storageGb": 0,
+      "weightKg": 0.05,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 80,
+      "battery": 85,
+      "portability": 95,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Up to 2x more Active Noise Cancellation",
+      "Adaptive Audio dynamically blends Transparency and ANC",
+      "Up to 6 hours listening time with ANC enabled"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "oneplus-buds-pro-2",
+    "name": "OnePlus Buds Pro 2 with Spatial Audio",
+    "brand": "OnePlus",
+    "category": "earbuds",
+    "priceInr": 9999,
+    "priceAsOf": "2026-11-18",
+    "sourceUrl": "https://www.oneplus.in/product/oneplus-buds-pro-2",
+    "imageUrl": "/products/oneplus-buds-pro-2.svg",
+    "specs": {
+      "ramGb": 0,
+      "ramUpgradable": false,
+      "storageGb": 0,
+      "weightKg": 0.05,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 80,
+      "battery": 85,
+      "portability": 95,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "MelodyBoost Dual Drivers co-created with Dynaudio",
+      "Up to 48dB Smart Adaptive Noise Cancellation",
+      "Up to 39 hours total playback with case"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "realme-buds-air-5-pro",
+    "name": "Realme Buds Air 5 Pro ANC Earbuds",
+    "brand": "Realme",
+    "category": "earbuds",
+    "priceInr": 4999,
+    "priceAsOf": "2026-11-17",
+    "sourceUrl": "https://buy.realme.com/in/goods/644",
+    "imageUrl": "/products/realme-buds-air-5-pro.svg",
+    "specs": {
+      "ramGb": 0,
+      "ramUpgradable": false,
+      "storageGb": 0,
+      "weightKg": 0.05,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 80,
+      "battery": 85,
+      "portability": 95,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "50dB Active Noise Cancellation with 4000Hz ultra-wide band",
+      "Hi-Res Audio Wireless with LDAC",
+      "Up to 40 hours total battery life"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "nothing-ear-2024",
+    "name": "Nothing Ear (2024) Transparent ANC Earbuds",
+    "brand": "Nothing",
+    "category": "earbuds",
+    "priceInr": 11999,
+    "priceAsOf": "2026-11-19",
+    "sourceUrl": "https://in.nothing.tech/products/ear",
+    "imageUrl": "/products/nothing-ear-2024.svg",
+    "specs": {
+      "ramGb": 0,
+      "ramUpgradable": false,
+      "storageGb": 0,
+      "weightKg": 0.05,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 80,
+      "battery": 85,
+      "portability": 95,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Custom 11mm ceramic driver for crisp highs and deep bass",
+      "Smart Active Noise Cancellation up to 45dB",
+      "Up to 40.5 hours listening time with charging case"
+    ],
+    "observed": []
+  },
+  {
+    "slug": "boat-airdopes-141",
+    "name": "boAt Airdopes 141 TWS Earbuds",
+    "brand": "boAt",
+    "category": "earbuds",
+    "priceInr": 1299,
+    "priceAsOf": "2026-11-15",
+    "sourceUrl": "https://www.boat-lifestyle.com/products/airdopes-141",
+    "imageUrl": "/products/boat-airdopes-141.svg",
+    "specs": {
+      "ramGb": 0,
+      "ramUpgradable": false,
+      "storageGb": 0,
+      "weightKg": 0.06,
+      "warrantyYears": 1
+    },
+    "scores": {
+      "performance": 80,
+      "battery": 85,
+      "portability": 95,
+      "reliability": 50
+    },
+    "evidenceConfidence": 0.25,
+    "provenance": {
+      "priceInr": "verified",
+      "weightKg": "verified",
+      "warrantyYears": "verified"
+    },
+    "listingClaims": [
+      "Up to 42 hours total playback time",
+      "ENx environmental noise cancellation for calls",
+      "BEAST mode with 80ms low latency for gaming"
+    ],
+    "observed": []
+  }
+]

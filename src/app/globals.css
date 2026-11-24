@@ -1,26 +1,131 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #F2EBD8;
+  --color-sheet: #FBF7EA;
+  --color-ink: #1B1A17;
+  --color-carbon-blue: #2540D9;
+  --color-stamp-vermilion: #D8381C;
+  --color-vermilion-text: #A82A12;
+  --color-evidence-green: #1F6B4F;
+  --color-tape-yellow: #F3C94B;
+  --color-graphite: #8A8576;
+
+  --font-display: var(--font-bricolage), sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #F2EBD8;
+  --foreground: #1B1A17;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F2EBD8;
+  color: #1B1A17;
+  font-family: var(--font-bricolage), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Warm Paper Shadow: 1px contact + 12px soft, tinted rgba(60,40,10,0.16) */
+.paper-shadow {
+  box-shadow: 0 1px 3px rgba(60, 40, 10, 0.08), 0 12px 28px -4px rgba(60, 40, 10, 0.16);
+}
+
+.paper-shadow-sm {
+  box-shadow: 0 1px 2px rgba(60, 40, 10, 0.06), 0 4px 12px rgba(60, 40, 10, 0.1);
+}
+
+.paper-shadow-lg {
+  box-shadow: 0 2px 5px rgba(60, 40, 10, 0.1), 0 20px 40px -8px rgba(60, 40, 10, 0.22);
+}
+
+/* Perforated Thermal Receipt: zig-zag / perforated top and bottom */
+.receipt-perforated {
+  background-color: #FBF7EA;
+  position: relative;
+}
+
+.receipt-perforated::before,
+.receipt-perforated::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-size: 14px 8px;
+  background-repeat: repeat-x;
+}
+
+.receipt-perforated::before {
+  top: -8px;
+  background-image: radial-gradient(circle at 7px 0, transparent 4px, #FBF7EA 4.5px);
+}
+
+.receipt-perforated::after {
+  bottom: -8px;
+  background-image: radial-gradient(circle at 7px 8px, transparent 4px, #FBF7EA 4.5px);
+}
+
+/* Evidence Tape with Zig-Zag Cut Edge */
+.tape-tag {
+  background-color: #F3C94B;
+  color: #1B1A17;
+  clip-path: polygon(
+    0% 0%, 100% 0%, 97% 25%, 100% 50%, 97% 75%, 100% 100%,
+    0% 100%, 3% 75%, 0% 50%, 3% 25%
+  );
+}
+
+/* Tabular Numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus Ring */
+*:focus-visible {
+  outline: 3px solid #2540D9;
+  outline-offset: 2px;
+}
+
+/* Marquee Animation */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ticker {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* Hide Next.js dev indicator badge completely */
+nextjs-portal,
+#nextjs-dev-tools,
+[data-nextjs-dev-tools],
+[data-nextjs-dev-tools-button],
+[data-nextjs-toast],
+[data-nextjs-dialog-overlay],
+div[data-nextjs-route-announcer],
+div[hidden][data-nextjs-route-announcer] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }

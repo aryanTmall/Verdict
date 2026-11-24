@@ -1,0 +1,34 @@
+[
+  {
+    "id": "mba-rev-1",
+    "rating": 5,
+    "body": "Up to 18 hours battery life is practically real; I easily get 14 to 15 hours of coding and browsing.",
+    "date": "2026-05-10T11:00:00Z",
+    "verified": true,
+    "monthsUsed": 6
+  },
+  {
+    "id": "mba-rev-2",
+    "rating": 5,
+    "body": "Silent fanless design with zero noise even during intensive tasks, totally silent in bed.",
+    "date": "2026-06-22T14:30:00Z",
+    "verified": true,
+    "monthsUsed": 4
+  },
+  {
+    "id": "mba-rev-3",
+    "rating": 3,
+    "body": "8GB RAM bottleneck with concurrent containers: Docker and Android Studio cause massive swap memory usage.",
+    "date": "2026-08-18T18:00:00Z",
+    "verified": true,
+    "monthsUsed": 8
+  },
+  {
+    "id": "mba-rev-4",
+    "rating": 3,
+    "body": "Blazing fast unified memory for creative workflows is true for light edits, but 8GB stutters when multitasking heavy IDEs.",
+    "date": "2026-09-12T15:20:00Z",
+    "verified": true,
+    "monthsUsed": 12
+  }
+]

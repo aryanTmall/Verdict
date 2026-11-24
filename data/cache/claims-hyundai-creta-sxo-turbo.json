@@ -1,0 +1,58 @@
+[
+  {
+    "claim": "1.5L Turbo GDi petrol engine with 160PS best-in-class power",
+    "status": "supported",
+    "supportCount": 3,
+    "contradictCount": 1,
+    "receipts": [
+      {
+        "quote": "5L Turbo GDi petrol engine with 160PS best-in-class power",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Verified owner: Level 2 ADAS with 19 autonomous driving safety features",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Real world usage matches the advertised specification",
+        "monthsUsed": 6
+      }
+    ]
+  },
+  {
+    "claim": "Level 2 ADAS with 19 autonomous driving safety features",
+    "status": "supported",
+    "supportCount": 3,
+    "contradictCount": 1,
+    "receipts": [
+      {
+        "quote": "5L Turbo GDi petrol engine with 160PS best-in-class power",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Verified owner: Level 2 ADAS with 19 autonomous driving safety features",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Real world usage matches the advertised specification",
+        "monthsUsed": 6
+      }
+    ]
+  },
+  {
+    "claim": "Claimed 18.4 kmpl fuel efficiency with 7-speed DCT",
+    "status": "contradicted",
+    "supportCount": 1,
+    "contradictCount": 1,
+    "receipts": [
+      {
+        "quote": "4 kmpl fuel efficiency with 7-speed DCT",
+        "monthsUsed": 6
+      },
+      {
+        "quote": "Owner report after 4 months: City fuel economy drops to 10-11 kmpl with AC in traffic",
+        "monthsUsed": 4
+      }
+    ]
+  }
+]

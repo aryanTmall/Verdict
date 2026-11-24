@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="screenGrad-hp-victus-15-fb0157ax" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B1A17" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#222B3A" stop-opacity="0.98"/>
+    </linearGradient>
+    <pattern id="grid-hp-victus-15-fb0157ax" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#6D9EFF" stroke-width="0.5" stroke-opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <!-- Specimen Backdrop -->
+  <rect x="0" y="0" width="360" height="220" rx="8" fill="#F2EBD8"/>
+  <rect x="4" y="4" width="352" height="212" rx="6" fill="#FBF7EA" stroke="#1B1A17" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+  <!-- Top Docket Number -->
+  <text x="16" y="22" font-family="monospace" font-size="9" font-weight="bold" fill="#8A8576" letter-spacing="1">
+    FIG 1.0 — HP-VICTUS-15-FB0157AX
+  </text>
+  <rect x="250" y="12" width="94" height="14" rx="2" fill="#D8381C" fill-opacity="0.1" stroke="#D8381C" stroke-width="1"/>
+  <text x="297" y="22" font-family="monospace" font-size="8" font-weight="bold" fill="#D8381C" text-anchor="middle">
+    HIGH TGP GPU
+  </text>
+
+  <!-- Laptop Display Lid -->
+  <rect x="65" y="38" width="230" height="136" rx="6" fill="#1B1A17" stroke="#1B1A17" stroke-width="2"/>
+  <rect x="71" y="44" width="218" height="124" rx="4" fill="url(#screenGrad-hp-victus-15-fb0157ax)"/>
+  <rect x="71" y="44" width="218" height="124" rx="4" fill="url(#grid-hp-victus-15-fb0157ax)"/>
+
+  <!-- Webcam -->
+  <circle cx="180" cy="41" r="1.5" fill="#46D7AD"/>
+
+  <!-- Screen Content / Forensic Visualizer -->
+  <text x="82" y="62" font-family="monospace" font-size="8" fill="#46D7AD" font-weight="bold">> sys.audit --model HP</text>
+  <text x="82" y="74" font-family="monospace" font-size="7.5" fill="#8B9BB4">RAM: 16GB [UPGRADABLE]</text>
+  <text x="82" y="85" font-family="monospace" font-size="7.5" fill="#8B9BB4">CPU: undefined Cores · 2.37kg</text>
+  
+  <!-- Waveform / Spectrum line -->
+  <path d="M 82 108 L 105 108 L 115 95 L 125 118 L 135 102 L 148 108 L 275 108" fill="none" stroke="#D8381C" stroke-width="1.8"/>
+
+  <rect x="210" y="130" width="70" height="18" rx="2" fill="#1B1A17" fill-opacity="0.8"/>
+  <text x="245" y="142" font-family="monospace" font-size="8.5" font-weight="bold" fill="#FBF7EA" text-anchor="middle">
+    HP
+  </text>
+
+  <!-- Base / Keyboard Deck -->
+  <path d="M 32 174 L 328 174 L 308 195 L 52 195 Z" fill="#DCD5C5" stroke="#1B1A17" stroke-width="2"/>
+  <!-- Trackpad Notch -->
+  <rect x="150" y="174" width="60" height="2" fill="#D8381C"/>
+  <!-- Deck Edge Highlight -->
+  <line x1="56" y1="184" x2="304" y2="184" stroke="#B8B09E" stroke-width="1"/>
+  <!-- Rubber Feet -->
+  <rect x="62" y="195" width="22" height="3" rx="1.5" fill="#1B1A17"/>
+  <rect x="276" y="195" width="22" height="3" rx="1.5" fill="#1B1A17"/>
+
+  <!-- Bottom Stamp -->
+  <text x="180" y="210" font-family="monospace" font-size="8" fill="#8A8576" text-anchor="middle" letter-spacing="0.5">
+    VERIFIED EVIDENCE SPECIMEN · CASE FILE
+  </text>
+</svg>

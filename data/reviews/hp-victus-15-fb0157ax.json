@@ -1,0 +1,34 @@
+[
+  {
+    "id": "vic-rev-1",
+    "rating": 4,
+    "body": "Solid gaming budget laptop. Full-sized backlit keyboard with integrated numeric keypad is comfortable for typing.",
+    "date": "2026-06-05T10:00:00Z",
+    "verified": true,
+    "monthsUsed": 3
+  },
+  {
+    "id": "vic-rev-2",
+    "rating": 3,
+    "body": "Battery last only 3 hours on battery, so the claim of 7 hours is contradicted in real usage.",
+    "date": "2026-07-14T12:30:00Z",
+    "verified": true,
+    "monthsUsed": 5
+  },
+  {
+    "id": "vic-rev-3",
+    "rating": 4,
+    "body": "Fan noise under dual compiler load can sound like a mini hair dryer, but temps stay controlled.",
+    "date": "2026-08-20T16:00:00Z",
+    "verified": true,
+    "monthsUsed": 6
+  },
+  {
+    "id": "vic-rev-4",
+    "rating": 3,
+    "body": "Hinge stiffness and creaking after 8 months of opening and closing daily.",
+    "date": "2026-09-15T11:15:00Z",
+    "verified": true,
+    "monthsUsed": 8
+  }
+]

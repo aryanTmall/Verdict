@@ -1,0 +1,42 @@
+[
+  {
+    "id": "acr-rev-1",
+    "rating": 5,
+    "body": "The 2.8K 90Hz OLED display is absolutely breathtaking for movies and text editing.",
+    "date": "2026-07-10T12:00:00Z",
+    "verified": true,
+    "monthsUsed": 3
+  },
+  {
+    "id": "acr-rev-2",
+    "rating": 4,
+    "body": "Battery backup dropped significantly when display set to 90Hz; averages about 7 hours instead of 12.5 hours.",
+    "date": "2026-08-01T15:20:00Z",
+    "verified": true,
+    "monthsUsed": 5
+  },
+  {
+    "id": "acr-rev-3",
+    "rating": 4,
+    "body": "Featherlight 1.32kg all-aluminum chassis makes carrying it across campus super easy.",
+    "date": "2026-08-25T11:10:00Z",
+    "verified": true,
+    "monthsUsed": 2
+  },
+  {
+    "id": "acr-rev-4",
+    "rating": 3,
+    "body": "Experienced thermal throttling under heavy multitasking when running Android Studio emulator and Docker simultaneously.",
+    "date": "2026-09-30T17:40:00Z",
+    "verified": true,
+    "monthsUsed": 6
+  },
+  {
+    "id": "acr-rev-5",
+    "rating": 4,
+    "body": "Fan noise under dual compiler load is noticeable in a quiet library, but temps stay under 85C.",
+    "date": "2026-10-15T14:00:00Z",
+    "verified": true,
+    "monthsUsed": 4
+  }
+]

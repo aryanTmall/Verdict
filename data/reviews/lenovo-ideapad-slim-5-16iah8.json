@@ -1,0 +1,50 @@
+[
+  {
+    "id": "lnv-rev-1",
+    "rating": 4,
+    "body": "Great machine for daily work. Battery backup dropped to around 6 hours during my coding and browser sessions, not the 11.5 hours advertised.",
+    "date": "2026-06-12T10:00:00Z",
+    "verified": true,
+    "monthsUsed": 4
+  },
+  {
+    "id": "lnv-rev-2",
+    "rating": 4,
+    "body": "After 14 months of use, the hinge stiffness and creaking began on the right corner. Otherwise performance is rock solid.",
+    "date": "2026-08-14T11:30:00Z",
+    "verified": true,
+    "monthsUsed": 14
+  },
+  {
+    "id": "lnv-rev-3",
+    "rating": 4,
+    "body": "I noticed fan noise under dual compiler load when building large projects. It cools down quickly though.",
+    "date": "2026-09-02T14:15:00Z",
+    "verified": true,
+    "monthsUsed": 6
+  },
+  {
+    "id": "lnv-rev-4",
+    "rating": 5,
+    "body": "Whisper-quiet dual fan cooling system works well in normal web browsing, completely silent on battery.",
+    "date": "2026-09-18T16:00:00Z",
+    "verified": true,
+    "monthsUsed": 2
+  },
+  {
+    "id": "lnv-rev-5",
+    "rating": 4,
+    "body": "Military-grade MIL-STD-810H durability shows in the stiff lid, took multiple backpack trips without scratches.",
+    "date": "2026-10-05T09:20:00Z",
+    "verified": true,
+    "monthsUsed": 7
+  },
+  {
+    "id": "lnv-rev-6",
+    "rating": 3,
+    "body": "Battery last only 6 hours with brightness at 75% running VS Code and 20 Chrome tabs.",
+    "date": "2026-10-22T13:45:00Z",
+    "verified": true,
+    "monthsUsed": 3
+  }
+]

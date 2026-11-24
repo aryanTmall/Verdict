@@ -1,0 +1,26 @@
+[
+  {
+    "id": "loq-rev-1",
+    "rating": 4,
+    "body": "Lenovo LA1 AI chip dynamic power balancing keeps frames smooth during heavy gaming sessions.",
+    "date": "2026-07-02T13:40:00Z",
+    "verified": true,
+    "monthsUsed": 2
+  },
+  {
+    "id": "loq-rev-2",
+    "rating": 4,
+    "body": "Rapid Charge Pro 0-50% in 30 minutes works as claimed when using the official 170W power brick.",
+    "date": "2026-08-10T14:10:00Z",
+    "verified": true,
+    "monthsUsed": 4
+  },
+  {
+    "id": "loq-rev-3",
+    "rating": 3,
+    "body": "Battery drain while gaming is noticeable even when plugged in on heavy benchmarks, and lasts barely 3 hours unplugged.",
+    "date": "2026-09-08T18:00:00Z",
+    "verified": true,
+    "monthsUsed": 5
+  }
+]

@@ -1,0 +1,158 @@
+{
+  "mission": "I am an engineering student. I need a laptop for coding, Android Studio, Docker, college, daily travel and occasional gaming. My budget is ₹75,000 and I want it to last four years.",
+  "parsedProfile": {
+    "budgetInr": 75000,
+    "years": 4,
+    "workloads": ["ide", "browser", "android_studio", "docker", "gaming"],
+    "concurrency": "moderate",
+    "weights": {
+      "performance": 0.28,
+      "battery": 0.16,
+      "portability": 0.16,
+      "reliability": 0.16,
+      "longevity": 0.14,
+      "value": 0.10
+    },
+    "minRamGb": 16,
+    "maxWeightKg": 2.2
+  },
+  "assumptionsMade": [
+    "Identified engineering student use case requiring sustained compilation and virtualisation.",
+    "Mapped workloads to IDE, browser, Android Studio, Docker, and gaming.",
+    "Enforced 16GB minimum RAM constraint due to concurrent Android Studio emulator and Docker daemon overhead.",
+    "Ownership horizon locked at 4 years with moderate concurrency factor (0.6)."
+  ],
+  "clarifyingQuestion": null,
+  "claims": {
+    "lenovo-ideapad-slim-5-16iah8": [
+      {
+        "claim": "Up to 11.5 hours battery life with Rapid Charge Boost",
+        "status": "contradicted",
+        "supportCount": 0,
+        "contradictCount": 2,
+        "receipts": [
+          {
+            "quote": "Battery backup dropped to around 6 hours during my coding and browser sessions",
+            "monthsUsed": 4
+          },
+          {
+            "quote": "Battery last only 6 hours with brightness at 75% running VS Code and 20 Chrome tabs.",
+            "monthsUsed": 3
+          }
+        ]
+      },
+      {
+        "claim": "Whisper-quiet dual fan cooling system",
+        "status": "supported",
+        "supportCount": 1,
+        "contradictCount": 1,
+        "receipts": [
+          {
+            "quote": "Whisper-quiet dual fan cooling system works well in normal web browsing, completely silent on battery.",
+            "monthsUsed": 2
+          }
+        ]
+      },
+      {
+        "claim": "Military-grade MIL-STD-810H durability",
+        "status": "supported",
+        "supportCount": 1,
+        "contradictCount": 0,
+        "receipts": [
+          {
+            "quote": "Military-grade MIL-STD-810H durability shows in the stiff lid, took multiple backpack trips without scratches.",
+            "monthsUsed": 7
+          }
+        ]
+      }
+    ],
+    "acer-swift-go-14-oled": [
+      {
+        "claim": "Vibrant 2.8K 90Hz OLED display",
+        "status": "supported",
+        "supportCount": 1,
+        "contradictCount": 0,
+        "receipts": [
+          {
+            "quote": "The 2.8K 90Hz OLED display is absolutely breathtaking for movies and text editing.",
+            "monthsUsed": 3
+          }
+        ]
+      },
+      {
+        "claim": "Up to 12.5 hours real-world battery",
+        "status": "contradicted",
+        "supportCount": 0,
+        "contradictCount": 1,
+        "receipts": [
+          {
+            "quote": "Battery backup dropped significantly when display set to 90Hz; averages about 7 hours instead of 12.5 hours.",
+            "monthsUsed": 5
+          }
+        ]
+      },
+      {
+        "claim": "Featherlight 1.32kg all-aluminum chassis",
+        "status": "supported",
+        "supportCount": 1,
+        "contradictCount": 0,
+        "receipts": [
+          {
+            "quote": "Featherlight 1.32kg all-aluminum chassis makes carrying it across campus super easy.",
+            "monthsUsed": 2
+          }
+        ]
+      }
+    ],
+    "asus-vivobook-16-x1605va": [
+      {
+        "claim": "Upgradeable memory slot up to 24GB",
+        "status": "supported",
+        "supportCount": 1,
+        "contradictCount": 0,
+        "receipts": [
+          {
+            "quote": "The upgradeable memory slot allowed me to install an extra 16GB stick, running 24GB now effortlessly.",
+            "monthsUsed": 3
+          }
+        ]
+      },
+      {
+        "claim": "16-inch immersive display with 86% screen-to-body ratio",
+        "status": "supported",
+        "supportCount": 1,
+        "contradictCount": 0,
+        "receipts": [
+          {
+            "quote": "16-inch immersive display with 86% screen-to-body ratio gives ample room for split-screen coding.",
+            "monthsUsed": 5
+          }
+        ]
+      },
+      {
+        "claim": "180-degree lay-flat hinge for seamless collaboration",
+        "status": "contradicted",
+        "supportCount": 0,
+        "contradictCount": 1,
+        "receipts": [
+          {
+            "quote": "Hinge stiffness and creaking developed around month 10, needed tightening.",
+            "monthsUsed": 10
+          }
+        ]
+      }
+    ]
+  },
+  "narration": {
+    "lenovo-ideapad-slim-5-16iah8": {
+      "headline": "Strong fit for engineering, but battery claim contradicted by owner evidence.",
+      "regretParagraph": "The Lenovo IdeaPad Slim 5 16\" satisfies your 16GB memory and multithreading requirements within your ₹75,000 budget. However, owner reviews indicate real-world battery life averages around 6 hours during coding rather than the claimed 11.5 hours. Furthermore, hinge stiffness typically surfaces around month 14.",
+      "whatWouldChangeMyMind": "If you prioritize portability and an OLED screen over screen size, the Acer Swift Go 14 OLED is a close contender; raising your budget to ₹85,000 would bring 16GB MacBook Air into reach."
+    }
+  },
+  "qa": {
+    "docker": "According to the engine's headroom simulation, your 16GB memory provides 2.2x headroom on Day 1 for Docker and IDEs. By Year 4, demand grows to ~15.8 GB under moderate concurrency. Because RAM is soldered on this model, you cannot upgrade later.",
+    "battery": "Reviews contradict Lenovo's 11.5-hour marketing claim. Two verified purchasers report approximately 6 hours of battery backup under mixed coding and browser tabs.",
+    "hinge": "Review forensics identify hinge stiffness and creaking appearing at a median of 14 months of use across 16.7% of surveyed owners."
+  }
+}

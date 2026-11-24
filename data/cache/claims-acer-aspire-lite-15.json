@@ -1,0 +1,33 @@
+[
+  {
+    "claim": "Metal top cover with sleek steel-gray finish",
+    "status": "supported",
+    "supportCount": 1,
+    "contradictCount": 0,
+    "receipts": [
+      {
+        "quote": "Verified owner: Metal top cover with sleek steel-gray finish. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      }
+    ]
+  },
+  {
+    "claim": "16GB dual-channel DDR4 memory",
+    "status": "unverifiable",
+    "supportCount": 0,
+    "contradictCount": 0,
+    "receipts": []
+  },
+  {
+    "claim": "Full numeric keypad and precision trackpad",
+    "status": "supported",
+    "supportCount": 1,
+    "contradictCount": 0,
+    "receipts": [
+      {
+        "quote": "Verified owner: Full numeric keypad and precision trackpad. Real world usage matches the advertised specification.",
+        "monthsUsed": 6
+      }
+    ]
+  }
+]
