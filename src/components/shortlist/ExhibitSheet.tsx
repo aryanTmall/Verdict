@@ -111,8 +111,18 @@ export function ExhibitSheet({
               EXHIBIT {letter}
             </span>
             {letter === "A" && (
-              <span className="text-[10px] font-mono text-[#1F6B4F] font-bold tracking-wider uppercase">
-                ✦ TOP ENGINE FIT
+              <span className="text-[10px] font-mono bg-[#1F6B4F]/10 text-[#1F6B4F] border border-[#1F6B4F] font-bold px-1.5 py-0.5 rounded uppercase">
+                🥇 BEST OVERALL
+              </span>
+            )}
+            {letter === "B" && (
+              <span className="text-[10px] font-mono bg-[#2540D9]/10 text-[#2540D9] border border-[#2540D9] font-bold px-1.5 py-0.5 rounded uppercase">
+                💰 BEST VALUE
+              </span>
+            )}
+            {letter === "C" && (
+              <span className="text-[10px] font-mono bg-[#F3C94B]/30 text-[#1B1A17] border border-[#1B1A17]/40 font-bold px-1.5 py-0.5 rounded uppercase">
+                🛡️ BEST ALTERNATIVE
               </span>
             )}
           </div>
@@ -205,18 +215,18 @@ export function ExhibitSheet({
           </div>
         )}
 
-        {/* Best For / Compromise */}
+        {/* Who Should Buy / Who Should Avoid / Compromise */}
         <div className="mt-3 bg-[#F2EBD8] p-2.5 rounded text-xs font-mono space-y-1.5 border border-[#1B1A17]/10">
           <div className="flex items-start space-x-1.5 text-[#1F6B4F]">
             <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
             <span>
-              <strong className="text-[#1B1A17]">Best for:</strong> {bestFor}
+              <strong className="text-[#1B1A17]">Who should buy:</strong> {bestFor}
             </span>
           </div>
           <div className="flex items-start space-x-1.5 text-[#D8381C]">
             <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
             <span>
-              <strong className="text-[#1B1A17]">Compromise:</strong> {compromise}
+              <strong className="text-[#1B1A17]">Who should avoid / Risk:</strong> {compromise}
             </span>
           </div>
         </div>

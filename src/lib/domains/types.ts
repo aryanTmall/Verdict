@@ -9,6 +9,7 @@ export type IndustryId =
   | "agriculture"
   | "travel"
   | "services"
+  | "education"
   | "universal";
 
 export type DomainAttribute = {

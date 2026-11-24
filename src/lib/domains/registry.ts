@@ -9,6 +9,7 @@ import { travelDomain } from "./travel";
 import { fashionDomain } from "./fashion";
 import { healthDomain } from "./health";
 import { servicesDomain } from "./services";
+import { educationDomainPack } from "./education";
 import { universalDomain } from "./universal";
 
 const DOMAIN_REGISTRY: Record<IndustryId, DomainPack> = {
@@ -22,6 +23,7 @@ const DOMAIN_REGISTRY: Record<IndustryId, DomainPack> = {
   fashion: fashionDomain,
   health: healthDomain,
   services: servicesDomain,
+  education: educationDomainPack,
   universal: universalDomain,
 };
 

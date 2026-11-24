@@ -113,13 +113,31 @@ export function IntakeIndexCard({
     reader.readAsDataURL(file);
   };
 
-  const handleLinkSubmit = () => {
+  const handleLinkSubmit = async () => {
     if (!linkInput.trim()) return;
-    setMissionText(
-      `Cross-examine product from link: ${linkInput.trim()}. I need it for development, coding, and 4 years of college with ₹75,000 budget.`
-    );
-    setShowLinkModal(false);
-    setLinkInput("");
+    setErrorMessage(null);
+    try {
+      const res = await fetch("/api/products/analyze-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: linkInput.trim() }),
+      });
+      const data = await res.json();
+      if (data.suggestedMissionText) {
+        setMissionText(data.suggestedMissionText);
+        setShowLinkModal(false);
+        setLinkInput("");
+        onAnalyze(data.suggestedMissionText);
+      } else {
+        setMissionText(`Cross-examine product from link: ${linkInput.trim()}.`);
+        setShowLinkModal(false);
+        setLinkInput("");
+      }
+    } catch {
+      setMissionText(`Cross-examine product from link: ${linkInput.trim()}.`);
+      setShowLinkModal(false);
+      setLinkInput("");
+    }
   };
 
   return (

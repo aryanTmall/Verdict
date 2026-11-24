@@ -19,6 +19,8 @@ import { SmartPairingSection } from "@/components/pairing/SmartPairingSection";
 import { ScanModal } from "@/components/scan/ScanModal";
 import { MultilingualVoiceDrawer } from "@/components/voice/MultilingualVoiceDrawer";
 import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
+import { BuyerDnaModal } from "@/components/dna/BuyerDnaModal";
+import { applyDnaToWeights } from "@/lib/buyer-dna";
 import { RiskAccordionTable } from "@/components/risk/RiskAccordionTable";
 import { TcoBreakdown } from "@/components/tco/TcoBreakdown";
 import { WhatIfPanel } from "@/components/whatif/WhatIfPanel";
@@ -40,6 +42,7 @@ import {
   Bell,
   Camera,
   Languages,
+  Dna,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -71,6 +74,7 @@ export default function HomePage() {
   const [showScanModal, setShowScanModal] = useState(false);
   const [showVoiceDrawer, setShowVoiceDrawer] = useState(false);
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
+  const [showDnaModal, setShowDnaModal] = useState(false);
   const [missionOverride, setMissionOverride] = useState<string | undefined>(undefined);
 
   // Verdict Modal state
@@ -429,6 +433,16 @@ export default function HomePage() {
               <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D8381C]" />
             </button>
 
+            {/* Buyer DNA Quick Button */}
+            <button
+              onClick={() => setShowDnaModal(true)}
+              className="inline-flex items-center space-x-1 text-[#1B1A17] hover:text-[#2540D9] font-medium cursor-pointer"
+              title="Personal Buyer DNA Profile"
+            >
+              <Dna className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Buyer DNA</span>
+            </button>
+
             <span className="text-[#8A8576]">·</span>
 
             <Link
@@ -748,6 +762,20 @@ export default function HomePage() {
         onClose={() => setShowNotifDrawer(false)}
         onOpenAutopilot={() => setShowAutopilotModal(true)}
       />
+
+      {/* Personal Buyer DNA Modal */}
+      {showDnaModal && (
+        <BuyerDnaModal
+          onClose={() => setShowDnaModal(false)}
+          onDnaSaved={(dna) => {
+            if (profile) {
+              const updatedWeights = applyDnaToWeights(profile.weights, dna);
+              handleProfilePatch({ weights: updatedWeights });
+              setDiffMessage("Buyer DNA profile applied: scoring weights recalibrated.");
+            }
+          }}
+        />
+      )}
 
       {/* Footer */}
       <footer className="mt-16 border-t border-[#1B1A17]/20 py-8 px-4 text-center font-mono text-xs text-[#8A8576] space-y-2">

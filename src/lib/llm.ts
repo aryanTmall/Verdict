@@ -1026,6 +1026,7 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
       fashion: `In mechanical horology, the Seiko 5 Sports SRPD55K1 delivers in-house Caliber 4R36 reliability, 100m water resistance, and an estimated cost-per-wear of ~₹55 over 3 years.`,
       health: `For air purification, the Philips Series 3000i provides hospital-grade NanoProtect HEPA trapping down to 0.003 microns with whisper-quiet 24dB sleep mode.`,
       services: `For enterprise connectivity, Airtel Business Fiber Gigabit offers symmetric 1 Gbps throughput with contractual 99.9% uptime SLA and dedicated static IPv4.`,
+      education: `For data science, AI, and technical degrees, accredited programs such as the Executive PG Diploma (IIT Bangalore / UpGrad) and Scaler ML Master Program deliver rigorous capstones with verified alumni placement networks. Ensure at least 12-15 study hours weekly.`,
       electronics: `Evaluated with precision specifications, benchmarked battery endurance, and long-term upgradeability.`,
       universal: `Evaluated via VERDICT Universal Intelligence with normalized build quality and component lifecycle projections for ${classification.category}.`,
     };

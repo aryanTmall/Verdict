@@ -259,7 +259,16 @@ export function classifyQuery(text: string): DomainClassification {
     if (!budget) budget = 4000;
     assumptions.push("Evaluated for contractual 99.9% uptime SLAs, symmetric Gigabit throughput, static IP availability, and zero-FUP data terms.");
   }
-  // Domain K: UNIVERSAL FALLBACK
+  // Domain K: EDUCATION & CERTIFICATIONS
+  else if (/\b(?:course|courses|degree|diploma|certification|certifications|bootcamp|bootcamps|coaching|data\s*science|machine\s*learning\s*course|college|university|mba|upskilling|scaler|upgrad|coursera)\b/i.test(lower)) {
+    industry = "education";
+    category = "online_courses";
+    subcategory = "professional_education";
+    ownershipYears = 2;
+    if (!budget) budget = 150000;
+    assumptions.push("Evaluated for university accreditation, WES degree equivalency, mentor-to-student ratios, capstone portfolio rigor, and verified salary placement claims.");
+  }
+  // Domain L: UNIVERSAL FALLBACK
   else {
     industry = "universal";
     // Extract entity phrase

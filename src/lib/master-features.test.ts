@@ -15,6 +15,11 @@ import {
   getLocalizedVerbalVerdict,
 } from "./multilingual";
 import { getNotifications, addNotification, markNotificationAsRead } from "./notifications";
+import { classifyQuery } from "./domains/classifier";
+import { getDomainPack } from "./domains/registry";
+import { applyDnaToWeights } from "./buyer-dna";
+import { auditDealRisk } from "./deal-risk";
+import { isSafeUrl } from "../app/api/products/analyze-link/route";
 
 describe("VERDICT Master Platform Features Test Suite", () => {
   // Test 1: Price Radar & Cross-Marketplace Arbitrage
@@ -249,6 +254,108 @@ describe("VERDICT Master Platform Features Test Suite", () => {
       const updatedNotifs = getNotifications();
       const readNotif = updatedNotifs.find((n) => n.id === added.id);
       expect(readNotif?.isRead).toBe(true);
+    });
+  });
+
+  // Test 7: Universal Education Domain Intelligence
+  describe("7. Education Domain Intelligence", () => {
+    it("correctly classifies educational bootcamps, courses and degrees", () => {
+      const classification = classifyQuery("Which course should I choose for data science and AI?");
+      expect(classification.industry).toBe("education");
+      expect(classification.category).toBe("online_courses");
+
+      const pack = getDomainPack("education");
+      expect(pack).toBeDefined();
+      expect(pack.id).toBe("education");
+      expect(pack.name).toBe("Education, Degrees & Professional Certifications");
+      expect(pack.sampleProducts.length).toBeGreaterThanOrEqual(3);
+
+      const upgrad = pack.sampleProducts.find((p) => p.slug.includes("upgrad"));
+      expect(upgrad).toBeDefined();
+      expect(upgrad?.category).toBe("online_courses");
+      expect(upgrad?.ownership).toBeDefined();
+      const tcoBreakdown = upgrad?.ownership.tcoBreakdown || [];
+      const totalTco = tcoBreakdown.reduce((sum, item) => sum + item.inr, 0);
+      expect(totalTco).toBeGreaterThan(upgrad!.priceInr);
+    });
+  });
+
+  // Test 8: Personal Buyer DNA Engine
+  describe("8. Personal Buyer DNA Calibration", () => {
+    it("dynamically shifts scoring weights based on buyer profile and maintains 1.0 normalization", () => {
+      const baseWeights = {
+        priceToValue: 0.25,
+        performance: 0.35,
+        buildReliability: 0.20,
+        ecosystemFit: 0.20,
+      };
+
+      const budgetConscious = applyDnaToWeights(baseWeights, {
+        budgetSensitivity: "STRICT_HARD_CAP",
+        riskTolerance: "CONSERVATIVE_ZERO_DEFECT",
+        longevityPriority: "MAXIMUM_LIFESPAN",
+        preferredBrands: ["Acer"],
+        avoidedBrands: [],
+        repairabilityImportance: "CRITICAL",
+      });
+
+      // Price weight should increase for strict budget buyers
+      expect(budgetConscious.priceToValue).toBeGreaterThan(baseWeights.priceToValue);
+
+      // Sum of normalized weights should equal 1.0 within floating point delta
+      const sum =
+        budgetConscious.priceToValue +
+        budgetConscious.performance +
+        budgetConscious.buildReliability +
+        budgetConscious.ecosystemFit;
+      expect(Math.abs(sum - 1.0)).toBeLessThan(0.001);
+    });
+  });
+
+  // Test 9: Deal Risk & Seller Reputation Detector
+  describe("9. Deal Risk & Seller Reputation Detector", () => {
+    it("flags unseasonal steep discounts and short return policies as high risk", () => {
+      const suspiciousDeal = auditDealRisk({
+        listedPriceInr: 45000,
+        originalPriceInr: 95000, // > 50% discount
+        sellerName: "FlashDeals Retailer LLC",
+        sellerRating: 3.2,
+        returnWindowDays: 3,
+        isRefurbished: false,
+      });
+
+      expect(suspiciousDeal.riskScore).toBeGreaterThanOrEqual(40);
+      expect(suspiciousDeal.riskFlags.length).toBeGreaterThanOrEqual(1);
+      expect(suspiciousDeal.riskFlags.some((f) => f.includes("anomaly") || f.includes("discount") || f.includes("rating"))).toBe(true);
+
+      const legitimateDeal = auditDealRisk({
+        listedPriceInr: 72990,
+        originalPriceInr: 79990,
+        sellerName: "Appario Retail",
+        sellerRating: 4.8,
+        returnWindowDays: 14,
+        isRefurbished: false,
+      });
+
+      expect(legitimateDeal.riskLevel).toBe("LOW");
+      expect(legitimateDeal.isRecommended).toBe(true);
+    });
+  });
+
+  // Test 10: Product Link Analysis & SSRF Security
+  describe("10. Product Link Analysis & SSRF Security", () => {
+    it("strictly blocks private RFC1918 subnets, localhost, and cloud metadata", () => {
+      expect(isSafeUrl("http://localhost:3000/api")).toBe(false);
+      expect(isSafeUrl("http://127.0.0.1:8080/secret")).toBe(false);
+      expect(isSafeUrl("http://169.254.169.254/latest/meta-data")).toBe(false);
+      expect(isSafeUrl("http://10.0.0.5:8000/keys")).toBe(false);
+      expect(isSafeUrl("http://192.168.1.1/admin")).toBe(false);
+      expect(isSafeUrl("ftp://files.example.com/data")).toBe(false);
+
+      // Safe public domains
+      expect(isSafeUrl("https://www.amazon.in/dp/B0CX24D8L2")).toBe(true);
+      expect(isSafeUrl("https://www.flipkart.com/item/p/itm12345")).toBe(true);
+      expect(isSafeUrl("https://www.carwale.com/hyundai-cars/creta/")).toBe(true);
     });
   });
 });
