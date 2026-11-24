@@ -14,6 +14,110 @@ import type { ResearchReport } from "./search/types";
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
 const anthropic = anthropicApiKey ? new Anthropic({ apiKey: anthropicApiKey }) : null;
 
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+/**
+ * Direct HTTP client for Google Gemini API with native JSON mode.
+ */
+export async function queryGeminiChat(
+  systemPrompt: string,
+  userPrompt: string,
+  apiKey = process.env.GEMINI_API_KEY
+): Promise<string | null> {
+  if (!apiKey || apiKey.trim().length === 0) return null;
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey.trim()}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemPrompt }],
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userPrompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          maxOutputTokens: 2048,
+        },
+      }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      console.warn(`Gemini API error ${res.status}: ${res.statusText}`);
+      return null;
+    }
+
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    return text ? text.trim() : null;
+  } catch (err: unknown) {
+    console.warn("Gemini chat request failed:", (err as Error).message);
+    return null;
+  }
+}
+
+/**
+ * Direct HTTP client for Google Gemini structured JSON generation.
+ */
+export async function queryGeminiJson<T>(
+  systemPrompt: string,
+  userPrompt: string,
+  apiKey = process.env.GEMINI_API_KEY
+): Promise<T | null> {
+  if (!apiKey || apiKey.trim().length === 0) return null;
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey.trim()}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemPrompt }],
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userPrompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.1,
+          responseMimeType: "application/json",
+          maxOutputTokens: 3072,
+        },
+      }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      console.warn(`Gemini API error ${res.status}: ${res.statusText}`);
+      return null;
+    }
+
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) return null;
+    return JSON.parse(text) as T;
+  } catch (err: unknown) {
+    console.warn("Gemini JSON request failed:", (err as Error).message);
+    return null;
+  }
+}
+
 const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434";
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.1:latest";
 
@@ -1106,12 +1210,13 @@ export async function parseMission(text: string): Promise<MissionParseResult> {
 
     let aiAnswer = defaultAiAnswers[classification.industry] || defaultAiAnswers.universal;
 
-    // Ask local Ollama if active for enhanced domain narrative
+    // Ask Google Gemini if configured, or local Ollama for enhanced domain narrative
     try {
-      const ollamaPrompt = `You are VERDICT's ${pack.name} intelligence specialist. Provide 2 concise sentences advising a buyer in India looking for ${classification.category} within ₹${classification.budget.toLocaleString("en-IN")}. Mention top models and purchase advice.`;
-      const ollamaText = await queryOllamaChat("You are an expert purchasing advisor.", ollamaPrompt);
-      if (ollamaText && ollamaText.length > 30) {
-        aiAnswer = ollamaText.trim();
+      const prompt = `You are VERDICT's ${pack.name} intelligence specialist. Provide 2 concise sentences advising a buyer in India looking for ${classification.category} within ₹${classification.budget.toLocaleString("en-IN")}. Mention top models and purchase advice.`;
+      const aiText = (await queryGeminiChat("You are an expert purchasing advisor.", prompt)) ||
+        (await queryOllamaChat("You are an expert purchasing advisor.", prompt));
+      if (aiText && aiText.length > 30) {
+        aiAnswer = aiText.trim();
       }
     } catch {
       // Keep verified default answer
@@ -1225,7 +1330,7 @@ YOUR TASK:
     ? `${text}\n\n[LIVE SEARCH EVIDENCE RETRIEVED - GROUND RECOMMENDATIONS IN THESE FACTS]:\n${evidenceSnippet}`
     : text;
 
-  const ollamaRes = await queryOllamaJson<{
+  type MissionLlmResponse = {
     answer?: string;
     budgetInr?: number;
     years?: number;
@@ -1237,14 +1342,24 @@ YOUR TASK:
     products?: any[];
     recommendedProductSlugs?: string[];
     assumptionsMade?: string[];
-  }>(ollamaSystem, userPromptWithEvidence);
+  };
 
-  if (ollamaRes) {
-    const finalBudget = explicitBudget || ollamaRes.budgetInr || (isCar ? 1900000 : isSofa ? 30000 : isTv ? 45000 : 75000);
-    const category = isDomainItem ? detectedCategory : (ollamaRes.category || "laptop");
-    const years = Math.min(10, Math.max(1, ollamaRes.years || (isCar ? 5 : 3)));
-    const workloads: WorkloadId[] = (ollamaRes.workloads && ollamaRes.workloads.length > 0)
-      ? (ollamaRes.workloads.filter(w => ["ide", "browser", "android_studio", "docker", "gaming", "office"].includes(w)) as WorkloadId[])
+  // 1. First priority: Google Gemini API (gemini-2.5-flash) with native JSON mode
+  let activeLlmProvider = "Google Gemini (gemini-2.5-flash)";
+  let llmRes = await queryGeminiJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
+
+  // 2. Second priority: Local Ollama (llama3.1:latest)
+  if (!llmRes) {
+    llmRes = await queryOllamaJson<MissionLlmResponse>(ollamaSystem, userPromptWithEvidence);
+    if (llmRes) activeLlmProvider = `Local Ollama (${OLLAMA_MODEL})`;
+  }
+
+  if (llmRes) {
+    const finalBudget = explicitBudget || llmRes.budgetInr || (isCar ? 1900000 : isSofa ? 30000 : isTv ? 45000 : 75000);
+    const category = isDomainItem ? detectedCategory : (llmRes.category || "laptop");
+    const years = Math.min(10, Math.max(1, llmRes.years || (isCar ? 5 : 3)));
+    const workloads: WorkloadId[] = (llmRes.workloads && llmRes.workloads.length > 0)
+      ? (llmRes.workloads.filter(w => ["ide", "browser", "android_studio", "docker", "gaming", "office"].includes(w)) as WorkloadId[])
       : ["ide", "browser"];
 
     const weights: Weights = {
@@ -1258,8 +1373,8 @@ YOUR TASK:
 
     // Sanitize generated products
     let catalogProducts: Product[] | undefined = undefined;
-    if (ollamaRes.products && Array.isArray(ollamaRes.products) && ollamaRes.products.length > 0) {
-      catalogProducts = ollamaRes.products.map((p: any) => ({
+    if (llmRes.products && Array.isArray(llmRes.products) && llmRes.products.length > 0) {
+      catalogProducts = llmRes.products.map((p: any) => ({
         slug: p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
         name: p.name,
         brand: p.brand || "Brand",
@@ -1300,7 +1415,7 @@ YOUR TASK:
       });
     }
 
-    let answer = ollamaRes.answer || `Top recommendations evaluated for ₹${finalBudget.toLocaleString("en-IN")}.`;
+    let answer = llmRes.answer || `Top recommendations evaluated for ₹${finalBudget.toLocaleString("en-IN")}.`;
     if (researchReport.isLive && researchReport.totalSources > 0 && !answer.includes("🔍 Live Research")) {
       answer += `\n\n🔍 Live Research: Verified across ${researchReport.totalSources} sources (${researchReport.domainsConsulted.slice(0, 3).join(", ")}) via ${researchReport.providerUsed}.`;
     }
@@ -1315,10 +1430,10 @@ YOUR TASK:
         minRamGb: undefined,
         maxWeightKg: undefined,
       },
-      assumptionsMade: ollamaRes.assumptionsMade || [`Evaluated via Local Ollama (${OLLAMA_MODEL}) with ${category.toUpperCase()} industry knowledge`],
+      assumptionsMade: llmRes.assumptionsMade || [`Evaluated via ${activeLlmProvider} with ${category.toUpperCase()} industry knowledge`],
       clarifyingQuestion: null,
       aiAnswer: answer,
-      recommendedProductSlugs: ollamaRes.recommendedProductSlugs || catalogProducts?.map(p => p.slug),
+      recommendedProductSlugs: llmRes.recommendedProductSlugs || catalogProducts?.map(p => p.slug),
       category,
       catalogProducts,
       realityCheck,
